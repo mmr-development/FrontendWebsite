@@ -1,0 +1,127 @@
+@use '../_variables' as vars;
+
+.header {
+  background-color: vars.$primary-color;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .navbar-left {
+      .logo img {
+        width: 70px;
+        height: auto;
+      }
+    }
+
+    .menu-toggle {
+      display: none; // Hidden by default
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      .menu-icon {
+        width: 24px;
+        height: 2px;
+        background-color: vars.$background;
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 24px;
+          height: 2px;
+          background-color: vars.$background;
+        }
+
+        &::before {
+          top: -6px;
+        }
+
+        &::after {
+          top: 6px;
+        }
+      }
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      gap: vars.$spacing;
+
+      .nav-item .nav-link {
+        color: vars.$background;
+        text-decoration: none;
+
+        &:hover {
+          color: vars.$hover-color;
+        }
+      }
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: vars.$spacing-small;
+
+      .language-selector {
+        padding: 0.4rem;
+        border: 1px solid vars.$border-color;
+        border-radius: vars.$border-radius-small;
+        background-color: vars.$background;
+        color: vars.$text-color;
+      }
+
+      .login-button {
+        padding: 0.6rem 1.2rem;
+        background-color: vars.$accent-color;
+        color: vars.$background;
+        text-decoration: none;
+        border-radius: vars.$border-radius;
+        font-weight: bold;
+
+        &:hover {
+          background-color: vars.$hover-color;
+        }
+      }
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block; // Show the hamburger menu on small screens
+    }
+
+    .nav-list {
+      display: none; // Hide the navigation menu by default
+      flex-direction: column;
+      gap: vars.$spacing-small;
+      background-color: vars.$primary-color;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      padding: vars.$spacing;
+      border-top: 1px solid vars.$border-color;
+    }
+
+    .nav-list.open {
+      display: flex; // Show the menu when toggled
+    }
+  }
+}

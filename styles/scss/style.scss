@@ -1,0 +1,105 @@
+@use '_variables' as vars;
+@use '_mixins' as mixins;
+
+@use 'layouts/header';
+@use 'layouts/footer';
+@use 'layouts/content';
+
+@use 'pages/home';
+@use 'pages/about';
+@use 'pages/contact';
+@use 'pages/login';
+
+@use 'components/button';
+@use 'components/card';
+@use 'components/form';
+@use 'components/modal';
+@use 'components/table';
+@use 'components/tooltip';
+
+body {
+    background-color: vars.$background;
+    color: vars.$text-color;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  a {
+    color: vars.$accent-color;
+    text-decoration: none;
+  
+    &:hover {
+      color: scale(vars.$accent-color, black, -10%);
+    }
+}
+
+// Default container styling
+.container {
+  max-width: 800px; // Limit the maximum width
+  margin: auto; // Center the container
+  padding: 20px; // Add some padding
+  box-sizing: border-box; // Include padding in width calculation
+}
+
+// Login form styling
+#login-form {
+  background-color: #f9f9f9; // Light background for contrast
+  border: 1px solid #ddd; // Subtle border
+  border-radius: 8px; // Rounded corners
+  padding: 20px; // Inner padding
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Add a shadow for depth
+
+  h1 {
+    color: #333; // Main text color
+    text-align: center; // Center the heading
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555; // Slightly darker text for labels
+  }
+
+  input {
+    width: 100%; // Full width inputs
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc; // Subtle border
+    border-radius: 4px; // Rounded corners
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%; // Full width button
+    padding: 10px;
+    background-color: #007BFF; // Main theme color (blue)
+    color: white; // White text for contrast
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background-color: #0056b3; // Darker blue on hover
+    }
+  }
+
+  p {
+    text-align: center;
+    margin-top: 15px;
+
+    a {
+      color: #007BFF; // Link color matching the theme
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

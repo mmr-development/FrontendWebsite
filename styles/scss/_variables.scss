@@ -1,0 +1,79 @@
+// Colors
+$primary-color: #2cb673;     // vibrant green for primary elements
+$accent-color: #b1e2c6;      // lighter green for accents
+$background: #ebf8f1;        // soft greenish-white for background
+$background-darker: #b1e2c6; // slightly darker background for contrast
+$background-light: #ebf8f1;  // light green for sections
+$text-color: #1B5E20;        // deep green for text
+$border-color: #b1e2c6;      // light green for borders
+$footer-bg: #2cb673;         // vibrant green for footer background
+$footer-text: #ebf8f1;       // light text for footer
+$hover-color: #1e8f5a;       // darker green for hover effects
+
+// Typography
+$font-family: 'Inter', sans-serif; // primary font
+$font-size-base: 16px;             // base font size
+$font-size-small: 14px;            // small font size
+$font-size-medium: 16px;           // medium font size
+$font-size-large: 18px;            // large font size
+
+// Spacing
+$spacing-small: 0.5rem;            // small spacing
+$spacing: 1rem;                    // default spacing
+$spacing-large: 1.5rem;            // large spacing
+
+// Borders
+$border-radius: 8px;               // default border radius 
+$border-radius-small: 4px;         // small border radius
+$border-radius-large: 12px;        // large border radius
+
+// Shadows
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // subtle shadow for cards/forms
+$box-shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.15); // stronger shadow for hover effects
+
+// Transitions
+$transition-duration: 0.3s;        // default transition duration
+
+// window size
+$window-width: 100vw;             // default window width
+$window-height: 100vh;            // default window height
+$window-size: $window-width * $window-height; // default window size
+$window-size-small: 600px;        // small window size
+$window-size-medium: 900px;       // medium window size
+$window-size-large: 1200px;      // large window size
+
+// Breakpoints
+$breakpoint-small: 600px;        // small devices (phones)
+$breakpoint-medium: 900px;       // medium devices (tablets)
+$breakpoint-large: 1200px;      // large devices (desktops)
+
+// Z-index
+$z-index-header: 1000;         // z-index for header
+$z-index-footer: 100;          // z-index for footer
+$z-index-modal: 2000;          // z-index for modal
+$z-index-tooltip: 3000;        // z-index for tooltip
+$z-index-dropdown: 4000;      // z-index for dropdown
+$z-index-toast: 5000;         // z-index for toast notifications
+$z-index-spinner: 6000;       // z-index for loading spinner
+$z-index-backdrop: 7000;     // z-index for backdrop
+
+// Animations
+$animation-duration: 0.3s;      // default animation duration
+$animation-ease: cubic-bezier(0.25, 0.1, 0.25, 1); // default animation easing
+$animation-fade-in: fade-in $animation-duration $animation-ease; // fade-in animation
+$animation-fade-out: fade-out $animation-duration $animation-ease; // fade-out animation
+$animation-slide-in: slide-in $animation-duration $animation-ease; // slide-in animation
+$animation-slide-out: slide-out $animation-duration $animation-ease; // slide-out animation
+$animation-bounce: bounce $animation-duration $animation-ease; // bounce animation
+$animation-shake: shake $animation-duration $animation-ease; // shake animation
+$animation-spin: spin $animation-duration $animation-ease; // spin animation
+
+// Transitions
+$transition: all $transition-duration ease-in-out; // default transition
+$transition-fast: all 0.2s ease-in-out; // fast transition
+$transition-slow: all 0.5s ease-in-out; // slow transition
+$transition-opacity: opacity $transition-duration ease-in-out; // opacity transition
+$transition-transform: transform $transition-duration ease-in-out; // transform transition
+$transition-color: color $transition-duration ease-in-out; // color transition
+$transition-border: border $transition-duration ease-in-out; // border transition
+$transition-shadow: box-shadow $transition-duration ease-in-out; // shadow transition

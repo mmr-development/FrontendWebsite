@@ -1,0 +1,26 @@
+@use '_variables' as vars;
+@mixin card-style {
+    background-color: vars.$background;
+    border: 1px solid vars.$border-color;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  @mixin media-query-small {
+    @media (max-width: vars.$breakpoint-small) {
+      @content;
+    }
+  }
+  
+  @mixin media-query-medium {
+    @media (max-width: vars.$breakpoint-medium) {
+      @content;
+    }
+  }
+  
+  @mixin media-query-large {
+    @media (max-width: vars.$breakpoint-large) {
+      @content;
+    }
+  }

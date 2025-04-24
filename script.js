@@ -46,7 +46,7 @@ async function loadTemplate(templatePath) {
 }
 
 
-async function renderTemplate(path, templateId, data) {
+export async function renderTemplate(path, templateId, data) {
     const template = await loadTemplate(rootpath + path);
     const renderedTemplate = Mustache.render(template, data);
     document.getElementById(templateId).innerHTML = renderedTemplate;

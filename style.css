@@ -282,99 +282,14 @@
 
 #categoryscrollbar {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  color: #1B5E20;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 0px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px;
-  background-color: #ebf8f1;
-  padding: 1rem;
-}
-#categoryscrollbar .scrollbar-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  max-width: 1200px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-#categoryscrollbar .scrollbar-container::-webkit-scrollbar {
-  display: none;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item {
-  height: 100%;
-  width: 100px;
-  margin: 0 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  background-color: #ebf8f1;
-  transition: all 0.2s ease-in-out;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item:active {
-  transform: scale(0.95);
-  transition: all 0.2s ease-in-out;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-  transition: all 0.2s ease-in-out;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item .scrollbar-item-image {
-  width: 100px;
-  height: 70px;
-  border-radius: 50%;
-  background-color: #ebf8f1;
-  display: flex;
   justify-content: center;
   align-items: center;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item .scrollbar-item-image img {
+  margin-top: 2rem;
   width: 100%;
-  height: 100%;
-  border-radius: 10px;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item .scrollbar-item-title {
-  font-size: 16px;
-  font-weight: 500;
+  height: 80px;
+  background-color: red;
   color: #1B5E20;
-  text-align: center;
-  margin-top: 5px;
-}
-#categoryscrollbar .scrollbar-container .scrollbar-item .scrollbar-item-description {
-  font-size: 12px;
-  font-weight: 400;
-  color: #1B5E20;
-  text-align: center;
-}
-
-#restaurant-container {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-}
-#restaurant-container .restaurant-sidebar {
-  width: 350px;
-  height: auto;
-}
-#restaurant-container .restaurant-sidebar .option {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 50px;
-  background-color: #ebf8f1;
-  color: #1B5E20;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  transition: all 0.2s ease-in-out;
 }
 
 .button {
@@ -461,48 +376,6 @@
   color: #ebf8f1;
 }
 
-.toggle {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 25px;
-  border: 1px solid #2cb673;
-  border-radius: 25px;
-}
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-.toggle .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ebf8f1;
-  transition: 0.4s;
-  border-radius: 25px;
-}
-.toggle .slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 2.5px;
-  background-color: black;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-.toggle input:checked + .slider {
-  background-color: #2cb673;
-}
-.toggle input:checked + .slider:before {
-  transform: translateX(calc(100% + 2px));
-}
-
 body {
   background-color: #ebf8f1;
   color: #1B5E20;
@@ -522,7 +395,7 @@ a:hover {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 800px;
   margin: auto;
   padding: 20px;
   box-sizing: border-box;

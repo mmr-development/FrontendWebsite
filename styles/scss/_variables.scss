@@ -15,7 +15,8 @@ $font-family: 'Inter', sans-serif; // primary font
 $font-size-base: 16px;             // base font size
 $font-size-small: 14px;            // small font size
 $font-size-medium: 16px;           // medium font size
-$font-size-large: 18px;            // large font size
+$font-size-large: 18px;
+$font-size-xl: 36px;            // large font size
 
 // Spacing
 $spacing-small: 0.5rem;            // small spacing
@@ -77,3 +78,12 @@ $transition-transform: transform $transition-duration ease-in-out; // transform 
 $transition-color: color $transition-duration ease-in-out; // color transition
 $transition-border: border $transition-duration ease-in-out; // border transition
 $transition-shadow: box-shadow $transition-duration ease-in-out; // shadow transition
+
+// buttons
+$button-padding: 0.5rem 1rem; // default button padding
+$button-border-radius: $border-radius; // default button border radius
+$button-font-size: $font-size-medium; // default button font size
+$button-font-weight: bold; // default button font weight
+$button-bg-color: $primary-color; // default button background color
+$button-text-color: $background; // default button text color
+$button-bg-color-hover: $hover-color; // default button hover background color

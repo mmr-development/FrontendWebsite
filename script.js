@@ -45,12 +45,16 @@ async function loadTemplate(templatePath) {
     return await response.text();
 }
 
-async function baseRenderTemplates() {
-    const headerTemplate = await loadTemplate(rootpath + 'templates/partials/header.mustache');
-    const footerTemplate = await loadTemplate(rootpath + 'templates/partials/footer.mustache');
 
-    document.getElementById('header').innerHTML = Mustache.render(headerTemplate, headerData);
-    document.getElementById('footer').innerHTML = Mustache.render(footerTemplate, footerData);
+async function renderTemplate(path, templateId, data) {
+    const template = await loadTemplate(rootpath + path);
+    const renderedTemplate = Mustache.render(template, data);
+    document.getElementById(templateId).innerHTML = renderedTemplate;
+}
+
+async function baseRenderTemplates() {
+    renderTemplate('templates/partials/header.mustache', 'header', headerData);
+    renderTemplate('templates/partials/footer.mustache', 'footer', footerData)
 }
 
 baseRenderTemplates();

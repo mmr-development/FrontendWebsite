@@ -1,8 +1,8 @@
 .header {
-  background-color: #2cb673;
   padding: 0;
   margin: 0;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .header .navbar-container {
   max-width: 1200px;
@@ -52,11 +52,15 @@
   gap: 1rem;
 }
 .header .navbar .nav-list .nav-item .nav-link {
-  color: #ebf8f1;
+  color: #1B5E20;
   text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
 }
 .header .navbar .nav-list .nav-item .nav-link:hover {
-  color: #1e8f5a;
+  color: #ebf8f1;
+  background-color: #1e8f5a;
 }
 .header .navbar .navbar-right {
   display: flex;
@@ -72,7 +76,7 @@
 }
 .header .navbar .navbar-right .login-button {
   padding: 0.6rem 1.2rem;
-  background-color: #b1e2c6;
+  background-color: #2cb673;
   color: #ebf8f1;
   text-decoration: none;
   border-radius: 8px;
@@ -167,6 +171,113 @@
 .content .content-body p {
   margin-bottom: 1rem;
   font-size: 16px;
+}
+
+.find-restaurant-section {
+  background-color: #b1e2c6;
+  color: #1B5E20;
+  margin: 0;
+  padding: 0;
+  height: 600px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+.find-restaurant-section .input-form {
+  height: 100%;
+  margin: 0;
+  padding: 0px !important;
+  width: 45%;
+  padding: 1.5rem;
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.find-restaurant-section .input-form label {
+  font-size: 36px;
+  margin: 0;
+  text-wrap: normal;
+  text-align: center;
+  font-weight: bolder;
+  color: #1B5E20;
+}
+.find-restaurant-section .input-form .restaurant-form {
+  margin-top: 1rem;
+  width: 80%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.find-restaurant-section .input-form .restaurant-form input {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #b1e2c6;
+  border-radius: 100px;
+  font-size: 16px;
+}
+.find-restaurant-section .input-form .restaurant-form button {
+  position: absolute;
+  right: 10px;
+  width: 80px;
+  height: 100%;
+  background-color: #2cb673;
+  color: #ebf8f1;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.find-restaurant-section .header-image {
+  width: 55%;
+  height: 100%;
+}
+.find-restaurant-section .header-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.find-restaurant-section .clip-section {
+  position: absolute;
+  top: 0;
+  left: 44%;
+  background-color: #eee;
+  width: calc(1% + 150px);
+  height: 100%;
+  clip-path: polygon(0 0, 100% 0%, calc(100% - 150px) 600px, 0% 100%);
+}
+@media screen and (max-width: 900px) {
+  .find-restaurant-section .clip-section {
+    width: calc(1% + 100px);
+    clip-path: polygon(0 0, 100% 0%, calc(100% - 100px) 600px, 0% 100%);
+  }
+}
+@media screen and (max-width: 900px) {
+  .find-restaurant-section {
+    height: 400px;
+    flex-direction: column;
+  }
+  .find-restaurant-section .input-form {
+    width: 100%;
+    height: 50%;
+  }
+  .find-restaurant-section .header-image {
+    width: 100%;
+    height: 50%;
+  }
+  .find-restaurant-section .clip-section {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: calc(1% + 50px);
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0%, 100% calc(100% - 50px), 0% 100%);
+  }
 }
 
 .button {

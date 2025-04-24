@@ -1,10 +1,10 @@
 @use '../_variables' as vars;
 
 .header {
-  background-color: vars.$primary-color;
   padding: 0;
   margin: 0;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   .navbar-container {
     max-width: 1200px;
@@ -64,11 +64,15 @@
       gap: vars.$spacing;
 
       .nav-item .nav-link {
-        color: vars.$background;
+        color: vars.$text-color;
         text-decoration: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: vars.$border-radius;
+        font-weight: bold;
 
         &:hover {
-          color: vars.$hover-color;
+          color: vars.$background-light;
+          background-color: vars.$hover-color;
         }
       }
     }
@@ -88,7 +92,7 @@
 
       .login-button {
         padding: 0.6rem 1.2rem;
-        background-color: vars.$accent-color;
+        background-color: vars.$primary-color;
         color: vars.$background;
         text-decoration: none;
         border-radius: vars.$border-radius;

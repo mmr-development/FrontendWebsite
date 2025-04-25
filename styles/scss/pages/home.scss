@@ -1,0 +1,119 @@
+@use '../_variables' as vars;
+
+.find-restaurant-section{
+    background-color: vars.$background-darker;
+    color: vars.$text-color;
+    margin: 0;
+    padding: 0;
+    height: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+
+    .input-form {
+        height: 100%;
+        margin: 0;
+        padding: 0px !important;
+        width: 45%;
+        padding: vars.$spacing-large;
+        background-color: #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        label {
+            font-size: vars.$font-size-xl;
+            margin: 0;
+            text-wrap: normal;
+            text-align: center;
+            font-weight: bolder;
+            color: vars.$text-color;
+        }
+    
+        .restaurant-form{
+            margin-top: 1rem;
+            width: 80%;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+            input {
+                width: 100%;
+                height: 100%;
+                padding: 0.5rem 1rem;
+                border: 1px solid vars.$border-color;
+                border-radius: 100px;
+                font-size: vars.$font-size-medium;
+            }
+
+            button {
+                position: absolute;
+                right: 10px;
+                width: 80px;
+                height: 100%;
+                background-color: vars.$primary-color;
+                color: vars.$background;
+                border: none;
+                border-radius: 100px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    
+    .header-image{
+        width: 55%;
+        height: 100%;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .clip-section {
+        position: absolute;
+        top: 0;
+        left: 44%;
+        background-color: #eee;
+        width: calc(1% + 150px);
+        height: 100%;
+        clip-path: polygon(0 0, 100% 0%, calc(100% - 150px) 600px, 0% 100%);
+
+        @media screen and (max-width: vars.$breakpoint-medium) {
+            width: calc(1% + 100px);
+            clip-path: polygon(0 0, 100% 0%, calc(100% - 100px) 600px, 0% 100%);
+            
+        }
+    }
+
+    @media screen and (max-width: vars.$breakpoint-medium) {
+        height: 400px;
+        flex-direction: column;
+
+        .input-form {
+            width: 100%;
+            height: 50%;
+        }
+
+        .header-image {
+            width: 100%;
+            height: 50%;
+        }
+
+        .clip-section {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: calc(1% + 50px);
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+            clip-path: polygon(0 0, 100% 0%, 100% calc(100% - 50px), 0% 100%);
+        }
+    }
+}

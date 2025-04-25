@@ -1,0 +1,9 @@
+<form class="form" action="{{action}}" method="{{method}}">
+  {{#fields}}
+    <div class="form-group">
+      <label for="{{id}}">{{label}}</label>
+      <input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{placeholder}}" />
+    </div>
+  {{/fields}}
+  <button type="submit">{{submitText}}</button>
+</form>

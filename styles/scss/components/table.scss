@@ -1,0 +1,29 @@
+@use '../_variables' as vars;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: vars.$spacing 0;
+
+  th, td {
+    border: 1px solid vars.$text-color;
+    padding: vars.$spacing;
+    text-align: left;
+    font-family: vars.$font-family;
+  }
+
+  th {
+    background-color: vars.$primary-color;
+    color: vars.$background;
+  }
+
+  tr:nth-child(even) {
+    background-color: vars.$background-darker;
+    color: vars.$text-color;
+  }
+
+  tr:hover {
+    background-color: vars.$accent-color;
+    color: vars.$background;
+  }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/css/style.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div class="find-restaurant-section">
+        <div class="input-form">
+            <label for="restaurant-name">Find a Restaurant</label>
+            <form id="restaurant-form" class="restaurant-form">
+                <input type="text" id="restaurant-name" name="location" placeholder="Enter your address" required>
+                <button>Find</button>
+            </form>
+        </div>
+        <div class="clip-section">
+
+        </div>
+        <div class="header-image">
+            <img src="files/images/home/home-food-header.jpg" alt="Restaurant Image" class="header-image">
+        </div>
+    </div>
+    <div id="footer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="scripts/homepage/redirecttorestaurants.js"></script>
+</body>
+</html>

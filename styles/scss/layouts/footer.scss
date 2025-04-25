@@ -1,0 +1,41 @@
+@use '../_variables' as vars;
+
+#footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 100px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.footer {
+  background-color: vars.$footer-bg;
+  color: vars.$footer-text;
+  text-align: center;
+  padding: vars.$spacing;
+  margin: 0;
+  padding: auto 0 auto 0;
+
+  p {
+    margin: 0;
+    font-family: vars.$font-family;
+  }
+
+  .social-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: vars.$spacing;
+
+    a {
+      color: vars.$footer-text;
+      text-decoration: none;
+
+      &:hover {
+        color: vars.$accent-color;
+      }
+    }
+  }
+}

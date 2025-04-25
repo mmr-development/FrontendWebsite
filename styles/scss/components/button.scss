@@ -1,0 +1,14 @@
+@use '../_variables' as vars;
+
+.button {
+    background-color: vars.$primary-color;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+  
+    &:hover {
+      background-color: scale(vars.$primary-color,black,  -10%);
+    }
+  }
+  

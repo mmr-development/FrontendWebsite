@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="navbar-container">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="{{logoUrl}}" class="logo">
+          <img src="{{logoSrc}}" alt="{{logoAlt}}" />
+        </a>
+      </div>
+      <button class="menu-toggle" aria-label="Toggle navigation">
+        <span class="menu-icon"></span>
+      </button>
+      <ul class="nav-list">
+        {{#links}}
+          <li class="nav-item">
+            <a href="{{url}}" class="nav-link">{{label}}</a>
+          </li>
+        {{/links}}
+      </ul>
+      <div class="navbar-right">
+        <select class="language-selector">
+          {{#languages}}
+            <option value="{{code}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+          {{/languages}}
+        </select>
+        <a href="{{loginUrl}}" class="login-button">Login</a>
+      </div>
+    </nav>
+  </div>
+</header>

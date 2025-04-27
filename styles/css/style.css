@@ -107,13 +107,14 @@
 }
 
 #footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  height: 100px;
+  background-color: #2cb673;
+  color: #ebf8f1;
+  text-align: center;
+  padding: 1rem;
   margin: 0;
-  overflow: hidden;
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
 }
 
 .footer {
@@ -376,6 +377,58 @@
   margin-bottom: 10px;
   transition: all 0.2s ease-in-out;
 }
+#restaurant-container .restaurants-list {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+#restaurant-container .restaurants-list .restaurant-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item {
+  display: flex;
+  flex-direction: row;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  height: 150px;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item .restaurant-image {
+  height: 100%;
+  aspect-ratio: 2/1;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item .restaurant-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px 0 0 15px;
+  object-fit: cover;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item .restaurant-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item .restaurant-details div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 1rem 0;
+}
+#restaurant-container .restaurants-list .restaurant-list .restaurant-item .restaurant-details div p {
+  padding: 0;
+  margin: 0 1rem 0 0;
+}
 
 .button {
   background-color: #2cb673;
@@ -511,6 +564,8 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -526,6 +581,12 @@ a:hover {
   margin: auto;
   padding: 20px;
   box-sizing: border-box;
+}
+
+.page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 #login-form {

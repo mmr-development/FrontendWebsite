@@ -1,16 +1,4 @@
-// Get root path dynamically
-const globalpath = window.location.origin + window.location.pathname.split('/').slice(0, -1).join('/') + '/';
-let rootpath = '';
-
-// Check if the URL contains "pages" and adjust the root path accordingly
-if (globalpath.includes('/pages/')) {
-    rootpath = '../'; // Go one level up if inside a "pages" subdirectory
-} else {
-    rootpath = './'; // Default to the current directory
-}
-
-console.log('Root path:', rootpath);
-
+import { renderTemplate, rootpath } from './scripts/utils/rendertemplate.js';
 
 const headerData = {
     logoUrl: rootpath + "/",
@@ -39,22 +27,14 @@ const footerData = {
     ],
 };
 
-// Function to load Mustache templates
-async function loadTemplate(templatePath) {
-    const response = await fetch(templatePath);
-    return await response.text();
-}
-
-
-export async function renderTemplate(path, templateId, data) {
-    const template = await loadTemplate(rootpath + path);
-    const renderedTemplate = Mustache.render(template, data);
-    document.getElementById(templateId).innerHTML = renderedTemplate;
-}
-
 async function baseRenderTemplates() {
     renderTemplate('templates/partials/header.mustache', 'header', headerData);
     renderTemplate('templates/partials/footer.mustache', 'footer', footerData)
 }
 
 baseRenderTemplates();
+
+const fontAwesomeLink = document.createElement('link');
+fontAwesomeLink.rel = 'stylesheet';
+fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+document.head.appendChild(fontAwesomeLink);

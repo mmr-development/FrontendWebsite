@@ -1,6 +1,4 @@
-import { renderTemplate } from '../../script.js';
-
-//    <div class="options"></div>
+import { renderTemplate } from '../utils/rendertemplate.js';
 
 let scrollbarData = {
     categories: [

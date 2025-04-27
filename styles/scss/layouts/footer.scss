@@ -1,13 +1,14 @@
 @use '../_variables' as vars;
 
 #footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  height: 100px;
+  background-color: vars.$footer-bg;
+  color: vars.$footer-text;
+  text-align: center;
+  padding: vars.$spacing;
   margin: 0;
-  overflow: hidden;
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
 }
 
 .footer {

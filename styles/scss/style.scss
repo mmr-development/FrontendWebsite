@@ -27,6 +27,8 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   a {
@@ -44,6 +46,12 @@ body {
   margin: auto; // Center the container
   padding: 20px; // Add some padding
   box-sizing: border-box; // Include padding in width calculation
+}
+
+.page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 // Login form styling

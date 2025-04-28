@@ -16,7 +16,13 @@
         {{/image}}
     </div>
     <div class="modal-footer">
-        <button class="add-to-cart" data-id="{{id}}">Add to Cart</button>
-        <button class="close-modal" aria-label="Close modal">Close</button>
+        <div class="modal-quantity">
+            <button class="quantity-button" data-action="decrease">-</button>
+            <input type="number" class="quantity-input" value="1" min="{{min}}" max="{{max}}" aria-label="Quantity" />
+            <button class="quantity-button" data-action="increase">+</button>
+        </div>
+        <div>        
+            <button class="add-to-cart" data-id="{{id}}">Add to Cart</button>
+        </div>
     </div>
 </div>

@@ -1,0 +1,8 @@
+<div class="menu-filter">
+    {{#categories}}
+    <div class="menu-filter-item" data-id="{{id}}">
+        <input type="checkbox" id="filter-{{id}}" name="filter-{{id}}" value="{{name}}">
+        <label for="filter-{{id}}">{{name}}</label>
+    </div>
+    {{/categories}}
+</div>

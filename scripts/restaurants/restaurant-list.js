@@ -8,7 +8,7 @@ const data = {
                 {
                     "id": "1",
                     "name": "Pizza Palace",
-                    "image": "../../files/images/restaunrants/placeholder.png",
+                    "image": "../../files/images/restaurants/placeholder.png",
                     "rating": "4.5",
                     "top-picks": "Pepperoni Pizza, Margherita",
                     "estimated-delivery-time": "30-40 mins",
@@ -18,7 +18,7 @@ const data = {
                 {
                     "id": "2",
                     "name": "Sushi World",
-                    "image": "../../files/images/restaunrants/placeholder.png",
+                    "image": "../../files/images/restaurants/placeholder.png",
                     "rating": "4.8",
                     "top-picks": "California Roll, Dragon Roll",
                     "estimated-delivery-time": "20-30 mins",
@@ -33,7 +33,7 @@ const data = {
                 {
                     "id": "3",
                     "name": "Burger Haven",
-                    "image": "../../files/images/restaunrants/placeholder.png",
+                    "image": "../../files/images/restaurants/placeholder.png",
                     "rating": "4.3",
                     "top-picks": "Cheeseburger, Bacon Burger",
                     "estimated-delivery-time": "25-35 mins",
@@ -43,7 +43,7 @@ const data = {
                 {
                     "id": "4",
                     "name": "Taco Fiesta",
-                    "image": "../../files/images/restaunrants/placeholder.png",
+                    "image": "../../files/images/restaurants/placeholder.png",
                     "rating": "4.6",
                     "top-picks": "Beef Tacos, Chicken Quesadilla",
                     "estimated-delivery-time": "15-25 mins",

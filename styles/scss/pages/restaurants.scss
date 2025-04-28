@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: auto;
     color: vars.$text-color;
     box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 0px,  
      rgba(0, 0, 0, 0.07) 0px 4px 4px, 
@@ -26,18 +25,18 @@
             display: none;
         }
 
-        
         .scrollbar-item{
             height: 100%;
             width: 100px;
             margin: 0 10px;
+            padding: 5px 0;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            // add hover effect
             background-color: vars.$background;
             transition: all 0.2s ease-in-out;
+
             &:active{
                 transform: scale(0.95);
                 transition: all 0.2s ease-in-out;

@@ -1,0 +1,20 @@
+<div class="restaurant-detail-header">
+    <img src="{{image}}" alt="{{name}}" class="restaurant-image" />
+</div>
+<div class="restaurant-detail-body">  
+    <h2 class="restaurant-full-name">{{name}}</h2>
+    <div class="row">
+        <p> Rating: {{rating}}/5</p>
+        <p> Min price: {{min_order}}</p>
+        <p> Delivery fee: {{delivery_fee}}</p>
+    </div>
+    <div id="restaurant-menu"></div>
+        <div class="opening-hours">
+        <h3>Opening Hours</h3>
+        <ul>
+            {{#opening_hours}}
+            <li>{{day}}: {{hours }}</li>
+            {{/opening_hours}}
+        </ul>
+    </div>
+</div>

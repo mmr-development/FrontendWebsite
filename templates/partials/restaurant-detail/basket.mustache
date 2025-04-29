@@ -1,0 +1,43 @@
+{{#empty}}
+<div class="basket-items">
+    <i class="fas fa-shopping-basket basket"></i>
+    <p class="empty-basket">Your basket is empty</p>
+</div>
+{{/empty}}
+{{^empty}}
+<div class="basket-items">
+    {{#items}}
+    <div class="basket-item" data-id="{{id}}">
+        <p>
+            <span class="basket-item-name">{{name}}</span>
+            <span class="basket-item-price">{{price}} kr.</span>
+        </p>
+        <div class="basket-item-actions">
+            <button class="add-note-button" data-id="{{id}}">Add Note</button>
+            <div class="basket-quantity" data-id="{{id}}">
+                <button class="quantity-button" data-action="decrease">-</button>
+                <input id="quantity-input-basket" type="number" class="quantity-input" value="{{quantity}}" min="{{min}}" max="{{max}}" aria-label="Quantity" />
+                <button class="quantity-button" data-action="increase">+</button>
+            </div>
+            <button class="remove-item-button" data-id="{{id}}">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+    {{/items}}
+</div>
+<div class="basket-footer">
+    <div class="basket-calculation">
+        <p><span>Subtotal:</span>
+        <span>{{subtotal}} kr.</span></p>
+        <p><span>Delivery fee:</span>
+        <span>{{deliveryFee}} kr.</span></p>
+    </div>
+    <div class="basket-total">
+        <p><span>Total:</span>
+        <span>{{totalPrice}} kr.</span></p>
+        <button class="checkout-button" id="restaurant-detaail-checkout-button">Checkout ( {{totalPrice}} kr.)</button> 
+        <button class="close-sidebar">Close</button>
+    </div>
+</div>
+{{/empty}}

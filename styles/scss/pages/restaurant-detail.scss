@@ -22,6 +22,7 @@
 
         .restaurant-detail-body{
             max-width: 950px;
+            padding: 10px;
             width: 100%;
             margin: auto;
             display: flex;
@@ -46,7 +47,7 @@
                 }
 
                 .menu-item{
-                    width: calc(100% - 40px);
+                    width: calc(100% - 60px);
                     margin: 10px auto;
                     height: 100px;
                     display: flex;
@@ -68,7 +69,7 @@
 
                     .menu-item-image{
                         width: 100px;
-                        height: 100%;
+                        height: 100px;
                         img {
                             width: 100%;
                             height: 100%;
@@ -95,57 +96,147 @@
         flex-direction: column;
         align-items: center;
 
+        .sidebar-content-wrapper {
 
-        .toggle-delivery-option {
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 200px;
-            height: 50px;
-            background-color: vars.$primary-color;
-            border-radius: 25px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        
-            input[type="checkbox"] {
-                opacity: 0;
+            .toggle-button {
+                display: none;
                 width: 0;
-                height: 0;
-                margin: 0;
             }
-        
-            .toggle-label {
+    
+            .toggle-delivery-option {
                 display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                width: 200px;
+                height: 50px;
+                background-color: vars.$primary-color;
+                border-radius: 25px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            
+                input[type="checkbox"] {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                    margin: 0;
+                }
+            
+                .toggle-label {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    cursor: pointer;
+            
+                    .toggle-option {
+                        flex: 1;
+                        text-align: center;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: vars.$text-color;
+                        z-index: 1;
+                    }
+            
+                    .toggle-overlay {
+                        position: absolute;
+                        top: 0;
+                        width: 50%;
+                        height: 100%;
+                        background-color: rgba(255, 255, 255, 0.5);
+                        border-radius: 25px;
+                        transition: all 0.3s ease-in-out;
+                    }
+                }
+            
+                input[type="checkbox"]:checked + .toggle-label .toggle-overlay {
+                    transform: translateX(100%);
+                }
+            }
+        }
+    }
+
+    // media queries
+    @media (max-width: 950px) {
+        flex-direction: column;
+        align-items: center;
+
+        .restaurant-detail-sidebar {
+            z-index: 888;
+            position: fixed;
+            top: auto; 
+            bottom: -10px;
+            left: 0;
+            width: calc(100% - 10px);
+            height: auto;
+            box-shadow: none;
+            padding: 5px;
+
+            .sidebar-content-wrapper {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: calc(100% - 40px);
+                padding: 0 20px;
+                height: 100%;
+                background-color: vars.$background-light;
+                box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.1);
+                transform: translateY(100%); /* Initially hidden */
+                transition: transform 0.3s ease-in-out; /* Smooth transition */
+            
+                &.show {
+                    transform: translateY(0); /* Slide into view */
+                }
+            }
+
+            .toggle-button{
+                display: flex !important;
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
-                height: 100%;
-                position: relative;
+                height: 60px;
+                background-color: vars.$primary-color;
+                border-radius: 100px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                margin-bottom: 20px;
+                border: none;
                 cursor: pointer;
-        
-                .toggle-option {
-                    flex: 1;
-                    text-align: center;
-                    font-size: 16px;
-                    font-weight: 600;
-                    color: vars.$text-color;
-                    z-index: 1;
-                }
-        
-                .toggle-overlay {
-                    position: absolute;
-                    top: 0;
-                    width: 50%;
-                    height: 100%;
-                    background-color: rgba(255, 255, 255, 0.5);
-                    border-radius: 25px;
-                    transition: all 0.3s ease-in-out;
+                font-size: 16px;
+                font-weight: 600;
+                color: vars.$background-light;
+                padding: 0 20px;
+
+                transition: all 0.1s ease-in-out;
+
+                &:hover{
+                    background-color: vars.$button-bg-color-hover;
+                    cursor: pointer;
                 }
             }
-        
-            input[type="checkbox"]:checked + .toggle-label .toggle-overlay {
-                transform: translateX(100%);
+
+
+        }
+
+        .restaurant-detail-body {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .restaurant-detail-header {
+            margin-top: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+
+            img {
+                border-radius: 20px;
             }
         }
     }

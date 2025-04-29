@@ -25,4 +25,20 @@ let scrollbarData = {
     ],
 };
 
-renderTemplate('templates/partials/categoryscrollbar.mustache', 'categoryscrollbar', scrollbarData);
+await renderTemplate('templates/partials/categoryscrollbar.mustache', 'categoryscrollbar', scrollbarData).then(() => {
+    const scrollbarContainer = document.querySelector('.scrollbar-container'); // Replace with the correct class or ID
+
+    if (scrollbarContainer) {
+        scrollbarContainer.addEventListener('wheel', (event) => {
+            event.preventDefault(); // Prevent vertical scrolling
+
+            // Adjust scrolling for both mouse wheels and touchpads
+            const scrollAmount = event.deltaY * 5 || event.deltaX * 100; // Use deltaX for horizontal touchpad gestures
+            scrollbarContainer.scrollBy({
+                left: scrollAmount, // Scroll horizontally
+                behavior: 'smooth', // Add smooth scrolling behavior
+            });
+        });
+    }
+});
+

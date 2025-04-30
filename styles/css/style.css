@@ -183,9 +183,59 @@
   height: 600px;
   width: 100%;
   position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
+}
+.find-restaurant-section .autocomplete-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  z-index: 1000;
+  max-height: 400px; /* Limit the height of the suggestions box */
+  overflow-y: auto; /* Enable scrolling if suggestions exceed max height */
+}
+.find-restaurant-section .dawa-autocomplete-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px; /* Increased border radius for a modern look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent overflow of suggestions */
+  max-height: 300px; /* Limit the height of the suggestions box */
+}
+.find-restaurant-section .dawa-autocomplete-suggestions::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+.find-restaurant-section .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion {
+  padding: 12px 16px; /* Increased padding for better spacing */
+  font-size: 16px;
+  font-weight: 500;
+  color: #1B5E20;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+  list-style: none;
+  margin-left: -40px;
+}
+.find-restaurant-section .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.find-restaurant-section .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.find-restaurant-section .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion.dawa-selected,
+.find-restaurant-section .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:hover {
+  background-color: #2cb673;
+  color: #ebf8f1;
+  transform: scale(1.02); /* Slight scaling effect on hover */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
 }
 .find-restaurant-section .input-form {
   height: 100%;
@@ -510,7 +560,7 @@
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 100vh;
-  position: sticky;
+  position: sticky !important;
   top: 0;
   display: flex;
   flex-direction: column;
@@ -582,8 +632,7 @@
   .restaurant-detail-wrapper .restaurant-detail-sidebar {
     z-index: 888;
     position: fixed;
-    top: auto;
-    bottom: -10px;
+    bottom: -220px;
     left: 0;
     width: calc(100% - 10px);
     height: auto;
@@ -642,6 +691,99 @@
   }
 }
 
+.checkout-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+.checkout-container .checkout-form {
+  flex: 1;
+  background-color: #ebf8f1;
+  width: 100%;
+  height: auto;
+  overflow-y: auto;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.checkout-container .checkout-form .contact-form {
+  width: calc(100% - 40px);
+  height: auto;
+  padding: 20px;
+  background-color: #ebf8f1;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #b1e2c6;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.checkout-container .checkout-form .contact-form.row {
+  flex-direction: row;
+  justify-content: space-between;
+}
+.checkout-container .checkout-form .contact-form .c-form-content {
+  width: calc(100% - 20px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group {
+  width: calc(50% - 20px);
+  display: flex;
+  flex-direction: column;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #ebf8f1;
+  color: #1B5E20;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group input:required {
+  border-color: #2cb673;
+}
+.checkout-container .checkout-sidebar {
+  flex: 0 0 300px;
+  padding: 20px;
+  background-color: #ebf8f1;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  height: fit-content; /* Ensure height adjusts to content */
+  overflow-y: auto;
+  position: sticky;
+  top: 0px; /* Add spacing from the top of the viewport */
+  height: 100%;
+}
+.checkout-container .checkout-sidebar .toggle-delivery-option {
+  display: none;
+}
+.checkout-container .checkout-sidebar .checkout-button {
+  display: none !important;
+}
+
+@media screen and (max-width: 950px) {
+  .checkout-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .checkout-container .checkout-sidebar {
+    width: auto;
+    position: static;
+    margin-top: 20px;
+    height: 600px;
+  }
+  .checkout-container .c-form-group {
+    width: 100%;
+  }
+}
 .button {
   background-color: #2cb673;
   color: white;
@@ -702,11 +844,11 @@
   background-color: #b1e2c6;
 }
 
-#modal {
+#c-modal, #modal {
   display: none;
 }
 
-#modal.active {
+#c-modal.active, #modal.active {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -719,7 +861,7 @@
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
 }
-#modal.active .modal-content {
+#c-modal.active .c-modal__content, #c-modal.active .modal-content, #modal.active .c-modal__content, #modal.active .modal-content {
   display: flex;
   flex-direction: column;
   background-color: #ebf8f1;
@@ -730,7 +872,7 @@
   width: calc(100% - 40px);
   overflow-y: auto;
 }
-#modal.active .modal-content .modal-header {
+#c-modal.active .c-modal__content .c-modal__header, #c-modal.active .c-modal__content .modal-header, #c-modal.active .modal-content .c-modal__header, #c-modal.active .modal-content .modal-header, #modal.active .c-modal__content .c-modal__header, #modal.active .c-modal__content .modal-header, #modal.active .modal-content .c-modal__header, #modal.active .modal-content .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -738,11 +880,11 @@
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
-#modal.active .modal-content .modal-header h2 {
+#c-modal.active .c-modal__content .c-modal__header .c-modal__title, #c-modal.active .c-modal__content .c-modal__header .modal-title, #c-modal.active .c-modal__content .modal-header .c-modal__title, #c-modal.active .c-modal__content .modal-header .modal-title, #c-modal.active .modal-content .c-modal__header .c-modal__title, #c-modal.active .modal-content .c-modal__header .modal-title, #c-modal.active .modal-content .modal-header .c-modal__title, #c-modal.active .modal-content .modal-header .modal-title, #modal.active .c-modal__content .c-modal__header .c-modal__title, #modal.active .c-modal__content .c-modal__header .modal-title, #modal.active .c-modal__content .modal-header .c-modal__title, #modal.active .c-modal__content .modal-header .modal-title, #modal.active .modal-content .c-modal__header .c-modal__title, #modal.active .modal-content .c-modal__header .modal-title, #modal.active .modal-content .modal-header .c-modal__title, #modal.active .modal-content .modal-header .modal-title {
   font-size: 36px;
   color: #1B5E20;
 }
-#modal.active .modal-content .modal-header .close-modal {
+#c-modal.active .c-modal__content .c-modal__header .c-modal__close, #c-modal.active .c-modal__content .c-modal__header .close-modal, #c-modal.active .c-modal__content .modal-header .c-modal__close, #c-modal.active .c-modal__content .modal-header .close-modal, #c-modal.active .modal-content .c-modal__header .c-modal__close, #c-modal.active .modal-content .c-modal__header .close-modal, #c-modal.active .modal-content .modal-header .c-modal__close, #c-modal.active .modal-content .modal-header .close-modal, #modal.active .c-modal__content .c-modal__header .c-modal__close, #modal.active .c-modal__content .c-modal__header .close-modal, #modal.active .c-modal__content .modal-header .c-modal__close, #modal.active .c-modal__content .modal-header .close-modal, #modal.active .modal-content .c-modal__header .c-modal__close, #modal.active .modal-content .c-modal__header .close-modal, #modal.active .modal-content .modal-header .c-modal__close, #modal.active .modal-content .modal-header .close-modal {
   background: none;
   border: none;
   font-size: 18px;
@@ -750,71 +892,94 @@
   cursor: pointer;
   scale: 2;
 }
-#modal.active .modal-content .modal-header .close-modal:hover {
+#c-modal.active .c-modal__content .c-modal__header .c-modal__close:hover, #c-modal.active .c-modal__content .c-modal__header .close-modal:hover, #c-modal.active .c-modal__content .modal-header .c-modal__close:hover, #c-modal.active .c-modal__content .modal-header .close-modal:hover, #c-modal.active .modal-content .c-modal__header .c-modal__close:hover, #c-modal.active .modal-content .c-modal__header .close-modal:hover, #c-modal.active .modal-content .modal-header .c-modal__close:hover, #c-modal.active .modal-content .modal-header .close-modal:hover, #modal.active .c-modal__content .c-modal__header .c-modal__close:hover, #modal.active .c-modal__content .c-modal__header .close-modal:hover, #modal.active .c-modal__content .modal-header .c-modal__close:hover, #modal.active .c-modal__content .modal-header .close-modal:hover, #modal.active .modal-content .c-modal__header .c-modal__close:hover, #modal.active .modal-content .c-modal__header .close-modal:hover, #modal.active .modal-content .modal-header .c-modal__close:hover, #modal.active .modal-content .modal-header .close-modal:hover {
   color: #2cb673;
 }
-#modal.active .modal-content .modal-body {
+#c-modal.active .c-modal__content .c-modal__body, #c-modal.active .c-modal__content .modal-body, #c-modal.active .modal-content .c-modal__body, #c-modal.active .modal-content .modal-body, #modal.active .c-modal__content .c-modal__body, #modal.active .c-modal__content .modal-body, #modal.active .modal-content .c-modal__body, #modal.active .modal-content .modal-body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
 }
-#modal.active .modal-content .modal-body .menu-item-content h4 {
+#c-modal.active .c-modal__content .c-modal__body .menu-item-content h4, #c-modal.active .c-modal__content .modal-body .menu-item-content h4, #c-modal.active .modal-content .c-modal__body .menu-item-content h4, #c-modal.active .modal-content .modal-body .menu-item-content h4, #modal.active .c-modal__content .c-modal__body .menu-item-content h4, #modal.active .c-modal__content .modal-body .menu-item-content h4, #modal.active .modal-content .c-modal__body .menu-item-content h4, #modal.active .modal-content .modal-body .menu-item-content h4 {
   font-size: 18px;
   color: #1B5E20;
   margin-bottom: 10px;
 }
-#modal.active .modal-content .modal-body .menu-item-content .menu-item-price {
+#c-modal.active .c-modal__content .c-modal__body .menu-item-content .menu-item-price, #c-modal.active .c-modal__content .modal-body .menu-item-content .menu-item-price, #c-modal.active .modal-content .c-modal__body .menu-item-content .menu-item-price, #c-modal.active .modal-content .modal-body .menu-item-content .menu-item-price, #modal.active .c-modal__content .c-modal__body .menu-item-content .menu-item-price, #modal.active .c-modal__content .modal-body .menu-item-content .menu-item-price, #modal.active .modal-content .c-modal__body .menu-item-content .menu-item-price, #modal.active .modal-content .modal-body .menu-item-content .menu-item-price {
   font-size: 16px;
   font-weight: bold;
   color: #2cb673;
   margin-bottom: 10px;
 }
-#modal.active .modal-content .modal-body .menu-item-content p {
+#c-modal.active .c-modal__content .c-modal__body .menu-item-content p, #c-modal.active .c-modal__content .modal-body .menu-item-content p, #c-modal.active .modal-content .c-modal__body .menu-item-content p, #c-modal.active .modal-content .modal-body .menu-item-content p, #modal.active .c-modal__content .c-modal__body .menu-item-content p, #modal.active .c-modal__content .modal-body .menu-item-content p, #modal.active .modal-content .c-modal__body .menu-item-content p, #modal.active .modal-content .modal-body .menu-item-content p {
   font-size: 16px;
   color: #1B5E20;
 }
-#modal.active .modal-content .modal-body .menu-item-image {
+#c-modal.active .c-modal__content .c-modal__body .menu-item-image, #c-modal.active .c-modal__content .modal-body .menu-item-image, #c-modal.active .modal-content .c-modal__body .menu-item-image, #c-modal.active .modal-content .modal-body .menu-item-image, #modal.active .c-modal__content .c-modal__body .menu-item-image, #modal.active .c-modal__content .modal-body .menu-item-image, #modal.active .modal-content .c-modal__body .menu-item-image, #modal.active .modal-content .modal-body .menu-item-image {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#modal.active .modal-content .modal-body .menu-item-image img {
+#c-modal.active .c-modal__content .c-modal__body .menu-item-image img, #c-modal.active .c-modal__content .modal-body .menu-item-image img, #c-modal.active .modal-content .c-modal__body .menu-item-image img, #c-modal.active .modal-content .modal-body .menu-item-image img, #modal.active .c-modal__content .c-modal__body .menu-item-image img, #modal.active .c-modal__content .modal-body .menu-item-image img, #modal.active .modal-content .c-modal__body .menu-item-image img, #modal.active .modal-content .modal-body .menu-item-image img {
   max-width: 100%;
   max-height: 150px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 30px, rgba(0, 0, 0, 0.1) 0px 4px 25px;
 }
-#modal.active .modal-content .modal-footer {
+#c-modal.active .c-modal__content .c-modal__body select, #c-modal.active .c-modal__content .modal-body select, #c-modal.active .modal-content .c-modal__body select, #c-modal.active .modal-content .modal-body select, #modal.active .c-modal__content .c-modal__body select, #modal.active .c-modal__content .modal-body select, #modal.active .modal-content .c-modal__body select, #modal.active .modal-content .modal-body select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b1e2c6;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #ebf8f1;
+  color: #1B5E20;
+}
+#c-modal.active .c-modal__content .c-modal__footer, #c-modal.active .c-modal__content .modal-footer, #c-modal.active .modal-content .c-modal__footer, #c-modal.active .modal-content .modal-footer, #modal.active .c-modal__content .c-modal__footer, #modal.active .c-modal__content .modal-footer, #modal.active .modal-content .c-modal__footer, #modal.active .modal-content .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   margin-top: 20px;
 }
-#modal.active .modal-content .modal-footer button {
+#c-modal.active .c-modal__content .c-modal__footer .c-modal__submit, #c-modal.active .c-modal__content .modal-footer .c-modal__submit, #c-modal.active .modal-content .c-modal__footer .c-modal__submit, #c-modal.active .modal-content .modal-footer .c-modal__submit, #modal.active .c-modal__content .c-modal__footer .c-modal__submit, #modal.active .c-modal__content .modal-footer .c-modal__submit, #modal.active .modal-content .c-modal__footer .c-modal__submit, #modal.active .modal-content .modal-footer .c-modal__submit {
+  width: 100%;
+  background-color: #2cb673;
+  color: #ebf8f1;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+#c-modal.active .c-modal__content .c-modal__footer .c-modal__submit:hover, #c-modal.active .c-modal__content .modal-footer .c-modal__submit:hover, #c-modal.active .modal-content .c-modal__footer .c-modal__submit:hover, #c-modal.active .modal-content .modal-footer .c-modal__submit:hover, #modal.active .c-modal__content .c-modal__footer .c-modal__submit:hover, #modal.active .c-modal__content .modal-footer .c-modal__submit:hover, #modal.active .modal-content .c-modal__footer .c-modal__submit:hover, #modal.active .modal-content .modal-footer .c-modal__submit:hover {
+  background-color: #1e8f5a;
+}
+#c-modal.active .c-modal__content .c-modal__footer button, #c-modal.active .c-modal__content .modal-footer button, #c-modal.active .modal-content .c-modal__footer button, #c-modal.active .modal-content .modal-footer button, #modal.active .c-modal__content .c-modal__footer button, #modal.active .c-modal__content .modal-footer button, #modal.active .modal-content .c-modal__footer button, #modal.active .modal-content .modal-footer button {
   padding: 10px 20px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
   font-size: 16px;
 }
-#modal.active .modal-content .modal-footer button.add-to-cart {
+#c-modal.active .c-modal__content .c-modal__footer button.add-to-cart, #c-modal.active .c-modal__content .modal-footer button.add-to-cart, #c-modal.active .modal-content .c-modal__footer button.add-to-cart, #c-modal.active .modal-content .modal-footer button.add-to-cart, #modal.active .c-modal__content .c-modal__footer button.add-to-cart, #modal.active .c-modal__content .modal-footer button.add-to-cart, #modal.active .modal-content .c-modal__footer button.add-to-cart, #modal.active .modal-content .modal-footer button.add-to-cart {
   background-color: #2cb673;
   color: #ebf8f1;
 }
-#modal.active .modal-content .modal-footer button.add-to-cart:hover {
+#c-modal.active .c-modal__content .c-modal__footer button.add-to-cart:hover, #c-modal.active .c-modal__content .modal-footer button.add-to-cart:hover, #c-modal.active .modal-content .c-modal__footer button.add-to-cart:hover, #c-modal.active .modal-content .modal-footer button.add-to-cart:hover, #modal.active .c-modal__content .c-modal__footer button.add-to-cart:hover, #modal.active .c-modal__content .modal-footer button.add-to-cart:hover, #modal.active .modal-content .c-modal__footer button.add-to-cart:hover, #modal.active .modal-content .modal-footer button.add-to-cart:hover {
   background-color: #1e8f5a;
 }
-#modal.active .modal-content .modal-footer button.close-modal {
+#c-modal.active .c-modal__content .c-modal__footer button.close-modal, #c-modal.active .c-modal__content .modal-footer button.close-modal, #c-modal.active .modal-content .c-modal__footer button.close-modal, #c-modal.active .modal-content .modal-footer button.close-modal, #modal.active .c-modal__content .c-modal__footer button.close-modal, #modal.active .c-modal__content .modal-footer button.close-modal, #modal.active .modal-content .c-modal__footer button.close-modal, #modal.active .modal-content .modal-footer button.close-modal {
   background-color: #ebf8f1;
   color: #1B5E20;
 }
-#modal.active .modal-content .modal-footer button.close-modal:hover {
+#c-modal.active .c-modal__content .c-modal__footer button.close-modal:hover, #c-modal.active .c-modal__content .modal-footer button.close-modal:hover, #c-modal.active .modal-content .c-modal__footer button.close-modal:hover, #c-modal.active .modal-content .modal-footer button.close-modal:hover, #modal.active .c-modal__content .c-modal__footer button.close-modal:hover, #modal.active .c-modal__content .modal-footer button.close-modal:hover, #modal.active .modal-content .c-modal__footer button.close-modal:hover, #modal.active .modal-content .modal-footer button.close-modal:hover {
   background-color: #b1e2c6;
 }
-#modal.active .modal-content .modal-footer .modal-quantity {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity, #c-modal.active .c-modal__content .modal-footer .modal-quantity, #c-modal.active .modal-content .c-modal__footer .modal-quantity, #c-modal.active .modal-content .modal-footer .modal-quantity, #modal.active .c-modal__content .c-modal__footer .modal-quantity, #modal.active .c-modal__content .modal-footer .modal-quantity, #modal.active .modal-content .c-modal__footer .modal-quantity, #modal.active .modal-content .modal-footer .modal-quantity {
   display: flex;
   align-items: center;
   background-color: #ebf8f1;
@@ -822,7 +987,7 @@
   overflow: hidden;
   border: 1px solid #b1e2c6;
 }
-#modal.active .modal-content .modal-footer .modal-quantity input {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity input, #c-modal.active .c-modal__content .modal-footer .modal-quantity input, #c-modal.active .modal-content .c-modal__footer .modal-quantity input, #c-modal.active .modal-content .modal-footer .modal-quantity input, #modal.active .c-modal__content .c-modal__footer .modal-quantity input, #modal.active .c-modal__content .modal-footer .modal-quantity input, #modal.active .modal-content .c-modal__footer .modal-quantity input, #modal.active .modal-content .modal-footer .modal-quantity input {
   width: 50px;
   padding: 5px;
   font-size: 16px;
@@ -830,7 +995,7 @@
   border: none;
   text-align: center;
 }
-#modal.active .modal-content .modal-footer .modal-quantity .quantity-button {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button, #c-modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button, #c-modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button, #c-modal.active .modal-content .modal-footer .modal-quantity .quantity-button, #modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button, #modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button, #modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button, #modal.active .modal-content .modal-footer .modal-quantity .quantity-button {
   display: flex;
   gap: 10px;
   border-radius: 50px;
@@ -844,13 +1009,13 @@
   border: none;
   cursor: pointer;
 }
-#modal.active .modal-content .modal-footer .modal-quantity .quantity-button:hover {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:hover, #c-modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:hover, #c-modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:hover, #c-modal.active .modal-content .modal-footer .modal-quantity .quantity-button:hover, #modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:hover, #modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:hover, #modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:hover, #modal.active .modal-content .modal-footer .modal-quantity .quantity-button:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-#modal.active .modal-content .modal-footer .modal-quantity .quantity-button:first-child {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:first-child, #c-modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:first-child, #c-modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:first-child, #c-modal.active .modal-content .modal-footer .modal-quantity .quantity-button:first-child, #modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:first-child, #modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:first-child, #modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:first-child, #modal.active .modal-content .modal-footer .modal-quantity .quantity-button:first-child {
   margin-right: -5px;
 }
-#modal.active .modal-content .modal-footer .modal-quantity .quantity-button:last-child {
+#c-modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:last-child, #c-modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:last-child, #c-modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:last-child, #c-modal.active .modal-content .modal-footer .modal-quantity .quantity-button:last-child, #modal.active .c-modal__content .c-modal__footer .modal-quantity .quantity-button:last-child, #modal.active .c-modal__content .modal-footer .modal-quantity .quantity-button:last-child, #modal.active .modal-content .c-modal__footer .modal-quantity .quantity-button:last-child, #modal.active .modal-content .modal-footer .modal-quantity .quantity-button:last-child {
   margin-left: -5px;
 }
 

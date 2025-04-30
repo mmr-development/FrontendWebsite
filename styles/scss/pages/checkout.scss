@@ -1,0 +1,107 @@
+@use '../_variables' as vars;
+
+.checkout-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    .checkout-form {
+        flex: 1;
+        background-color: vars.$background-light;
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        max-width: vars.$window-size-medium;
+        margin: 20px auto;
+        padding: 20px;
+
+        .contact-form {
+            width: calc(100% - 40px);
+            height: auto;
+            padding:20px;
+            background-color: vars.$background-light;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1); 
+            border-radius: vars.$border-radius;
+            border: 1px solid vars.$border-color;
+            display: flex;
+            flex-direction: column;
+
+            margin-bottom: 20px;
+
+            &.row{
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .c-form-content{
+                width: calc(100% - 20px);
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: space-between; 
+            
+                .c-form-group{
+                    width: calc(50% - 20px);
+                    display: flex;
+                    flex-direction: column;
+
+                    input {
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid vars.$border-color;
+                        border-radius: vars.$border-radius;
+                        font-size: vars.$font-size-base;
+                        background-color: vars.$background-light;
+                        color: vars.$text-color;
+
+                        &:required {
+                            border-color: vars.$primary-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .checkout-sidebar {
+        flex: 0 0 300px;
+        padding: 20px;
+        background-color: vars.$background-light;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+        height: fit-content; /* Ensure height adjusts to content */
+        overflow-y: auto;
+        position: sticky;
+        top: 0px; /* Add spacing from the top of the viewport */
+        height: 100%;
+
+        .toggle-delivery-option{
+            display: none;
+        }
+
+        .checkout-button {
+            display: none !important;
+        }
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .checkout-container {
+        flex-direction: column;
+        align-items: center;
+
+        .checkout-sidebar {
+            width: auto;
+            position: static;
+            margin-top: 20px; 
+            height: 600px; 
+        }
+
+        .c-form-group {
+            width: 100%;
+        }
+    }
+}

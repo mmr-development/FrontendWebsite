@@ -90,19 +90,19 @@
         padding: 20px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         height: 100vh;
-        position: sticky;
+        position: sticky !important;
         top: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
 
         .sidebar-content-wrapper {
-
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+
             .toggle-button {
                 display: none;
                 width: 0;
@@ -170,9 +170,8 @@
 
         .restaurant-detail-sidebar {
             z-index: 888;
-            position: fixed;
-            top: auto; 
-            bottom: -10px;
+            position: fixed; 
+            bottom: -220px;
             left: 0;
             width: calc(100% - 10px);
             height: auto;

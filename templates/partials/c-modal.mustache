@@ -1,0 +1,16 @@
+<div class="c-modal">
+    <div class="c-modal__content">
+        <div class="c-modal__header">
+            <h2 class="c-modal__title">{{title}}</h2>
+            <button class="c-modal__close" aria-label="{{close}}">x</button>
+        </div>
+        <div class="c-modal__body">
+            {{#content}}
+                {{{.}}}
+            {{/content}}
+        </div>
+        <div class="c-modal__footer">
+            <button class="c-modal__submit">{{submit}}</button>
+        </div>
+    </div>
+</div>

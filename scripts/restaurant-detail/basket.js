@@ -1,7 +1,7 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
 import { updateToggleButton } from './restaurant-detail-sidebar-toggle.js';
 
-export const basketUpdate = async () => {
+export const basketUpdate = async ( elementid = 'basket') => {
     // Get restaurantId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('id');

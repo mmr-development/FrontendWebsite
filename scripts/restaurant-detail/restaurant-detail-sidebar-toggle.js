@@ -18,9 +18,11 @@ export const updateToggleButton = async (quantity, totalPrice) => {
 
     let closeButton = document.getElementsByClassName('close-sidebar')[0];
     
-    closeButton.addEventListener('click', () => {
-        if (contentWrapper) {
-            contentWrapper.classList.toggle('show'); // Toggle a class to show/hide the sidebar
-        }
-    });
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            if (contentWrapper) {
+                contentWrapper.classList.toggle('show'); // Toggle a class to show/hide the sidebar
+            } 
+        });
+    }
 };

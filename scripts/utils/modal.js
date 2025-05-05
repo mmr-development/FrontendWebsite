@@ -13,4 +13,10 @@ export const renderModal = async (data) => {
             modal.classList.remove('active');
         });
     });
+
+    document.querySelectorAll('.c-modal__submit').forEach((submit) => {
+        submit.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+    });
 }

@@ -720,7 +720,10 @@
   border: 1px solid #b1e2c6;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.checkout-container .checkout-form .contact-form .contact-form__title {
+  margin-top: 0;
 }
 .checkout-container .checkout-form .contact-form.row {
   flex-direction: row;
@@ -731,13 +734,14 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   justify-content: space-between;
 }
 .checkout-container .checkout-form .contact-form .c-form-content .c-form-group {
   width: calc(50% - 20px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .checkout-container .checkout-form .contact-form .c-form-content .c-form-group input {
   width: 100%;
@@ -750,6 +754,29 @@
 }
 .checkout-container .checkout-form .contact-form .c-form-content .c-form-group input:required {
   border-color: #2cb673;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group.tipform {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 100%;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group.tipform label {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #1B5E20;
+  margin-bottom: 10px;
+  border: 1px solid #b1e2c6;
+  border-radius: 100px;
+  padding: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group.tipform label:hover {
+  background-color: #1e8f5a;
+}
+.checkout-container .checkout-form .contact-form .c-form-content .c-form-group.tipform label.selected {
+  background-color: #1e8f5a;
+  color: #ebf8f1;
 }
 .checkout-container .checkout-sidebar {
   flex: 0 0 300px;
@@ -784,6 +811,125 @@
     width: 100%;
   }
 }
+.await-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(50%);
+  background-color: #ebf8f1;
+}
+
+.await-confirmation {
+  text-align: center;
+  padding: 30px;
+  background-color: #ebf8f1;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+.await-confirmation h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2cb673;
+  margin-bottom: 20px;
+}
+.await-confirmation p {
+  font-size: 16px;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+.await-confirmation #order-details {
+  font-size: 14px;
+  color: #0d3b12;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  border-radius: 4px;
+}
+.await-confirmation #cancel-order-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ebf8f1;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.await-confirmation #cancel-order-button:hover {
+  background-color: #a71d2a;
+}
+
+.order-confirmation {
+  padding: 20px;
+  background-color: #ebf8f1;
+  border-radius: 8px;
+  color: #1B5E20;
+}
+.order-confirmation__title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #2cb673;
+}
+.order-confirmation__text {
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.order-confirmation__details {
+  margin-bottom: 20px;
+}
+.order-confirmation__details h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #b1e2c6;
+}
+.order-confirmation__details ul {
+  list-style: none;
+  padding: 0;
+}
+.order-confirmation__details ul li {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.order-confirmation__details ul li strong {
+  font-weight: bold;
+  color: #2cb673;
+}
+.order-confirmation__items {
+  margin-bottom: 20px;
+}
+.order-confirmation__items h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #b1e2c6;
+}
+.order-confirmation__items ul {
+  list-style: none;
+  padding: 0;
+}
+.order-confirmation__items ul li {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.order-confirmation__items ul li strong {
+  font-weight: bold;
+  color: #2cb673;
+}
+.order-confirmation__footer {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+  color: #1e8f5a;
+}
+
 .button {
   background-color: #2cb673;
   color: white;
@@ -936,6 +1082,56 @@
   font-size: 16px;
   background-color: #ebf8f1;
   color: #1B5E20;
+}
+#c-modal.active .c-modal__content .c-modal__body input, #c-modal.active .c-modal__content .modal-body input, #c-modal.active .modal-content .c-modal__body input, #c-modal.active .modal-content .modal-body input, #modal.active .c-modal__content .c-modal__body input, #modal.active .c-modal__content .modal-body input, #modal.active .modal-content .c-modal__body input, #modal.active .modal-content .modal-body input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b1e2c6;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #ebf8f1;
+  color: #1B5E20;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select, #c-modal.active .c-modal__content .modal-body #payment-method-select, #c-modal.active .modal-content .c-modal__body #payment-method-select, #c-modal.active .modal-content .modal-body #payment-method-select, #modal.active .c-modal__content .c-modal__body #payment-method-select, #modal.active .c-modal__content .modal-body #payment-method-select, #modal.active .modal-content .c-modal__body #payment-method-select, #modal.active .modal-content .modal-body #payment-method-select {
+  width: 100%;
+  padding: 10px;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method, #modal.active .modal-content .modal-body #payment-method-select .payment-method {
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 20px);
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method:hover, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method:hover, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method:hover, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method:hover, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method:hover, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method:hover, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method:hover, #modal.active .modal-content .modal-body #payment-method-select .payment-method:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method.selected, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method.selected, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method.selected, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method.selected, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method.selected, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method.selected, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method.selected, #modal.active .modal-content .modal-body #payment-method-select .payment-method.selected {
+  background-color: #b1e2c6;
+  color: #ebf8f1;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__title, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__title, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__title, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__title, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__title, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__title, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__title, #modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__title {
+  color: #1B5E20;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__image, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__image, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__image, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__image, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__image, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__image, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__image, #modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 50px;
+  border-radius: 10px;
+}
+#c-modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__image img, #c-modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__image img, #c-modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__image img, #c-modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__image img, #modal.active .c-modal__content .c-modal__body #payment-method-select .payment-method .payment-method__image img, #modal.active .c-modal__content .modal-body #payment-method-select .payment-method .payment-method__image img, #modal.active .modal-content .c-modal__body #payment-method-select .payment-method .payment-method__image img, #modal.active .modal-content .modal-body #payment-method-select .payment-method .payment-method__image img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
 }
 #c-modal.active .c-modal__content .c-modal__footer, #c-modal.active .c-modal__content .modal-footer, #c-modal.active .modal-content .c-modal__footer, #c-modal.active .modal-content .modal-footer, #modal.active .c-modal__content .c-modal__footer, #modal.active .c-modal__content .modal-footer, #modal.active .modal-content .c-modal__footer, #modal.active .modal-content .modal-footer {
   display: flex;
@@ -1252,8 +1448,13 @@
   font-size: larger;
 }
 #basket .basket-footer .basket-total .checkout-button:hover {
+  background-color: #b1e2c6;
+  color: #ebf8f1;
+}
+#basket .basket-footer .basket-total .checkout-button.active {
   background-color: #1e8f5a;
   color: #ebf8f1;
+  display: block !important;
 }
 #basket .basket-footer .basket-total .close-sidebar {
   display: none;

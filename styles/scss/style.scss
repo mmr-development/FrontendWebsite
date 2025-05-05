@@ -12,6 +12,8 @@
 @use 'pages/restaurants';
 @use 'pages/restaurant-detail';
 @use 'pages/checkout';
+@use 'pages/await-confirmation.scss';
+@use 'pages/checkout-order-confirm';
 
 @use 'components/button';
 @use 'components/card';

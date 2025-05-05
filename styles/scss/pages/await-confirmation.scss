@@ -1,0 +1,58 @@
+@use '../_variables' as vars;
+
+.await-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(50%);
+    background-color: vars.$background-light;
+}
+
+.await-confirmation {
+    text-align: center;
+    padding: 30px;
+    background-color: vars.$background;
+    border-radius: vars.$border-radius;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+
+    h1 {
+        font-size: vars.$font-size-xl;
+        font-weight: bold;
+        color: vars.$primary-color;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: vars.$font-size-medium;
+        color: vars.$text-color-muted;
+        margin-bottom: 30px;
+    }
+
+    #order-details {
+        font-size: vars.$font-size-small;
+        color: vars.$text-color-dark;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: vars.$background-light;
+        border: 1px solid vars.$border-color;
+        border-radius: vars.$border-radius-small;
+    }
+
+    #cancel-order-button {
+        padding: 10px 20px;
+        font-size: vars.$font-size-medium;
+        font-weight: bold;
+        color: vars.$background;
+        background-color: vars.$danger-color;
+        border: none;
+        border-radius: vars.$border-radius-small;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: vars.$danger-color-dark;
+        }
+    }
+}

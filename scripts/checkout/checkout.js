@@ -33,7 +33,28 @@ export const renderCheckout = async () => {
         fullname: 'Full Name',
         phonenumber: 'Phone Number',
         deliveryTime: 'Delivery Time',
+        deliveryTimeTitle: 'Delivery Time',
         deliveryoption: 'Delivery Option',
+        deliveryNoteTitle: 'Delivery Note',
+        deliveryNote: 'Delivery Note',
+        deliveryTipTitle: 'Delivery Tip',
+        deliveryTipOptions: [
+            { value: '10', text: '10,00 kr.' },
+            { value: '20', text: '20,00 kr.' },
+            { value: '30', text: '30,00 kr.' },
+        ],
+        paymentTitle: 'Payment Method',
+        paymentOptions: [
+            { value: 'creditcard', text: 'Credit Card', logo: '../../files/images/checkout/dankort.png'},
+            { value: 'paypal', text: 'PayPal', logo: '../../files/images/checkout/paypal.png'},
+            { value: 'mobilpay', text: 'Mobil Pay', logo: '../../files/images/checkout/mobilpay.png'},
+        ],
+    };
+
+    // check if checkout-form-contact exists
+    let checkoutFormContact = document.getElementById('checkout-form-contact');
+    if (!checkoutFormContact) {
+        return;
     }
 
     await renderTemplate(
@@ -41,10 +62,12 @@ export const renderCheckout = async () => {
         'checkout-form-contact',
         contactFormData
     ).then(() => {
+        let filledoutoptions = {
+        };
 
         document.getElementById('deliverytimeform').addEventListener('click', async (e) => {
-            console.log('Delivery time form clicked');
             await renderModal({
+                minWidth: '400',
                 title: 'Delivery Time',
                 content: '<select id="delivery-time-select"></select>',
                 close: "Close",
@@ -61,14 +84,157 @@ export const renderCheckout = async () => {
                     let selectedValue = select.options[select.selectedIndex].value;
                     if (selectedValue !== 'asap') {
                         let selectedDate = new Date(selectedValue);
+                        filledoutoptions.deliveryTime = selectedDate;
                         let formattedDate = selectedDate.toLocaleDateString([], { weekday: "long" }).charAt(0).toUpperCase() + selectedDate.toLocaleDateString([], { weekday: "long" }).slice(1) + " " + selectedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                        document.getElementById('deliverytimeform').textContent = formattedDate;
+                        document.getElementById('deliverytimeform-final').textContent = formattedDate;
+                        validateCheckout(filledoutoptions);
                     } else {
-                        document.getElementById('deliverytimeform').textContent = 'As soon as possible';
+                        document.getElementById('deliverytimeform-final').textContent = 'As soon as possible';
+                        delete filledoutoptions.deliveryTime;
                     }
                 });
             });
         });
+        document.getElementById('deliverynoteform').addEventListener('click', async (e) => {
+            await renderModal({
+                minWidth: '400',
+                title: 'Delivery Note',
+                content: '<textarea id="delivery-note-textarea" rows="4" cols="50"></textarea>',
+                close: "Close",
+                submit: "Submit",
+            }).then(() => {
+                const textarea = document.getElementById('delivery-note-textarea');
+                textarea.addEventListener('input', () => {
+                    let note = textarea.value;
+                    note.length > 0 ? filledoutoptions.deliveryNote = note : delete filledoutoptions.deliveryNote;
+                    document.getElementById('deliverynoteform-final').textContent = note;
+                    validateCheckout(filledoutoptions);
+                });
+            });
+        });
+
+        document.querySelectorAll('.predefinedTips').forEach((tip) => {
+            tip.addEventListener('click', () => {
+                let selectedTip = tip.getAttribute('data-value');
+                filledoutoptions.deliveryTip = selectedTip;
+                document.getElementById('deliverytipform-final').textContent = ': ' + selectedTip + ',00 kr.';
+                document.querySelectorAll('.predefinedTips').forEach((tip) => {
+                    tip.classList.remove('selected');
+                });
+                tip.classList.add('selected');
+                validateCheckout(filledoutoptions); // Validate after updating the tip
+            });
+        });
+
+        document.getElementById('customTipOption').addEventListener('click', async (e) => {
+            await renderModal({
+                minWidth: '400',
+                title: 'Custom Tip',
+                content: '<input type="number" id="custom-tip-input" placeholder="Enter custom tip amount">',
+                close: "Close",
+                submit: "Submit",
+            }).then(() => {
+                const input = document.getElementById('custom-tip-input');
+                input.addEventListener('input', () => {
+                    let tip = input.value;
+                    if (tip.length > 0) {
+                        filledoutoptions.deliveryTip = tip;
+                        document.querySelectorAll('.predefinedTips').forEach((tip) => {
+                            tip.classList.remove('selected');
+                        });
+                    } else {
+                        delete filledoutoptions.deliveryTip;
+                    }
+                    document.getElementById('deliverytipform-final').textContent = ': ' + tip + ',00 kr.';
+                    validateCheckout(filledoutoptions);
+                });
+            });
+        });
+        document.getElementById('paymentmethodform').addEventListener('click', async (e) => {
+            await renderModal({
+                minWidth: '400',
+                title: 'Payment Method',
+                content: '<div id="payment-method-select"></div>',
+                close: "Close",
+                submit: "Submit",
+            }).then(async () => {
+                await renderTemplate(
+                    '../../templates/partials/checkout/payment-method.mustache',
+                    'payment-method-select',
+                    { paymentOptions: contactFormData.paymentOptions }
+                ).then(() => {
+                    const paymentMethods = document.querySelectorAll('.payment-method');
+                    paymentMethods.forEach(method => {
+                        method.addEventListener('click', () => {
+                            paymentMethods.forEach(m => m.classList.remove('selected'));
+                            method.classList.add('selected');
+                            let selectedMethod = method.getAttribute('data-value');
+                            filledoutoptions.paymentMethod = selectedMethod;
+                            document.getElementById('paymentmethod-final').innerHTML =method.querySelector('.payment-method__title').innerHTML;
+                            validateCheckout(filledoutoptions);
+                        });
+                    });
+                });
+            });
+        });
+
+
     });
+}
+
+
+
+let validateCheckout = (options) => {
+    if (options.deliveryTime && options.paymentMethod) {
+        let basket = document.getElementsByClassName('basket-total')[0];
+        // add checkout button to basket
+        let checkoutButton = document.createElement('button');
+        checkoutButton.classList.add('checkout-button', 'active');
+        checkoutButton.textContent = 'Checkout';
+        checkoutButton.addEventListener('click', () => {
+            // get from local storage
+            let cart = JSON.parse(localStorage.getItem('restaurantCarts'))
+            // id from url;
+            let urlParams = new URLSearchParams(window.location.search);
+            let restaurantId = urlParams.get('id');
+            let restaurantCart = cart[restaurantId];
+            let order = {
+                restaurantId: restaurantId,
+                items: restaurantCart,
+                deliveryTime: options.deliveryTime,
+                deliveryNote: options.deliveryNote ?? '',
+                deliveryTip: options.deliveryTip ?? 0,
+                paymentMethod: options.paymentMethod,
+            };
+            
+            // save order to local storage
+            localStorage.setItem('order', JSON.stringify(order));
+            // create modal for order confirmation
+            renderModal({
+                minWidth: '400',
+                title: 'Order Confirmation',
+                content: '<div id="order-confirmation"></div>',
+                close: "Close",
+                submit: "Confirm",
+            }).then(() => {
+                renderTemplate(
+                    '../../templates/partials/checkout/order-confirmation.mustache',
+                    'order-confirmation',
+                    order
+                ).then(() => {
+                    // on confirm button click, redirect to order page
+                    document.querySelector('.c-modal__submit').addEventListener('click', () => {
+                        window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;
+                    });
+                });
+            });
+        });
+        basket.appendChild(checkoutButton);
+    } else {
+        let checkoutButton = document.querySelector('.checkout-button');
+        if (checkoutButton) {
+            checkoutButton.remove();
+        }
+    }
 }
 

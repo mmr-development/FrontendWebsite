@@ -1,6 +1,10 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
 
 export const updateToggleButton = async (quantity, totalPrice) => {
+    let sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+    if (!sidebarToggleButton) {
+        return;
+    }
     await renderTemplate(
         '../../templates/partials/restaurant-detail/sidebar-toggle-button.mustache',
         'sidebar-toggle-button',

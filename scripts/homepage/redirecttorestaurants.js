@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (addressInput) {
         dawaAutocomplete.dawaAutocomplete(addressInput, {
             select: function (selected) {
+                console.log(selected);
                 if (addressInput) {
                     addressInput.innerHTML = selected.tekst;
                     submitButton.style.display = "block";

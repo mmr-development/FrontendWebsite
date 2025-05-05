@@ -1,0 +1,81 @@
+@use '../_variables' as vars;
+
+.order-confirmation {
+    padding: 20px;
+    background-color: vars.$background-light;
+    border-radius: vars.$border-radius;
+    color: vars.$text-color;
+
+    &__title {
+        font-size: vars.$font-size-xl;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+        color: vars.$primary-color;
+    }
+
+    &__text {
+        font-size: vars.$font-size-medium;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    &__details {
+        margin-bottom: 20px;
+
+        h3 {
+            font-size: vars.$font-size-large;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: vars.$accent-color
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                font-size: vars.$font-size-medium;
+                margin-bottom: 5px;
+
+                strong {
+                    font-weight: bold;
+                    color: vars.$primary-color;
+                }
+            }
+        }
+    }
+
+    &__items {
+        margin-bottom: 20px;
+
+        h3 {
+            font-size: vars.$font-size-large;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: vars.$accent-color;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                font-size: vars.$font-size-medium;
+                margin-bottom: 5px;
+
+                strong {
+                    font-weight: bold;
+                    color: vars.$primary-color
+                }
+            }
+        }
+    }
+
+    &__footer {
+        font-size: vars.$font-size-medium;
+        text-align: center;
+        margin-top: 20px;
+        color: vars.$button-bg-color-hover;
+    }
+}

@@ -1,13 +1,12 @@
 import { renderTemplate, rootpath } from './scripts/utils/rendertemplate.js';
 
 const headerData = {
-    logoUrl: rootpath + "/",
+    logoUrl: rootpath + "",
     logoSrc: rootpath + "/files/images/logo.png",
     logoAlt: "MMR Delivery Logo",
     links: [
-      { label: "Home", url: "/" },
-      { label: "About", url: "/pages/about.html" },
-      { label: "Contact", url: "/pages/contact.html" },
+      { label: "Become a Partner", url: "/pages/become-a-partner.html" },
+      { label: "Become a Courier ", url: "/pages/become-a-courier.html" },
     ],
     languages: [
       { code: "en", name: "English", selected: true },

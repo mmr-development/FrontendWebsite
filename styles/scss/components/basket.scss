@@ -187,8 +187,14 @@
                 font-size: larger;
     
                 &:hover {
-                    background-color: vars.$button-bg-color-hover;
+                    background-color: vars.$accent-color;
                     color: vars.$background-light;
+                }
+
+                &.active {
+                    background-color: vars.$button-bg-color-hover;
+                    color: vars.$background;
+                    display: block !important;
                 }
             }
 

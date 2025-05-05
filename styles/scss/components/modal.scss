@@ -104,6 +104,64 @@
                 background-color: vars.$background-light;
                 color: vars.$text-color;
             }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid vars.$border-color;
+                border-radius: 5px;
+                font-size: vars.$font-size-base;
+                background-color: vars.$background-light;
+                color: vars.$text-color;
+            }
+
+            #payment-method-select {
+                width: 100%;
+                padding: 10px;
+
+                .payment-method {
+                    display: flex;
+                    flex-direction: row;
+                    width: calc(100% - 20px);
+                    padding: 10px;
+                    border-radius: 5px;
+                    background-color: vars.$background-light;
+                    border: 1px solid vars.$border-color;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+
+                    &:hover {
+                        background-color: rgba(0, 0, 0, 0.05);
+                        cursor: pointer;
+                    }
+
+                    &.selected {
+                        background-color: vars.$accent-color;
+                        color: vars.$background;
+                    }
+
+                    .payment-method__title {
+                        color: vars.$text-color;
+                        font-size: vars.$font-size-large;
+                        margin-bottom: 10px;
+                    }
+
+                    .payment-method__image {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: auto;
+                        height: 50px;
+                        border-radius: 10px;
+
+                        img {
+                            max-width: 100%;
+                            max-height: 100%;
+                            border-radius: 10px;
+                        }
+                    }
+                }
+            }
         }
 
         .c-modal__footer, .modal-footer {

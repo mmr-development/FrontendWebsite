@@ -14,6 +14,9 @@
 @use 'pages/checkout';
 @use 'pages/await-confirmation.scss';
 @use 'pages/checkout-order-confirm';
+@use 'pages/become-a-partner';
+@use 'pages/become-a-courier';
+@use 'pages/thank-you';
 
 @use 'components/button';
 @use 'components/card';
@@ -24,6 +27,17 @@
 @use 'components/slider';
 @use 'components/sidebar';
 @use 'components/basket';
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  opacity: 0.8;
+  pointer-events: none;
+  will-change: transform;
+  border-radius: 50%;
+}
 
 body {
     background-color: vars.$background;
@@ -36,6 +50,7 @@ body {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
   
   a {

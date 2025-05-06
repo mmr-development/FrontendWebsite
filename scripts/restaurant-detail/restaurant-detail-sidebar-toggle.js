@@ -14,9 +14,9 @@ export const updateToggleButton = async (quantity, totalPrice) => {
     let toggleButton = document.getElementById('sidebar-toggle-button');
     let contentWrapper = document.querySelector('.sidebar-content-wrapper');
 
-    toggleButton.addEventListener('click', () => { // Use querySelector for a single element
+    toggleButton.addEventListener('click', () => { 
         if (contentWrapper) {
-            contentWrapper.classList.add('show'); // Toggle a class to show/hide the sidebar
+            contentWrapper.classList.add('show'); 
         }
     });
 
@@ -25,7 +25,7 @@ export const updateToggleButton = async (quantity, totalPrice) => {
     if (closeButton) {
         closeButton.addEventListener('click', () => {
             if (contentWrapper) {
-                contentWrapper.classList.toggle('show'); // Toggle a class to show/hide the sidebar
+                contentWrapper.classList.toggle('show'); 
             } 
         });
     }

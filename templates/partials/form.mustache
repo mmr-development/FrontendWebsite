@@ -1,9 +1,27 @@
 <form class="form" action="{{action}}" method="{{method}}">
-  {{#fields}}
-    <div class="form-group">
-      <label for="{{id}}">{{label}}</label>
-      <input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{placeholder}}" />
-    </div>
-  {{/fields}}
-  <button type="submit">{{submitText}}</button>
+  <h2>{{title}}</h2>
+  {{#description}}
+    <p>{{description}}</p>
+  {{/description}}
+  <div class="form-content">
+    {{#fields}}
+      <div class="form-group">
+        <label for="{{id}}">{{label}}</label>
+        {{#select}}
+          <select id="{{id}}" name="{{name}}">
+            {{#options}}
+              <option value="{{value}}">{{text}}</option>
+            {{/options}}
+          </select>
+        {{/select}}
+        {{^select}}
+          <input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{placeholder}}" value="{{value}}">
+        {{/select}}
+        {{#error}}
+          <span class="error">{{error}}</span>
+        {{/error}}
+      </div>
+    {{/fields}}
+  </div>
+  <button class="form-submit-btn" type="submit">{{submitText}}</button>
 </form>

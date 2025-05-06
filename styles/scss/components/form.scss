@@ -1,38 +1,62 @@
 @use '../_variables' as vars;
 
 .form {
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: vars.$window-size-small;
+  width: calc(100% - 15px);
   padding: vars.$spacing;
   background-color: vars.$background;
   border-radius: vars.$border-radius;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
 
-  .form-group {
-    margin-bottom: vars.$spacing;
+  .form-content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: vars.$spacing;
+    margin-bottom: 20px;
 
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-family: vars.$font-family;
-      color: vars.$text-color;
-    }
+    .form-group {
+      margin-bottom: vars.$spacing;
+      margin: 0;
+      width: calc(50% - 8px);
 
-    input {
-      width: calc(100% - vars.$spacing);
-      padding: 0.5rem;
-      border: 1px solid vars.$text-color;
-      border-radius: vars.$border-radius;
-      font-family: vars.$font-family;
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-family: vars.$font-family;
+        color: vars.$text-color;
+      }
 
-      &:focus {
-        border-color: vars.$primary-color;
-        outline: none;
+      input {
+        width: calc(100% - vars.$spacing);
+        padding: 0.5rem;
+        border: 1px solid vars.$text-color;
+        border-radius: vars.$border-radius;
+        font-family: vars.$font-family;
+
+        &:focus {
+          border-color: vars.$primary-color;
+          outline: none;
+        }
+      }
+
+      select {
+        width: calc(100%);
+        padding: 0.5rem;
+        border: 1px solid vars.$text-color;
+        border-radius: vars.$border-radius;
+        font-family: vars.$font-family;
+
+        &:focus {
+          border-color: vars.$primary-color;
+          outline: none;
+        }
       }
     }
   }
 
-  button {
+  .form-submit-btn {
     background-color: vars.$primary-color;
     color: vars.$background;
     padding: 0.6rem 1.2rem;
@@ -40,9 +64,31 @@
     border-radius: vars.$border-radius;
     font-family: vars.$font-family;
     cursor: pointer;
+    margin-left: auto;
+    display: block;
 
     &:hover {
       background-color: vars.$accent-color;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #become-a-partner-form {
+    margin-top: 10px !important;
+
+    .form {
+      width: calc(100% - 65px);
+      margin: 0 20px;
+  
+      .form-content {
+        flex-direction: column;
+        gap: vars.$spacing;
+    
+        .form-group {
+          width: 100% !important;
+        }
+      }
     }
   }
 }

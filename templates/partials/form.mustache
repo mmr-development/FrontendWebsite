@@ -9,14 +9,32 @@
         <label for="{{id}}">{{label}}</label>
         {{#select}}
           <select id="{{id}}" name="{{name}}">
+           <option value="" disabled selected>{{placeholder}}
             {{#options}}
-              <option value="{{value}}">{{text}}</option>
+              <option value="{{value}}" >{{text}}</option>
             {{/options}}
           </select>
         {{/select}}
         {{^select}}
-          <input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{placeholder}}" value="{{value}}">
+          {{#checkbox}}
+            <div class="checkbox-group">
+              {{#options}}
+                <label>
+                  <input type="checkbox" id="{{id}}" name="{{name}}" value="{{value}}">
+                  {{text}}
+                </label>
+              {{/options}}
+            </div>
+          {{/checkbox}}
+          {{^checkbox}}
+            <input type="{{type}}" id="{{id}}" name="{{name}}" placeholder="{{placeholder}}" value="{{value}}">
+          {{/checkbox}}
         {{/select}}
+        {{#autocomplete}}
+          <div class="autocomplete-suggestions"></div>
+        {{/autocomplete}}
+        {{^autocomplete}}
+        {{/autocomplete}}
         {{#error}}
           <span class="error">{{error}}</span>
         {{/error}}

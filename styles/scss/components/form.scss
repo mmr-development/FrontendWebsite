@@ -20,6 +20,7 @@
       margin-bottom: vars.$spacing;
       margin: 0;
       width: calc(50% - 8px);
+      position: relative;
 
       label {
         display: block;
@@ -53,6 +54,100 @@
           outline: none;
         }
       }
+
+      .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        gap: vars.$spacing-small; /* Add spacing between checkboxes */
+        margin-top: vars.$spacing-small;
+      
+        label {
+          display: flex;
+          align-items: center;
+          gap: vars.$spacing-small; /* Add spacing between checkbox and text */
+          font-family: vars.$font-family;
+          font-size: vars.$font-size-medium;
+          color: vars.$text-color;
+      
+          input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            border: 1px solid vars.$border-color;
+            border-radius: vars.$border-radius-small;
+            cursor: pointer;
+      
+            &:checked {
+              background-color: vars.$primary-color;
+              border-color: vars.$primary-color;
+            }
+      
+            &:focus {
+              outline: 2px solid vars.$accent-color;
+            }
+          }
+        }
+      }
+
+      .autocomplete-container {
+        position: absolute;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        z-index: 1000;
+        max-height: 400px; /* Limit the height of the suggestions box */
+        overflow-y: auto; /* Enable scrolling if suggestions exceed max height */
+      }
+    
+      .dawa-autocomplete-suggestions {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: vars.$background-light;
+          border: 1px solid vars.$border-color;
+          border-radius: 8px; /* Increased border radius for a modern look */
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+          z-index: 1000;
+          overflow-y: auto;
+          overflow-x: hidden; /* Prevent overflow of suggestions */
+          max-height: 300px; /* Limit the height of the suggestions box */
+
+          // hide scrollbar
+          &::-webkit-scrollbar {
+              display: none; /* Hide scrollbar for WebKit browsers */
+          }
+      }
+    
+      .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion {
+          padding: 12px 16px; /* Increased padding for better spacing */
+          font-size: vars.$font-size-medium;
+          font-weight: 500;
+          color: vars.$text-color;
+          cursor: pointer;
+          transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+          list-style: none;
+          margin-left: -40px;
+      }
+    
+      .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:first-child {
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+      }
+    
+      .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:last-child {
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+      }
+      
+      .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion.dawa-selected,
+      .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:hover {
+          background-color: vars.$primary-color;
+          color: vars.$background-light;
+          transform: scale(1.02); /* Slight scaling effect on hover */
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
+      }
     }
   }
 
@@ -74,8 +169,8 @@
 }
 
 @media screen and (max-width: 650px) {
-  #become-a-partner-form {
-    margin-top: 10px !important;
+  #become-a-partner-form, #become-a-courier-form {
+    margin: 10px 0 !important;
 
     .form {
       width: calc(100% - 65px);

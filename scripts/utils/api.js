@@ -1,7 +1,17 @@
 const apiurl = 'http://10.130.66.11:8080/v1/'
 
+const validateUrl = (url) => {
+    if (!url.includes('?') && !url.endsWith('/')) {
+        return url + '/';
+    }
+    else if (url.includes('?') && !url.substring(url.indexOf('?') - 1, url.indexOf('?')).endsWith('/')) {
+        return url.substring(0, url.indexOf('?')) + '/' + url.substring(url.indexOf('?'));
+    }
+    return url;
+}
+
 const getApiUrl = (path) => {
-    return apiurl + path
+    return validateUrl(apiurl + path);
 }
 
 export const post = async (path, data) => {
@@ -12,7 +22,10 @@ export const post = async (path, data) => {
         },
         body: JSON.stringify(data),
     });
-    return response.json();
+    return {
+        status: response.status,
+        data: await response.json(),
+    }
 }
 
 export const get = async (path) => {
@@ -22,7 +35,11 @@ export const get = async (path) => {
             'Content-Type': 'application/json',
         },
     });
-    return response.json();
+    
+    return {
+        status: response.status,
+        data: await response.json(),
+    }
 }
 
 export const put = async (path, data) => {
@@ -33,7 +50,10 @@ export const put = async (path, data) => {
         },
         body: JSON.stringify(data),
     });
-    return response.json();
+    return {
+        status: response.status,
+        data: await response.json(),
+    };
 }
 
 export const patch = async (path, data) => {
@@ -44,7 +64,10 @@ export const patch = async (path, data) => {
         },
         body: JSON.stringify(data),
     });
-    return response.json();
+    return {
+        status: response.status,
+        data: await response.json(),
+    }
 }
 
 export const del = async (path) => {
@@ -54,5 +77,8 @@ export const del = async (path) => {
             'Content-Type': 'application/json',
         },
     });
-    return response.json();
+    return {
+        status: response.status,
+        data: await response.json(),
+    }
 }

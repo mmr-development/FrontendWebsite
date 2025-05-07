@@ -1,10 +1,29 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
 import * as api from '../utils/api.js';
-import { renderConfetti } from "../utils/confetti.js";
 
 export const renderPartnerForm = async () => {
-    let deliverymethods = await api.get('partners/delivery-methods/');
-    let buisnessTypes = await api.get('partners/business-types/');
+    let deliverymethods = await api.get('partners/delivery-methods/').then((response) => {
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            console.error('Error fetching delivery methods:', response.statusText);
+            return [];
+        }
+    }).catch((error) => {
+        console.error('Error fetching delivery methods:', error);
+        return [];
+    });
+    
+    let buisnessTypes = await api.get('partners/business-types/').then((response) => {
+        if (response.status === 200) {
+            return response.data;
+        }
+        return [];
+    }).catch((error) => {
+        console.error('Error fetching business types:', error);
+        return [];
+    });
+
     let formdata = {
         action: 'partner-form',
         method: 'POST',
@@ -40,6 +59,7 @@ export const renderPartnerForm = async () => {
                 placeholder: 'Indtast din virksomhedsadresse',
                 required: true,
                 name: 'company-address',
+                autocomplete: true,
             },
             {
                 id: 'email',
@@ -50,12 +70,20 @@ export const renderPartnerForm = async () => {
                 name: 'email',
             },
             {
-                id: 'phone',
+                id: 'contact-phone',
                 type: 'tel',
-                label: 'Telefonnummer',
+                label: 'Kontaktunmmer',
                 placeholder: 'Indtast dit telefonnummer',
                 required: true,
-                name: 'phone',
+                name: 'contact-phone',
+            },
+            {
+                id: 'company-phone',
+                type: 'tel',
+                label: 'Virksomhedens telefonnummer',
+                placeholder: 'Indtast virksomhedens telefonnummer',
+                required: true,
+                name: 'company-phone',
             },
             {
                 id: 'delivery-method',
@@ -65,17 +93,16 @@ export const renderPartnerForm = async () => {
                 placeholder: 'Vælg en leveringsmetode',
                 required: true,
                 name: 'delivery-method',
-                options: [
-                    { value: '', text: 'Vælg en leveringsmetode' },
+                options:[
                     ...deliverymethods.map(method => {
                         return {
                             value: method.id,
                             text: method.name,
                         }
                     }),
-                ],
+                ]
+                
             },
-            // buisness type
             {
                 id: 'business-type',
                 type: 'select',
@@ -85,7 +112,6 @@ export const renderPartnerForm = async () => {
                 required: true,
                 name: 'business-type',
                 options: [
-                    { value: '', text: 'Vælg en virksomhedstype' },
                     ...buisnessTypes.map(type => {
                         return {
                             value: type.id,
@@ -105,6 +131,26 @@ export const renderPartnerForm = async () => {
         'become-a-partner-form',
         formdata
     ).then(async () => {
+        let addressInput = document.querySelector('#company-address');
+        let addressdata = {};
+        if (addressInput) {
+            dawaAutocomplete.dawaAutocomplete(addressInput, {
+                select: function (selected) {
+                    addressdata = {
+                        street: selected.data.vejnavn,
+                        address_detail: selected.data.husnr + (selected.data.etage ? ', ' + selected.data.etage : '') + (selected.data.dør ? ' ' + selected.data.dør : ''),
+                        city: selected.data.postnrnavn,
+                        postal_code: selected.data.postnr,
+                        country: 'denmark',
+                    };
+                    console.log(addressdata);
+                    if (addressInput) {
+                        addressInput.innerHTML = selected.tekst;
+                    }
+                },
+            });
+        }
+
         document.querySelector('#become-a-partner-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             let formData = new FormData(e.target);
@@ -120,21 +166,16 @@ export const renderPartnerForm = async () => {
                 },
                 business: {
                     name: data['company-name'],
-                    address: {
-                        street: data['company-address'],
-                        city: data['company-address'],
-                        postal_code: data['company-address'],
-                        country: data['company-address'],
-                    },
+                    address: addressdata,
                 },
                 delivery_method_id: parseInt(data['delivery-method'], 10),
                 business_type_id: parseInt(data['business-type'], 10),
             };
             // Send the formatted data to the API
-            await api.post('partner-applications/', formattedData).then((response) => {
+            await api.post('partner-applications', formattedData).then((response) => {
                 console.log(response);
                 if (response.status === 201) {
-                    window.location.href = 'pages/thank-you.html';
+                    window.location.href = 'thank-you.html';
                 } else {
                     alert('Der opstod en fejl. Prøv igen senere.');
                 }

@@ -1,8 +1,13 @@
+#header {
+  z-index: 1000;
+}
+
 .header {
   padding: 0;
   margin: 0;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 .header .navbar-container {
   max-width: 1200px;
@@ -113,7 +118,7 @@
   text-align: center;
   padding: 1rem;
   margin: 0;
-  width: 100%;
+  width: auto;
   height: 100px;
   flex-shrink: 0;
 }
@@ -330,6 +335,144 @@
     clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0%, 100% calc(100% - 50px), 0% 100%);
   }
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  height: auto;
+  flex-direction: column;
+  background-color: #ebf8f1;
+  padding: 20px !important;
+}
+.auth-container .auth-form {
+  margin: 10px auto;
+  width: calc(100% - 40px);
+  max-width: 500px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+}
+.auth-container .auth-form .auth-form-content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+.auth-container .auth-form .auth-form-content .auth-form-group {
+  margin-bottom: 1rem;
+  margin: 0;
+  width: 100%;
+  position: relative;
+}
+.auth-container .auth-form .auth-form-content .auth-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: "Inter", sans-serif;
+  color: #1B5E20;
+}
+.auth-container .auth-form .auth-form-content .auth-form-group input {
+  width: calc(100% - 1rem);
+  padding: 0.5rem;
+  border: 1px solid #1B5E20;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: large;
+}
+.auth-container .auth-form .auth-form-content .auth-form-group input:focus {
+  border-color: #2cb673;
+  outline: none;
+}
+.auth-container .auth-form .auth-form-content .radio-container {
+  display: flex;
+  position: relative;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 5px;
+  width: 100%;
+  justify-content: space-between;
+  /* Slide the background based on checked radio */
+  /* Optional: Change label color when checked */
+}
+.auth-container .auth-form .auth-form-content .radio-container input[type=radio] {
+  display: none;
+}
+.auth-container .auth-form .auth-form-content .radio-container label {
+  padding: 10px 0;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 0.3s ease;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  flex-grow: 1; /* Allow labels to grow equally */
+}
+.auth-container .auth-form .auth-form-content .radio-container .slider {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  width: 33.33%; /* Equal width for each radio button */
+  background: #4caf50;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  z-index: 0;
+}
+.auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(1):checked ~ .slider {
+  transform: translateX(0);
+}
+.auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(2):checked ~ .slider {
+  transform: translateX(100%);
+}
+.auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(3):checked ~ .slider {
+  transform: translateX(calc(200% - 10px)); /* Adjust for padding */
+}
+.auth-container .auth-form .auth-form-content .radio-container input:checked + label {
+  color: #fff;
+}
+.auth-container .auth-form .auth-form-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #2cb673;
+  color: #1B5E20;
+  border: none;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+}
+.auth-container .auth-form .auth-form-button:hover {
+  background-color: #1e8f5a;
+  color: #ebf8f1;
+}
+.auth-container p {
+  font-family: "Inter", sans-serif;
+  color: #1B5E20;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  margin-right: auto;
+}
+.auth-container p a {
+  color: #b1e2c6;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: large;
+  transition: color 0.1s ease, text-decoration 0.3s ease;
+}
+.auth-container p a:hover {
+  color: black;
+  text-decoration: underline;
 }
 
 #categoryscrollbar {
@@ -703,7 +846,7 @@
 .checkout-container .checkout-form {
   flex: 1;
   background-color: #ebf8f1;
-  width: 100%;
+  width: calc(100% - 40px);
   height: auto;
   overflow-y: auto;
   max-width: 900px;
@@ -802,13 +945,22 @@
     align-items: center;
   }
   .checkout-container .checkout-sidebar {
-    width: auto;
-    position: static;
-    margin-top: 20px;
-    height: 600px;
+    flex: 1;
+    width: calc(100% - 80px);
+    margin: 20px auto;
+    position: relative;
+    top: 0; /* Reset top position for mobile view */
+    height: auto; /* Allow height to adjust to content */
+    border-radius: 8px;
   }
   .checkout-container .c-form-group {
+    width: 100% !important;
+  }
+  .checkout-container .tipform {
+    flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
+    margin: 0 auto;
   }
 }
 .await-container {
@@ -944,6 +1096,20 @@
   margin-top: 50px;
 }
 
+.become-a-courier-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  height: auto;
+}
+.become-a-courier-container #become-a-courier-form {
+  width: 600px;
+  height: auto;
+  margin-top: 50px;
+}
+
 .thank-you-container {
   display: flex;
   flex-direction: column;
@@ -1017,6 +1183,7 @@
   margin-bottom: 1rem;
   margin: 0;
   width: calc(50% - 8px);
+  position: relative;
 }
 .form .form-content .form-group label {
   display: block;
@@ -1046,6 +1213,87 @@
   border-color: #2cb673;
   outline: none;
 }
+.form .form-content .form-group .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 0.5rem; /* Add spacing between checkboxes */
+  margin-top: 0.5rem;
+}
+.form .form-content .form-group .checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Add spacing between checkbox and text */
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #1B5E20;
+}
+.form .form-content .form-group .checkbox-group label input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #b1e2c6;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form .form-content .form-group .checkbox-group label input[type=checkbox]:checked {
+  background-color: #2cb673;
+  border-color: #2cb673;
+}
+.form .form-content .form-group .checkbox-group label input[type=checkbox]:focus {
+  outline: 2px solid #b1e2c6;
+}
+.form .form-content .form-group .autocomplete-container {
+  position: absolute;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  z-index: 1000;
+  max-height: 400px; /* Limit the height of the suggestions box */
+  overflow-y: auto; /* Enable scrolling if suggestions exceed max height */
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px; /* Increased border radius for a modern look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent overflow of suggestions */
+  max-height: 300px; /* Limit the height of the suggestions box */
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion {
+  padding: 12px 16px; /* Increased padding for better spacing */
+  font-size: 16px;
+  font-weight: 500;
+  color: #1B5E20;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+  list-style: none;
+  margin-left: -40px;
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.form .form-content .form-group .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion.dawa-selected,
+.form .form-content .form-group .dawa-autocomplete-suggestions .dawa-autocomplete-suggestion:hover {
+  background-color: #2cb673;
+  color: #ebf8f1;
+  transform: scale(1.02); /* Slight scaling effect on hover */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
+}
 .form .form-submit-btn {
   background-color: #2cb673;
   color: #ebf8f1;
@@ -1062,18 +1310,18 @@
 }
 
 @media screen and (max-width: 650px) {
-  #become-a-partner-form {
-    margin-top: 10px !important;
+  #become-a-partner-form, #become-a-courier-form {
+    margin: 10px 0 !important;
   }
-  #become-a-partner-form .form {
+  #become-a-partner-form .form, #become-a-courier-form .form {
     width: calc(100% - 65px);
     margin: 0 20px;
   }
-  #become-a-partner-form .form .form-content {
+  #become-a-partner-form .form .form-content, #become-a-courier-form .form .form-content {
     flex-direction: column;
     gap: 1rem;
   }
-  #become-a-partner-form .form .form-content .form-group {
+  #become-a-partner-form .form .form-content .form-group, #become-a-courier-form .form .form-content .form-group {
     width: 100% !important;
   }
 }
@@ -1587,7 +1835,6 @@ body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 a {
@@ -1609,57 +1856,6 @@ a:hover {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-#login-form {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-#login-form h1 {
-  color: #333;
-  text-align: center;
-  margin-bottom: 20px;
-}
-#login-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
-}
-#login-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-#login-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-#login-form button:hover {
-  background-color: #0056b3;
-}
-#login-form p {
-  text-align: center;
-  margin-top: 15px;
-}
-#login-form p a {
-  color: #007BFF;
-  text-decoration: none;
-}
-#login-form p a:hover {
-  text-decoration: underline;
 }
 
 .row {

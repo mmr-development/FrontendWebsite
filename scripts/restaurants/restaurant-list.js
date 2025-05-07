@@ -56,7 +56,7 @@ const data = {
 };
 await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', data);
 
-const restaurantList = document.querySelectorAll('.restaurant-item');
+const restaurantList = document.querySelectorAll('.restaurants-item');
 
 if (restaurantList.length !== 0) {
     restaurantList.forEach((item) => {

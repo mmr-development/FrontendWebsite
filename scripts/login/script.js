@@ -29,7 +29,7 @@ submitButton.addEventListener('click', async (event) => {
     };
 
     console.log(radioInput)
-    await api.post('auth/sign-in?client_id=' + radioInput , data).then((res) => {
+    await api.post('auth/sign-in?client_id=' + radioInput , data, api.includeCredentials).then((res) => {
         console.log(res);
         if (res.status === 200) {
             //window.location.href = '../index.html';
@@ -46,7 +46,7 @@ submitButton.addEventListener('click', async (event) => {
 const testbutton = document.querySelector('#test-button');
 
 testbutton.addEventListener('click', async (event) => {
-    await api.get('cookie-test', true).then((res) => {
+    await api.get('cookie-test', api.includeCredentials).then((res) => {
         console.log(res);
     }).catch((error) => {
         console.error(error);

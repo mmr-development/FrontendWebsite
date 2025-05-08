@@ -6,5 +6,5 @@
         "cert" : "C:/Users/HFGF/Desktop/svendeprøve/FrontendWebsite/selfsigned.crt",
         "key" : "C:/Users/HFGF/Desktop/svendeprøve/FrontendWebsite/selfsigned.key",
         "passphrase": ""
-    }
+    }   
 }

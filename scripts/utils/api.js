@@ -1,5 +1,8 @@
 const apiurl = 'https://10.130.66.11:8080/v1/'
 
+
+export const includeCredentials = true;
+
 const validateUrl = (url) => {
     if (!url.includes('?') && !url.endsWith('/')) {
         return url + '/';
@@ -30,13 +33,14 @@ export const post = async (path, data, auth = false) => {
 }
 
 export const get = async (path, auth = false) => {
-    console.log(auth);
+    console.log("auth: " + auth);
     const response = await fetch(getApiUrl(path), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
-        credentials: auth ? 'include' : 'same-origin',
+        // credentials: auth ? 'include' : 'same-origin',
+        credentials: 'include',
     });
     
     return {

@@ -29,9 +29,10 @@ submitButton.addEventListener('click', async (event) => {
     };
 
     console.log(radioInput)
-    await api.post('auth/sign-in?' + radioInput , data).then((res) => {
+    await api.post('auth/sign-in?client_id=' + radioInput , data).then((res) => {
+        console.log(res);
         if (res.status === 200) {
-            window.location.href = '../index.html';
+            //window.location.href = '../index.html';
         } else {
             errorMessage.innerHTML = 'Forkert brugernavn eller adgangskode.';
         }
@@ -40,3 +41,14 @@ submitButton.addEventListener('click', async (event) => {
         errorMessage.innerHTML = 'Der opstod en fejl. Prøv igen senere.';
     });
 })
+
+
+const testbutton = document.querySelector('#test-button');
+
+testbutton.addEventListener('click', async (event) => {
+    await api.get('cookie-test', true).then((res) => {
+        console.log(res);
+    }).catch((error) => {
+        console.error(error);
+    });
+});

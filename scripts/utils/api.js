@@ -1,4 +1,4 @@
-const apiurl = 'http://10.130.66.11:8080/v1/'
+const apiurl = 'https://10.130.66.11:8080/v1/'
 
 const validateUrl = (url) => {
     if (!url.includes('?') && !url.endsWith('/')) {
@@ -14,12 +14,13 @@ const getApiUrl = (path) => {
     return validateUrl(apiurl + path);
 }
 
-export const post = async (path, data) => {
+export const post = async (path, data, auth = false) => {
     const response = await fetch(getApiUrl(path), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: auth ? 'include' : 'same-origin',
         body: JSON.stringify(data),
     });
     return {
@@ -28,12 +29,14 @@ export const post = async (path, data) => {
     }
 }
 
-export const get = async (path) => {
+export const get = async (path, auth = false) => {
+    console.log(auth);
     const response = await fetch(getApiUrl(path), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: auth ? 'include' : 'same-origin',
     });
     
     return {
@@ -42,12 +45,13 @@ export const get = async (path) => {
     }
 }
 
-export const put = async (path, data) => {
+export const put = async (path, data, auth = false) => {
     const response = await fetch(getApiUrl(path), {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: auth ? 'include' : 'same-origin',
         body: JSON.stringify(data),
     });
     return {
@@ -56,12 +60,13 @@ export const put = async (path, data) => {
     };
 }
 
-export const patch = async (path, data) => {
+export const patch = async (path, data, auth = false) => {
     const response = await fetch(getApiUrl(path), {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: auth ? 'include' : 'same-origin',
         body: JSON.stringify(data),
     });
     return {
@@ -70,12 +75,13 @@ export const patch = async (path, data) => {
     }
 }
 
-export const del = async (path) => {
+export const del = async (path, auth = false) => {
     const response = await fetch(getApiUrl(path), {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: auth ? 'include' : 'same-origin',
     });
     return {
         status: response.status,

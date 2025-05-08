@@ -21,11 +21,9 @@
 
     <label for="restaurant-type">Type of restaurant:</label>
     <select id="restaurant-type" name="restaurant-type" required>
-        <option value="fast-food">Fast Food</option>
-        <option value="fine-dining">Fine Dining</option>
-        <option value="cafe">Cafe</option>
-        <option value="bakery">Bakery</option>
-        <option value="other">Other</option>
+    {{#restaurantTypes}}
+        <option value="{{value}}">{{name}}</option>
+    {{/restaurantTypes}}
     </select>
 
     <label for="description">Description:</label>

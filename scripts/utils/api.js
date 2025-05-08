@@ -1,6 +1,5 @@
-const apiurl = 'https://10.130.66.11:8080/v1/'
-
-
+// const apiurl = 'https://10.130.66.11:8080/v1/'
+const apiurl = 'https://9918-185-19-132-68.ngrok-free.app/v1/';
 export const includeCredentials = true;
 
 const validateUrl = (url) => {

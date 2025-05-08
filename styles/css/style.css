@@ -415,26 +415,29 @@
   transition: color 0.3s ease;
   font-family: Arial, sans-serif;
   text-align: center;
-  flex-grow: 1; /* Allow labels to grow equally */
+  width: 33.33%; /* Equal width for each radio button */
 }
 .auth-container .auth-form .auth-form-content .radio-container .slider {
   position: absolute;
   top: 5px;
   bottom: 5px;
-  width: 33.33%; /* Equal width for each radio button */
+  left: 5px;
+  width: calc(33.33% - 5px); /* Equal width for each radio button */
   background: #4caf50;
   border-radius: 8px;
   transition: transform 0.3s ease;
   z-index: 0;
+  padding: 0;
+  margin: 0;
 }
 .auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(1):checked ~ .slider {
   transform: translateX(0);
 }
 .auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(2):checked ~ .slider {
-  transform: translateX(100%);
+  transform: translateX(calc(100% + 2.5px));
 }
 .auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(3):checked ~ .slider {
-  transform: translateX(calc(200% - 10px)); /* Adjust for padding */
+  transform: translateX(calc(200% + 5px)); /* Adjust for padding */
 }
 .auth-container .auth-form .auth-form-content .radio-container input:checked + label {
   color: #fff;

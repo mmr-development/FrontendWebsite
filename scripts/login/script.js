@@ -1,6 +1,5 @@
 import * as api from '../utils/api.js';
 
-// get form data from login-form element
 const form = document.querySelector('#login-form');
 
 const emailInput = form.querySelector('#email');
@@ -32,23 +31,16 @@ submitButton.addEventListener('click', async (event) => {
     await api.post('auth/sign-in?client_id=' + radioInput , data, api.includeCredentials).then((res) => {
         console.log(res);
         if (res.status === 200) {
-            //window.location.href = '../index.html';
+            const jwt = res.data.access_token;
+            // decode the JWT to get the user role
+            console.log(jwt);
+            const payload = JSON.parse(atob(jwt.split('.')[1]));
+            console.log(payload);
         } else {
             errorMessage.innerHTML = 'Forkert brugernavn eller adgangskode.';
         }
     }).catch((error) => {
         console.error(error);
         errorMessage.innerHTML = 'Der opstod en fejl. Prøv igen senere.';
-    });
-})
-
-
-const testbutton = document.querySelector('#test-button');
-
-testbutton.addEventListener('click', async (event) => {
-    await api.get('cookie-test', api.includeCredentials).then((res) => {
-        console.log(res);
-    }).catch((error) => {
-        console.error(error);
     });
 });

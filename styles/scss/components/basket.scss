@@ -1,0 +1,225 @@
+@use '../_variables' as vars;
+
+#basket {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    // hide scrollbar
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .basket-items {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background-color: vars.$background;
+
+        i.basket {
+            font-size: 4rem;
+            color: vars.$text-color;
+        }
+
+        p.empty-basket {
+            font-size: 30px;
+            font-weight: 750;
+            color: vars.$text-color;;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .basket-item {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            margin-bottom: 20px;
+            background-color: vars.$background-light;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+            p {
+                width: 100%;
+                padding: 5px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .basket-item-actions {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                
+                .add-note-button {
+                    background-color: transparent;
+                    color: vars.$primary-color;
+                    border-radius: 5px;
+                    padding: 5px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: vars.$font-size-medium;
+                    transition: all 0.2s ease-in-out;
+
+                    &:hover {
+                        background-color: vars.$button-bg-color-hover;
+                        color: vars.$background;
+                    }
+                }
+
+                .basket-quantity {
+                    display: flex;
+                    align-items: center;
+                    background-color: vars.$background-light;
+                    border-radius: 50px;
+                    overflow: hidden;
+                    border: 1px solid vars.$accent-color;
+                    
+        
+                    input {
+                        width: 50px;
+                        padding: 5px;
+                        font-size: vars.$font-size-base;
+                        background-color: transparent;
+                        border:none;
+                        text-align: center;
+                    }
+        
+                    .quantity-button {
+                        display: flex;
+                        gap: 10px;
+                        border-radius: 50px;
+                        color: vars.$hover-color;
+                        width: 50px;
+                        aspect-ratio: 1;
+                        padding: 0;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: xx-large;
+                        border: none;
+                        cursor: pointer;
+    
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.1);
+                        }
+    
+                        &:first-child {
+                            margin-right: -5px;
+                        }
+    
+                        &:last-child {
+                            margin-left: -5px;
+                        }
+                    }
+                }
+
+                .remove-item-button{
+                    background-color: transparent;
+                    color: vars.$primary-color;
+                    border-radius: 5px;
+                    padding: 5px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: vars.$font-size-medium;
+                    transition: all 0.2s ease-in-out;
+                    i {
+                        font-size: 1.2rem;
+                        color: vars.$text-color;
+                        cursor: pointer;
+                        transition: all 0.2s ease-in-out;
+    
+                        &:hover {
+                            color: vars.$primary-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .basket-footer {
+        width: calc(100% - 20px);
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background-color: vars.$background-light;
+        margin-bottom: 50px;
+
+        p {
+            width: 100%;
+            padding: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .basket-total{
+            width: 100%;
+            border-top: 1px solid vars.$text-color;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            .checkout-button {
+                width: 100%;
+                background-color: vars.$primary-color;
+                color: vars.$background;
+                border-radius: 50px;
+                padding: 20px 20px;
+                border: none;
+                cursor: pointer;
+                font-size: vars.$font-size-large;
+                transition: all 0.2s ease-in-out;
+                font-size: larger;
+    
+                &:hover {
+                    background-color: vars.$accent-color;
+                    color: vars.$background-light;
+                }
+
+                &.active {
+                    background-color: vars.$button-bg-color-hover;
+                    color: vars.$background;
+                    display: block !important;
+                }
+            }
+
+            .close-sidebar {
+                display: none;
+
+                @media screen and (max-width: 950px) {
+                    margin-top: 20px;
+                    width: 250px;
+                    padding: 20px;
+                    border-radius: 50px;
+                    border: 1px solid vars.$accent-color;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: large;
+
+                    transition: vars.$transition;
+
+                    &:hover {
+                        background-color: vars.$button-bg-color-hover;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

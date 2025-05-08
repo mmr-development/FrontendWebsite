@@ -8,21 +8,39 @@
 </head>
 <body>
     <div class="page-wrapper">
-    <div id="header"></div>
-    <div class="container">
-        <h1>Login</h1>
-        <form id="login-form" action="../api/login.php" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="./register.html">Register here</a></p>
-    </div>
+        <div id="header"></div>
+        <div class="container auth-container">
+            <h1>Login</h1>
+            <form id="login-form" class="auth-form">
+                <div id="error-message" class="error-message"></div>
+                <div class="auth-form-content">
+                    <div class="radio-container">
+                        <input type="radio" id="customer" name="radio-group" checked>
+                        <label for="customer">Customer</label>
+                        <input type="radio" id="restaurant" name="radio-group">
+                        <label for="restaurant">Restaurant</label>
+                        <input type="radio" id="admin" name="radio-group">
+                        <label for="admin">Admin</label>
+                        <div class="slider"></div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <button class="auth-form-button" id="submit" type="submit">Login</button>
+                <p>Don't have an account? <a href="./register.html">Register here</a></p>
+                <p>Forgot your password? <a href="./forgot-password.html">Reset it here</a></p>
+            </form>
+        </div>
     </div>
     <div id="footer"></div>
     <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
     <script type="module" src="../script.js"></script>
+    <script type="module" src="../scripts/login/script.js"></script>
 </body>
 </html>

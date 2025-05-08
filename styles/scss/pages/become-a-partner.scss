@@ -1,0 +1,16 @@
+@use '../_variables' as vars;
+
+.become-a-partner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    height: auto;
+
+    #become-a-partner-form {
+        width: calc(vars.$window-size-small);
+        height: auto;
+        margin-top: 50px;
+    }
+}

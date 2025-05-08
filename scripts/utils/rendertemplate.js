@@ -26,5 +26,6 @@ export async function renderTemplate(path, templateId, data) {
         const renderedTemplate = Mustache.render(template, data);
         document.getElementById(templateId).innerHTML = renderedTemplate;
     } catch (error) {
+        console.log(path, error);
     }
 }

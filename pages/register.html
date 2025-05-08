@@ -9,19 +9,40 @@
 <body>
     <div class="page-wrapper">
         <div id="header"></div>
-        <h1>Register</h1>
-        <form id="register-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br><br>
-            <button type="submit">Register</button>
-        </form>
+        <div class="container auth-container">
+            <h1>Register</h1>
+            <form id="register-form" class="auth-form">
+                <div id="error-message"></div>
+                <div class="auth-form-content">
+                    <div class="auth-form-group">
+                        <label for="firstname">Firstname:</label>
+                        <input type="text" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="lastname">Lastname:</label>
+                        <input type="text" id="lastname" name="lastname" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <button class="auth-form-button" id="submit" type="submit">Register</button>
+                <p>Allready have an acoount? <a href="./login.html">Login here</a></p>
+            </form>
+        </div>
     </div>
     <div id="footer"></div>
     <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
     <script type="module" src="../script.js"></script>
+    <script type="module" src="../scripts/register/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+<div class="order-confirmation">
+    <h2 class="order-confirmation__title">Order Confirmation</h2>
+    <p class="order-confirmation__text">Thank you for your order!</p>
+    <div class="order-confirmation__details">
+        <h3>Order Details</h3>
+        <ul>
+            <li><strong>Restaurant ID:</strong> {{restaurantId}}</li>
+            <li><strong>Delivery Time:</strong> {{deliveryTime}}</li>
+            <li><strong>Delivery Note:</strong> {{deliveryNote}}</li>
+            <li><strong>Delivery Tip:</strong> {{deliveryTip}},00 kr.</li>
+            <li><strong>Payment Method:</strong> {{paymentMethod}}</li>
+        </ul>
+    </div>
+    <div class="order-confirmation__items">
+        <h3>Items</h3>
+        <ul>
+            {{#items}}
+            <li>
+                <strong>{{name}}</strong> - Quantity: {{quantity}}, Price: {{price}} kr.
+            </li>
+            {{/items}}
+        </ul>
+    </div>
+    <p class="order-confirmation__footer">We hope you enjoy your meal!</p>
+</div>

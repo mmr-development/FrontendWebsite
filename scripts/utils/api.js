@@ -1,5 +1,5 @@
 // const apiurl = 'https://10.130.66.11:8080/v1/'
-const apiurl = 'https://9918-185-19-132-68.ngrok-free.app/v1/';
+const apiurl = 'https://68fb-185-19-132-68.ngrok-free.app/v1/';
 export const includeCredentials = true;
 
 const validateUrl = (url) => {
@@ -38,10 +38,9 @@ export const get = async (path, auth = false) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        // credentials: auth ? 'include' : 'same-origin',
         credentials: 'include',
     });
-    
+
     return {
         status: response.status,
         data: await response.json(),

@@ -1,4 +1,5 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
+import * as api from '../utils/api.js'
 
 const data = {
     "restaurnat-lists": [
@@ -54,6 +55,19 @@ const data = {
         }
     ]
 };
+// get city from url
+const urlparams = new URLSearchParams(window.location.search);
+const city = urlparams.get('city') || null;
+
+api.get('partners/?' + new URLSearchParams(city)).then((res) => {
+    if (res.status === 200) {
+       console.log(res.data);
+    } else {
+        console.error("Error fetching restaurants:", res);
+    }
+}).catch((error) => {
+    console.error("Error fetching restaurants:", error);
+});
 await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', data);
 
 const restaurantList = document.querySelectorAll('.restaurants-item');

@@ -1,17 +1,18 @@
 // on form submit redirect to restaurants page
+import * as api from '../utils/api.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("restaurant-form");
     const addressInput = document.getElementById("adresse");
     const submitButton = document.getElementById("submit-button");
+    let addressdata = {};
 
     submitButton.style.display = "none"; // Hide the submit button initially
 
     if (form) {
         form.addEventListener("submit", function (event) {
             event.preventDefault();
-            const formData = new FormData(form);
-            const queryString = new URLSearchParams(formData).toString();
-            window.location.href = `/pages/restaurants.html?${queryString}`;
+            window.location.href = 'pages/restaurants.html?' + new URLSearchParams(addressdata);
         });
     }
 
@@ -22,6 +23,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (addressInput) {
                     addressInput.innerHTML = selected.tekst;
                     submitButton.style.display = "block";
+                    addressdata = {
+                        city: selected.data.postnrnavn.split(" ")[0]
+                    };
                 }
             },
         });

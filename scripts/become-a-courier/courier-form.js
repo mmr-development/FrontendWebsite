@@ -1,6 +1,41 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
+import * as api from "../utils/api.js";
 
 export const renderCourierForm = async () => {
+    let preferancehours = await api.get('couriers/hour-preferences/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            console.log(res.data);
+            return res.data.hour_preferences.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
+    let preferanceavailability = await api.get('couriers/schedule-preferences/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            return res.data.schedule_preferences.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
+    let vehicleTypes = await api.get('couriers/vehicle-types/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            return res.data.vehicle_types.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
     let formdata = {
         action: 'thank-you.html',
         method: '',
@@ -67,11 +102,7 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'vehicle',
-                options: [
-                    { value: 'car', text: 'Bil' },
-                    { value: 'bike', text: 'Cykel' },
-                    { value: 'scooter', text: 'Scooter' },
-                ],
+                options: vehicleTypes,
             },
             {
                 id: 'availability',
@@ -81,11 +112,7 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'availability',
-                options: [
-                    { value: 'full-time', text: 'Fuldtid' },
-                    { value: 'part-time', text: 'Deltid' },
-                    { value: 'weekends', text: 'Weekender' },
-                ],
+                options: preferanceavailability,
             },
             {
                 id: 'work-hours',
@@ -95,11 +122,7 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'work-hours',
-                options: [
-                    { value: '8', text: '8 timer' },
-                    { value: '16-20', text: '16-20 timer' },
-                    { value: '24-30', text: '24-30 timer' },
-                ],
+                options: preferancehours,
             }
         ],
         title: 'Bliv bud',
@@ -111,10 +134,17 @@ export const renderCourierForm = async () => {
         'become-a-courier-form',
         formdata
     ).then(() => {
-        const form = document.getElementById('become-a-courier-form');
+        const form = document.getElementById('become-a-courier-form').children[0];
         const addressInput = document.getElementById('courier-address');
         // get the age checkbox and add an event listener to it
         const ageCheckbox = document.querySelectorAll('input[name="age"]');
+
+        // get the selects
+        const availabilitySelect = document.getElementById('availability');
+        const workHoursSelect = document.getElementById('work-hours');
+        const vehicleSelect = document.getElementById('vehicle');
+
+        let addressdata;
 
         if(ageCheckbox) {
             ageCheckbox.forEach((checkbox) => {
@@ -133,14 +163,54 @@ export const renderCourierForm = async () => {
         if (form) {
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
-                window.location.href = `thank-you.html?type=courier`;
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                console.log(data);
+                
+                const structuredData = {
+                    personal_details: {
+                        first_name: data.firstname || "",
+                        last_name: data.lastname || "",
+                        email: data.email || "",
+                        phone_number: data.phone || "",
+                        address: addressdata, 
+                        is_eighteen_plus: data.age === "yes"
+                    },
+                    schedule_preference: parseInt(availabilitySelect.value) || 1,
+                    hours_preference: parseInt(workHoursSelect.value) || 1,
+                    vehicle_type_id: parseInt(vehicleSelect.value) || 1,
+                    data_retention_consent: true
+                };
+
+                api.post('courier-applications/', structuredData, api.includeCredentials).then((res) => {
+                    if (res.status === 201) {
+                        console.log(res.data);
+                        alert("Ansøgning sendt. Du vil modtage en bekræftelse på din e-mail.");
+                        window.location.href = `thank-you.html?type=courier`;
+                    } else {
+                        console.error(res);
+                        alert("Der opstod en fejl. Prøv igen senere.");
+                    }
+                });
+
+
+                //window.location.href = `thank-you.html?type=courier`;
             });
         }
 
         if (addressInput) {
             dawaAutocomplete.dawaAutocomplete(addressInput, {
                 select: function (selected) {
-                    console.log(selected);
+                    addressdata = {
+                        street: selected.data.vejnavn,
+                        address_detail: selected.data.husnr
+                         + (selected.data.etage ? `, ${selected.data.etage}` : "") + (selected.data.dør ? ` ${selected.data.dør}` : ""),
+                        city: selected.data.postnrnavn,
+                        postal_code: selected.data.postnr,
+                        country: "Danmark"
+                    };
+
                     if (addressInput) {
                         addressInput.innerHTML = selected.tekst;
                     }

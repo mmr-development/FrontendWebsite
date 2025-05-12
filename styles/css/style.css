@@ -1205,7 +1205,7 @@
   justify-content: center;
   align-items: stretch;
   width: 100%;
-  height: 100vh;
+  height: auto;
   background-color: #ebf8f1;
   padding: 10px;
   box-sizing: border-box;
@@ -1223,6 +1223,9 @@
   justify-content: space-between;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 .dashboard-wrapper #dashboard-sidebar .sidebar-header {
   height: 70px;
@@ -1364,86 +1367,140 @@
   flex: 1;
   padding: 20px;
   background-color: #f8f9fa;
+  height: auto;
 }
-.dashboard-wrapper #dashboard-content .content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.dashboard-wrapper #dashboard-content #catalog .catalog {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
 }
-.dashboard-wrapper #dashboard-content .content-header h1 {
-  font-size: 24px;
-  font-weight: bold;
-}
-.dashboard-wrapper #dashboard-content .content-header .header-actions button {
-  padding: 10px 20px;
+.dashboard-wrapper #dashboard-content #catalog .catalog .add-catalog {
+  background-color: #28a745;
+  color: white;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
+  margin-bottom: 1.5rem;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
 }
-.dashboard-wrapper #dashboard-content .content-header .header-actions button.primary-button {
-  background-color: #4caf50;
-  color: #fff;
+.dashboard-wrapper #dashboard-content #catalog .catalog .add-catalog:hover {
+  background-color: #218838;
 }
-.dashboard-wrapper #dashboard-content .content-header .header-actions button.primary-button:hover {
-  background-color: #45a049;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-.dashboard-wrapper #dashboard-content .content-header .header-actions button.secondary-button {
-  background-color: #e0e0e0;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
   color: #333;
 }
-.dashboard-wrapper #dashboard-content .content-header .header-actions button.secondary-button:hover {
-  background-color: #d6d6d6;
-}
-.dashboard-wrapper #dashboard-content .stats-cards {
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
-.dashboard-wrapper #dashboard-content .stats-cards .stats-card {
-  flex: 1;
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button:hover {
+  background-color: #0069d9;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-catalog, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-category, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-item {
+  background-color: #dc3545;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-catalog:hover, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-category:hover, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-item:hover {
+  background-color: #c82333;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories {
+  margin-top: 1rem;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .add-category {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .add-category:hover {
+  background-color: #138496;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category {
+  background-color: #f1f1f1;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category h3 {
+  margin: 0 0 0.5rem;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .catalog-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items {
+  list-style: none;
+  padding-left: 0;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items .add-item {
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items .add-item:hover {
+  background-color: #e0a800;
+}
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
-.dashboard-wrapper #dashboard-content .stats-cards .stats-card .stats-icon {
-  font-size: 24px;
-  color: #4caf50;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li span {
+  margin-right: 1rem;
 }
-.dashboard-wrapper #dashboard-content .stats-cards .stats-card .stats-info h2 {
-  font-size: 20px;
-  margin: 0;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item,
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  margin-left: 0.5rem;
+  cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content .stats-cards .stats-card .stats-info p {
-  margin: 0;
-  color: #666;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item:hover,
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item:hover {
+  background-color: #5a6268;
 }
-.dashboard-wrapper #dashboard-content .grid-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 20px;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item,
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item {
+  background-color: #dc3545;
 }
-.dashboard-wrapper #dashboard-content .grid-content .grid-item {
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.dashboard-wrapper #dashboard-content .grid-content .grid-item.large {
-  grid-column: span 2;
-}
-.dashboard-wrapper #dashboard-content .grid-content .grid-item h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-.dashboard-wrapper #dashboard-content .grid-content .grid-item p {
-  color: #666;
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item:hover,
+.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item:hover {
+  background-color: #c82333;
 }
 
 .button {
@@ -1721,7 +1778,23 @@
   color: #1B5E20;
 }
 #c-modal.active .c-modal__content .c-modal__body input, #c-modal.active .c-modal__content .modal-body input, #c-modal.active .modal-content .c-modal__body input, #c-modal.active .modal-content .modal-body input, #modal.active .c-modal__content .c-modal__body input, #modal.active .c-modal__content .modal-body input, #modal.active .modal-content .c-modal__body input, #modal.active .modal-content .modal-body input {
-  width: 100%;
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #b1e2c6;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #ebf8f1;
+  color: #1B5E20;
+}
+#c-modal.active .c-modal__content .c-modal__body #item-picture-preview, #c-modal.active .c-modal__content .modal-body #item-picture-preview, #c-modal.active .modal-content .c-modal__body #item-picture-preview, #c-modal.active .modal-content .modal-body #item-picture-preview, #modal.active .c-modal__content .c-modal__body #item-picture-preview, #modal.active .c-modal__content .modal-body #item-picture-preview, #modal.active .modal-content .c-modal__body #item-picture-preview, #modal.active .modal-content .modal-body #item-picture-preview {
+  width: 50%;
+  aspect-ratio: 1;
+  max-height: 200px;
+  display: flex;
+  margin: 20px auto;
+}
+#c-modal.active .c-modal__content .c-modal__body #item-description, #c-modal.active .c-modal__content .modal-body #item-description, #c-modal.active .modal-content .c-modal__body #item-description, #c-modal.active .modal-content .modal-body #item-description, #modal.active .c-modal__content .c-modal__body #item-description, #modal.active .c-modal__content .modal-body #item-description, #modal.active .modal-content .c-modal__body #item-description, #modal.active .modal-content .modal-body #item-description {
+  width: calc(100% - 20px);
   padding: 10px;
   border: 1px solid #b1e2c6;
   border-radius: 5px;

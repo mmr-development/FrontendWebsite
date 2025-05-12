@@ -4,26 +4,16 @@ import * as api from '../utils/api.js';
 export const renderPartnerForm = async () => {
     let deliverymethods = await api.get('partners/delivery-methods/').then((response) => {
         if (response.status === 200) {
-            return response.data;
-        } else {
-            console.error('Error fetching delivery methods:', response.statusText);
-            return [];
-        }
-    }).catch((error) => {
-        console.error('Error fetching delivery methods:', error);
+            return response.data.delivery_methods;
+        } 
         return [];
-    });
-    
+    })
     let buisnessTypes = await api.get('partners/business-types/').then((response) => {
         if (response.status === 200) {
-            return response.data;
+            return response.data.business_types;
         }
         return [];
-    }).catch((error) => {
-        console.error('Error fetching business types:', error);
-        return [];
-    });
-
+    })
     let formdata = {
         action: 'partner-form',
         method: 'POST',

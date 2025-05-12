@@ -106,7 +106,25 @@
             }
 
             input {
-                width: 100%;
+                width: calc(100% - 20px);   
+                padding: 10px;
+                border: 1px solid vars.$border-color;
+                border-radius: 5px;
+                font-size: vars.$font-size-base;
+                background-color: vars.$background-light;
+                color: vars.$text-color;
+            }
+
+            #item-picture-preview{
+                width: 50%;
+                aspect-ratio: 1;
+                max-height: 200px;
+                display: flex;
+                margin: 20px auto;
+            }
+
+            #item-description{
+                width: calc(100% - 20px);
                 padding: 10px;
                 border: 1px solid vars.$border-color;
                 border-radius: 5px;

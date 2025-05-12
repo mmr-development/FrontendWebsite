@@ -1,25 +1,20 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
+import { renderCatalog } from "./pages/catalog.js";
 
-let data = {
-    pageTitle: "Dashboard Overview",
-    primaryAction: "Add New",
-    secondaryAction: "View Reports",
-    stats: [
-        { icon: "fas fa-users", value: "1,245", label: "Users" },
-        { icon: "fas fa-shopping-cart", value: "342", label: "Orders" },
-        { icon: "fas fa-dollar-sign", value: "$12,345", label: "Revenue" }
-    ],
-    largeSectionTitle: "Performance Overview",
-    largeSectionContent: "This section provides an overview of your platform's performance metrics.",
-    smallSection1Title: "Recent Activity",
-    smallSection1Content: "View the latest activity on your platform.",
-    smallSection2Title: "Notifications",
-    smallSection2Content: "You have 5 new notifications."
-}
+let pages = [
+    { id: 'dashboard', url: '#dashboard' },
+    { id: 'orders', url: '#orders' },
+    { id: 'products', url: '#products' },
+    { id: 'customers', url: '#customers' },
+    { id: 'settings', url: '#settings' },
+    { id: 'applications', url: '#applications' },
+    { id: 'catalog', url: '#catalog' },
+];
 
 export const renderDashboardContent = async () => {
-    await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', data).then(() => {
-        // Add any additional JavaScript functionality here if needed
+    console.log("renderDashboardContent");
+    await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', {pages: pages}).then(async() => {
+        await renderCatalog('catalog');
     });
 };
 

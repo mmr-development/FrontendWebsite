@@ -1,5 +1,11 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
 import * as api from '../utils/api.js';
+import * as auth from "../utils/auth.js";
+
+if (!auth.isLoggedIn()) {
+    window.location.href = '/';
+}
+
 
 const data = {
     sidebarTitle: 'Dashboard',

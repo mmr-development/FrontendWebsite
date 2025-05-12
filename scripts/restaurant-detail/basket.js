@@ -28,7 +28,8 @@ export const basketUpdate = async ( elementid = 'basket') => {
 
     if (checkedinput) {
         checkedinput.addEventListener('change', () => {
-            console.log('Delivery option changed');
+            console.log('Checkbox changed:', checkedinput.checked);
+            basketUpdate()
             if (checkedinput.checked) {
                 deliveryFee = 39.00;
             } else {
@@ -41,6 +42,7 @@ export const basketUpdate = async ( elementid = 'basket') => {
     const data = {
         totalItems: totalItems,
         subtotal: subtotal,
+        delivery: checkedinput ? checkedinput.checked : false,
         deliveryFee: deliveryFee.toFixed(2),
         totalPrice: totalPrice,
         items: basket.map(item => ({

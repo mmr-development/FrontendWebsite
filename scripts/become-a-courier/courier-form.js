@@ -208,7 +208,9 @@ export const renderCourierForm = async () => {
                          + (selected.data.etage ? `, ${selected.data.etage}` : "") + (selected.data.dør ? ` ${selected.data.dør}` : ""),
                         city: selected.data.postnrnavn,
                         postal_code: selected.data.postnr,
-                        country: "Danmark"
+                        country: "Danmark",
+                        longitude: selected.data.y,
+                        latitude: selected.data.x,
                     };
 
                     if (addressInput) {

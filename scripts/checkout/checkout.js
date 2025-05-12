@@ -51,7 +51,7 @@ export const renderCheckout = async () => {
     const deliveryRestaurants = JSON.parse(localStorage.getItem('delivery')) || {};
     const delivery = deliveryRestaurants.restaurant[id];
 
-    if (delivery && delivery.delivery === true) {
+    if (delivery && !delivery.delivery == true) {
         contactFormData.deliveryNoteTitle= 'Delivery Note';
         contactFormData.deliveryNote= 'Delivery Note';
         contactFormData.deliveryTipTitle= 'Delivery Tip';
@@ -203,6 +203,10 @@ let validateCheckout = (options) => {
     if (options.deliveryTime && options.paymentMethod) {
         let basket = document.getElementsByClassName('basket-total')[0];
         // add checkout button to basket
+        let existingCheckoutButton = document.querySelector('.checkout-button');
+        if (existingCheckoutButton) {
+            existingCheckoutButton.remove();
+        }
         let checkoutButton = document.createElement('button');
         checkoutButton.classList.add('checkout-button', 'active');
         checkoutButton.textContent = 'Checkout';

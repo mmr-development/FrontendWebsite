@@ -132,6 +132,8 @@ export const renderPartnerForm = async () => {
                         city: selected.data.postnrnavn,
                         postal_code: selected.data.postnr,
                         country: 'denmark',
+                        longitude: selected.data.y,
+                        latitude: selected.data.x,
                     };
                     console.log(addressdata);
                     if (addressInput) {

@@ -17,6 +17,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (addressInput) {
+        console.log("Address input found");
+        let savedAddress = sessionStorage.getItem('address') 
+        ? JSON.parse(sessionStorage.getItem('address')).tekst 
+        : '';
+        if (savedAddress) {
+            addressInput.value = savedAddress;
+            submitButton.style.display = "block";
+        }
+
         dawaAutocomplete.dawaAutocomplete(addressInput, {
             select: function (selected) {
                 console.log(selected);
@@ -26,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     addressdata = {
                         city: selected.data.postnrnavn.split(" ")[0]
                     };
+                    selected.data.longitude = selected.data.y;
+                    selected.data.latitude = selected.data.x;
+                    sessionStorage.setItem('address', JSON.stringify(selected));
                 }
             },
         });

@@ -30,8 +30,10 @@
     <div class="basket-calculation">
         <p><span>Subtotal:</span>
         <span>{{subtotal}} kr.</span></p>
-        <p><span>Delivery fee:</span>
-        <span>{{deliveryFee}} kr.</span></p>
+        {{#delivery}}
+            <p><span>Delivery fee:</span>
+            <span>{{deliveryFee}} kr.</span></p>
+        {{/delivery}}
     </div>
     <div class="basket-total">
         <p><span>Total:</span>

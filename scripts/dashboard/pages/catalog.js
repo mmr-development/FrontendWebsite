@@ -2,65 +2,26 @@ import { renderTemplate } from "../../utils/rendertemplate.js";
 import * as api from '../../utils/api.js';
 import { renderModal } from '../../utils/modal.js';
 
-let data = localStorage.getItem('catalogs');
-if (data) {
-    data = {};
-} else {
-    data = {
-        catalogs: [
-            {
-                id: 1,
-                name: "Catalog 1",
-                is_active: true,
-                categories: [
-                    {
-                        id: 1,
-                        name: "Category 1",
-                        catalog_id: 1,
-                        items: [
-                            { id: 1, name: "Item 1", price: "10", description: "Description 1", category_id: 1 },
-                            { id: 2, name: "Item 2", price: "20", description: "Description 2", category_id: 1 }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        name: "Category 2",
-                        catalog_id: 1,
-                        items: [
-                            { id: 3, name: "Item 3", price: "30", description: "Description 3", category_id: 2 },
-                            { id: 4, name: "Item 4", price: "40", description: "Description 4", category_id: 2 }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: "Catalog 2",
-                is_active: false,
-                categories: [
-                    {
-                        id: 3,
-                        name: "Category 3",
-                        catalog_id: 2,
-                        items: [
-                            { id: 5, name: "Item 5", price: "50", description: "Description 5", category_id: 3 },
-                            { id: 6, name: "Item 6", price: "60", description: "Description 6", category_id: 3 }
-                        ]
-                    },
-                    {
-                        id: 4,
-                        name: "Category 4",
-                        catalog_id: 2,
-                        items: [
-                            { id: 7, name: "Item 7", price: "70", description: "Description 7", category_id: 4 },
-                            { id: 8, name: "Item 8", price: "80", description: "Description 8", category_id: 4 }
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
-}
+let partnerid = await api.get('partners/me/', true).then((response) => {
+    if (response.status == 200) {
+        console.log("Partner ID:", response.data.id);
+        return response.data.id;
+    } else {
+        console.error("Error fetching partner ID:", response.data);
+        return null;
+    }
+});
+
+let data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+    if (response.status == 200) {
+        return response.data;
+    } else {
+        console.error("Error fetching catalogs:", response.data);
+        return null;
+    }
+});
+
+console.log(data);
 
 // --- Helper Functions ---
 
@@ -72,12 +33,17 @@ function addCatalog(container) {
         is_active: false,
         categories: []
     };
-    if (data.catalogs) {
-        data.catalogs.push(catalog);
-    } else {
-        data.catalogs = [catalog];
-    }
-    renderCatalog(container);
+    api.post('partners/' + partnerid + "/catalogs", catalog, true).then((response) => {
+        if (response.status == 201) {
+            catalog.id = response.data.id;
+            catalog.temp_id = null;
+            data.catalogs ? data.catalogs.push(catalog) : data.catalogs = [catalog];
+            localStorage.setItem('catalogs', JSON.stringify(data));
+            renderCatalog(container);
+        } else {
+            console.error("Error adding catalog:", response.data);
+        }
+    });
 }
 
 function addCategory(e, container) {
@@ -94,11 +60,21 @@ function addCategory(e, container) {
             catalog_id: catalog.id,
             items: []
         };
-        if (catalog.categories) {
-            catalog.categories.push(category);
-        } else {
-            catalog.categories = [category];
-        }
+        api.post('catalog/' + catalog.id + "/categories/", category, true).then((response) => {
+            if(response.status == 201) {
+                category.id = response.data.id;
+                category.temp_id = null;
+                if (catalog.categories) {
+                    catalog.categories.push(category);
+                } else {
+                    catalog.categories = [category];
+                }
+                localStorage.setItem('catalogs', JSON.stringify(data));
+                renderCatalog(container);
+            }else {
+                console.error("Error adding category:", response.data);
+            }
+        })
         renderCatalog(container);
     }
 }
@@ -106,18 +82,20 @@ function addCategory(e, container) {
 function addItem(e, container) {
     let categoryId = e.target.dataset.categoryId;
     let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c => {
-        return c.categories.some(cat =>
+    let catalog = data.catalogs.find(c =>
+        c.categories.some(cat =>
             (categoryId && cat.id == categoryId) ||
             (tempid && cat.temp_id == tempid)
-        );
-    });
+        )
+    );
     if (!catalog) return;
-    let category = catalog.categories.find(cat => {
-        return (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid);
-    });
+
+    let category = catalog.categories.find(cat =>
+        (categoryId && cat.id == categoryId) ||
+        (tempid && cat.temp_id == tempid)
+    );
     if (!category) return;
+
     let item = {
         temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
         id: null,
@@ -126,12 +104,30 @@ function addItem(e, container) {
         description: "Description",
         category_id: category.id
     };
-    if (category.items) {
-        category.items.push(item);
-    } else {
-        category.items = [item];
-    }
-    renderCatalog(container);
+
+    api.post('categories/' + category.id + "/items/", item, true).then((response) => {
+        if (response.status === 201) {
+            console.log("API response:", response.data);
+            item.id = response.data.id;
+            item.temp_id = null;
+            catalog.categories = catalog.categories.map(cat => {
+                if (cat.id === category.id) {
+                    cat.items = cat.items ? [...cat.items, item] : [item];
+                }
+                return cat;
+            });
+
+            localStorage.setItem('catalogs', JSON.stringify(data));
+            console.log("Updated catalogs:", data.catalogs);
+        } else {
+            console.error("Error adding item:", response.data);
+        }
+
+        // Re-render the catalog
+        renderCatalog(container);
+    }).catch((error) => {
+        console.error("API error:", error);
+    });
 }
 
 function deleteCatalog(e, container) {
@@ -141,7 +137,15 @@ function deleteCatalog(e, container) {
         ? data.catalogs.find(c => c.temp_id == tempid)
         : data.catalogs.find(c => c.id == catalogId);
     if (!catalog) return;
-    data.catalogs = data.catalogs.filter(c => c != catalog);
+    api.del(`partners/` + partnerid + `/catalogs/` + catalog.id, true).then((response) => {
+        if (response.status == 204) {
+            data.catalogs = data.catalogs.filter(c => c != catalog);
+            localStorage.setItem('catalogs', JSON.stringify(data));
+            renderCatalog(container);
+        } else {
+            console.error("Error deleting catalog:", response.data);
+        }
+    })
     renderCatalog(container);
 }
 
@@ -160,7 +164,15 @@ function deleteCategory(e, container) {
             (tempid && cat.temp_id == tempid);
     });
     if (!category) return;
-    catalog.categories = catalog.categories.filter(cat => cat != category);
+    api.del(`catalog/categories/${category.id}`, true).then((response) => {
+        if (response.status == 204) {
+            catalog.categories = catalog.categories.filter(c => c != category);
+            localStorage.setItem('catalogs', JSON.stringify(data));
+            renderCatalog(container);
+        } else {
+            console.error("Error deleting category:", response.data);
+        }
+    })
     renderCatalog(container);
 }
 
@@ -187,8 +199,16 @@ function deleteItem(e, container) {
         return (itemId && item.id == itemId) ||
             (tempid && item.temp_id == tempid);
     });
-if (!item) return
-    category.items = category.items.filter(i => i != item);
+    if (!item) return;
+    api.del(`categories/items/${item.id}`, true).then((response) => {
+        if (response.status == 204) {
+            category.items = category.items.filter(i => i != item);
+            localStorage.setItem('catalogs', JSON.stringify(data));
+            renderCatalog(container);
+        } else {
+            console.error("Error deleting item:", response.data);
+        }
+    })
     renderCatalog(container);
 }
 
@@ -228,6 +248,22 @@ function editCatalog(e, container) {
                     }
                 });
             }
+            console.log({
+                name: catalog.name,
+                is_active: catalog.is_active
+            })
+            api.patch('partners/' + partnerid + "/catalogs/" + catalog.id, {
+                name: catalog.name,
+                is_active: catalog.is_active
+            }, true).then((response) => {
+                if (response.status == 200) {
+                    catalog.id = response.data.id;
+                    catalog.temp_id = null;
+                    localStorage.setItem('catalogs', JSON.stringify(data));
+                } else {
+                    console.error("Error updating catalog:", response.data);
+                }
+            });
             renderCatalog(container);
         });
     });
@@ -269,6 +305,13 @@ function editCategory(e, container) {
             e.preventDefault();
             let formData = new FormData(form);
             category.name = formData.get('category-name');
+            api.patch('catalog/categories/' + category.id, category, true).then((response) => {
+                if (response.status == 200) {
+
+                } else {
+                    console.error("Error updating category:", response.data);
+                }
+            })
             renderCatalog(container);
         });
     });
@@ -322,12 +365,10 @@ function editItem(e, container) {
         submit: "Save",
     }).then(() => {
         let form = document.getElementById('edit-item-form');
-        if (!form) 
-            return;
+        if (!form) return;
         let submitButton = document.querySelector('.c-modal__submit');
         let pictureInput = document.getElementById('item-picture');
-        if (!pictureInput)
-            return;
+        if (!pictureInput) return;
         pictureInput.addEventListener('change', (e) => {
             let file = e.target.files[0];
             if (file && file.size !== 0) {
@@ -340,8 +381,7 @@ function editItem(e, container) {
         });
         
 
-        if (!submitButton)
-            return;
+        if (!submitButton) return;
         submitButton.addEventListener('click', (e) => {
             e.preventDefault();
             let formData = new FormData(form);
@@ -357,6 +397,15 @@ function editItem(e, container) {
                 };
                 reader.readAsDataURL(formpic);
             }
+            api.patch('categories/items/' + item.id, item, true).then((response) => {
+                if (response.status == 200) {
+                    item.id = response.data.id;
+                    item.temp_id = null;
+                    localStorage.setItem('catalogs', JSON.stringify(data));
+                } else {
+                    console.error("Error updating item:", response.data);
+                }
+            });
             renderCatalog(container);
         });
     });

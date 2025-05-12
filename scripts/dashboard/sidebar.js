@@ -6,19 +6,31 @@ if (!auth.isLoggedIn()) {
     window.location.href = '/';
 }
 
-
 const data = {
     sidebarTitle: 'Dashboard',
+    logoutText: 'Logout',
     sidebarLinks: [
         { label: 'Dashboard', url: '#', icon: 'fas fa-tachometer-alt' }, // Dashboard icon
         { label: 'Orders', url: '#orders', icon: 'fas fa-shopping-cart' }, // Shopping cart icon
         { label: 'Products', url: '#products', icon: 'fas fa-box' }, // Box icon
         { label: 'Customers', url: '#customers', icon: 'fas fa-users' }, // Users icon
         { label: 'Settings', url: '#settings', icon: 'fas fa-cog' }, // Settings gear icon
-
-
     ],
-    logoutText: 'Logout',
+}
+
+if(auth.isAdmin()) {
+    data.sidebarLinks = [
+        { url: '#dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
+        { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
+        { url: '#customers', label: 'Customers', icon: 'fas fa-users' },
+        { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
+    ];
+} else if(auth.isPartner()) {
+    data.sidebarLinks = [
+        { url: '#dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
+        { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
+        { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
+    ];
 }
 
 export const renderSidebar = async () => {

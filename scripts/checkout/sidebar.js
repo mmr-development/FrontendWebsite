@@ -32,7 +32,7 @@ export const renderSidebar = async () => {
     let deliveryOption = JSON.parse(localStorage.getItem('delivery')) || {};
     let delivery = deliveryOption.restaurant[id];
 
-    if (delivery && delivery.delivery == true) {
+    if (delivery && !delivery.delivery == true) {
         data.deliveryFee = deliveryFee.toFixed(2);
         data.totalPrice = (parseFloat(subtotal) + deliveryFee).toFixed(2);
     }

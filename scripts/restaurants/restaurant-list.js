@@ -1,6 +1,53 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
 import * as api from '../utils/api.js'
 
+const url = new URL(window.location.href);
+const params = new URLSearchParams(url.search);
+let city = params.get('city');
+if (city) {
+    sessionStorage.setItem('city', city);
+} else {
+    city = sessionStorage.getItem('city');
+}
+
+console.log(city);
+
+let restaurants = await api.get('partners/?city=' + city).then((res) => {
+    if (res.status === 200) {
+        return res.data;
+    } else {
+        console.error("Error fetching restaurants:", res);
+        return [];
+    }
+}).catch((error) => {
+    console.error("Error fetching restaurants:", error);
+    return [];
+});
+params.delete('city');
+const newUrl = url.origin + url.pathname + '?' + params.toString();
+window.history.replaceState({}, document.title, newUrl);
+
+console.log(restaurants);
+
+const formattedData = {
+    "restaurant-lists": [
+        {
+            "restaurant-list-name": "All Restaurants",
+            "restaurants": restaurants.partners.map(partner => ({
+                id: partner.id.toString(),
+                name: partner.name,
+                image: "../../files/images/restaurants/placeholder.png", // Placeholder image
+                rating: "4.0", // Default rating (can be updated dynamically)
+                "top-picks": "N/A", // Placeholder for top picks
+                "estimated-delivery-time": "30-40 mins", // Default delivery time
+                "delivery-fee": "$3.99", // Default delivery fee
+                "minimum-order": "$15.00", // Default minimum order
+                address: `${partner.address.street}, ${partner.address.city}, ${partner.address.postal_code}, ${partner.address.country}`
+            }))
+        }
+    ]
+};
+
 const data = {
     "restaurnat-lists": [
         {
@@ -28,47 +75,12 @@ const data = {
                 }
             ]
         },
-        {
-            "restaunrat-list-name": "New Arrivals",
-            "restaurants": [
-                {
-                    "id": "3",
-                    "name": "Burger Haven",
-                    "image": "../../files/images/restaurants/placeholder.png",
-                    "rating": "4.3",
-                    "top-picks": "Cheeseburger, Bacon Burger",
-                    "estimated-delivery-time": "25-35 mins",
-                    "delivery-fee": "$4.50",
-                    "minimum-order": "$10.00"
-                },
-                {
-                    "id": "4",
-                    "name": "Taco Fiesta",
-                    "image": "../../files/images/restaurants/placeholder.png",
-                    "rating": "4.6",
-                    "top-picks": "Beef Tacos, Chicken Quesadilla",
-                    "estimated-delivery-time": "15-25 mins",
-                    "delivery-fee": "$3.00",
-                    "minimum-order": "$12.00"
-                }
-            ]
-        }
     ]
 };
-// get city from url
-const urlparams = new URLSearchParams(window.location.search);
-const city = urlparams.get('city') || null;
+console.log(formattedData);
+console.log(data);
 
-api.get('partners/?' + new URLSearchParams(city)).then((res) => {
-    if (res.status === 200) {
-       console.log(res.data);
-    } else {
-        console.error("Error fetching restaurants:", res);
-    }
-}).catch((error) => {
-    console.error("Error fetching restaurants:", error);
-});
-await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', data);
+await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', formattedData);
 
 const restaurantList = document.querySelectorAll('.restaurants-item');
 

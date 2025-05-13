@@ -1,0 +1,112 @@
+import { renderTemplate } from "../../utils/rendertemplate.js";
+import * as api from '../../utils/api.js';
+
+
+const renderPartnerApplications = async (container, offset = 0) => {
+    console.log('offset', offset)
+    console.log(container)
+    const apiData = await api.get('partner-applications/?limit=5&offset=' + offset).then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        }
+        return [];
+    });
+
+    const columns = Object.keys(apiData.applications[0]).filter(key => (
+        key !== 'created_at' &&
+        key !== 'updated_at' &&
+        key !== 'id'
+    ));
+
+    columns.push('actions');
+
+    console.log(apiData.applications[0])
+    const rows = apiData.applications.map(application => {
+        return {
+            id: application.id,
+            cells: columns.map(column => {
+                if (column === 'actions') {
+                    return `
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="approveApplication('${application.id}')">Approve</button>
+                        <button class="btn btn-danger" onclick="rejectApplication('${application.id}')">Reject</button>
+                    </div>
+                    `;
+                }
+                else if (column === 'delivery_methods') {
+                    return application[column].map(method => method.name).join(', ') || 'N/A';
+                }
+                return application[column]?.name || application[column];
+            })
+        };
+    });
+
+    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
+
+    const templateData = {
+        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), // Format column names
+        rows: rows,
+        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
+        totalPages: totalPages,
+        paginationid: container + '-pagination',
+    };
+
+    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
+        const pagination = document.querySelector(`#${container}-pagination`);
+        if (pagination) {
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = `#${container}-${i}`;
+                pageLink.textContent = i;
+                pageLink.classList.add('page-link');
+                pageLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log((i - 1) * apiData.pagination.limit)
+                    await renderPartnerApplications(container, (i - 1) * apiData.pagination.limit);
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+        window.approveApplication = async (id) => {
+            updatePartner(id, 'approved');
+        };
+
+        window.rejectApplication = async (id) => {
+            updatePartner(id, 'rejected');
+        };
+
+        let updatePartner = async (id, applicationStatus) => {
+            const response = await api.patch(`partner-applications/${id}`, { status: applicationStatus }); 
+            response.status === 200 ?? await renderPartnerApplications(container);
+        }
+    });
+}
+
+const renderCourierApplications = async (applicationsContainer) => {
+}
+
+
+export const renderApplications = async (container) => {
+    // add partner application and courier application containers
+    const partnerApplicationsContainer = document.createElement('div');
+    partnerApplicationsContainer.id = 'partner-applications';
+    partnerApplicationsContainer.classList.add('applications-container');
+    const courierApplicationsContainer = document.createElement('div');
+    courierApplicationsContainer.id = 'courier-applications';
+    courierApplicationsContainer.classList.add('applications-container');
+
+    const containerElement = document.getElementById(container);
+    if (containerElement) {
+        containerElement.appendChild(partnerApplicationsContainer);
+        containerElement.appendChild(courierApplicationsContainer);
+    } else {
+        console.error('Container not found:', container);
+        return;
+    }
+
+    // Render partner applications
+    await renderPartnerApplications(partnerApplicationsContainer.id);
+}
+

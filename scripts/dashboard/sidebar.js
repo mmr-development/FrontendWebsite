@@ -11,25 +11,19 @@ const data = {
     logoutText: 'Logout',
     sidebarLinks: [
         { label: 'Dashboard', url: '#', icon: 'fas fa-tachometer-alt' }, // Dashboard icon
-        { label: 'Orders', url: '#orders', icon: 'fas fa-shopping-cart' }, // Shopping cart icon
-        { label: 'Products', url: '#products', icon: 'fas fa-box' }, // Box icon
-        { label: 'Customers', url: '#customers', icon: 'fas fa-users' }, // Users icon
-        { label: 'Settings', url: '#settings', icon: 'fas fa-cog' }, // Settings gear icon
     ],
 }
 
 if(auth.isAdmin()) {
     data.sidebarLinks = [
-        { url: '#dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
-        { url: '#customers', label: 'Customers', icon: 'fas fa-users' },
+        { url: '#users', label: 'Users', icon: 'fas fa-users' },
         { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
     ];
 } else if(auth.isPartner()) {
     data.sidebarLinks = [
-        { url: '#dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
-        { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
+        { url: "#catalog", label: "Catalog", icon: "fas fa-utensils" },
     ];
 }
 
@@ -47,7 +41,17 @@ export const renderSidebar = async () => {
         let logoutButton = document.getElementById('logout-button');
         if (logoutButton) {
             logoutButton.addEventListener('click', () => {
-
+                // remove session storage
+                sessionStorage.removeItem('role');
+                api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
+                    if (res.status === 200) {
+                        window.location.href = '/';
+                    } else {
+                        console.log('Logout failed');
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
             });
         }
     })

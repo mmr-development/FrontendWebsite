@@ -1369,12 +1369,18 @@
   background-color: #f8f9fa;
   height: auto;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog {
+.dashboard-wrapper #dashboard-content .dashboard-page {
+  display: none;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page.active {
+  display: block;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog {
   padding: 2rem;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .add-catalog {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .add-catalog {
   background-color: #28a745;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -1383,10 +1389,10 @@
   margin-bottom: 1.5rem;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .add-catalog:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .add-catalog:hover {
   background-color: #218838;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container {
   background: white;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -1394,17 +1400,17 @@
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container h2 {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container h2 {
   margin-top: 0;
   font-size: 1.5rem;
   color: #333;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -1412,19 +1418,19 @@
   border-radius: 6px;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button:hover {
   background-color: #0069d9;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-catalog, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-category, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-catalog, .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-category, .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-item {
   background-color: #dc3545;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-catalog:hover, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-category:hover, .dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .catalog-actions button.delete-item:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-catalog:hover, .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-category:hover, .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .catalog-actions button.delete-item:hover {
   background-color: #c82333;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories {
   margin-top: 1rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .add-category {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .add-category {
   background-color: #17a2b8;
   color: white;
   border: none;
@@ -1433,28 +1439,28 @@
   margin-bottom: 1rem;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .add-category:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .add-category:hover {
   background-color: #138496;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category {
   background-color: #f1f1f1;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category h3 {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category h3 {
   margin: 0 0 0.5rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .catalog-actions {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .catalog-actions {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items {
   list-style: none;
   padding-left: 0;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items .add-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items .add-item {
   background-color: #ffc107;
   color: #212529;
   border: none;
@@ -1463,10 +1469,10 @@
   margin-bottom: 0.8rem;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items .add-item:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items .add-item:hover {
   background-color: #e0a800;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li {
   background-color: white;
   border: 1px solid #ccc;
   padding: 0.75rem;
@@ -1477,11 +1483,11 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li span {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li span {
   margin-right: 1rem;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item,
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .edit-item,
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item {
   background-color: #6c757d;
   color: white;
   border: none;
@@ -1490,17 +1496,165 @@
   margin-left: 0.5rem;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item:hover,
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .edit-item:hover,
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item:hover {
   background-color: #5a6268;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item,
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item,
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item {
   background-color: #dc3545;
 }
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item:hover,
-.dashboard-wrapper #dashboard-content #catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .edit-item.delete-item:hover,
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item:hover {
   background-color: #c82333;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .table-container {
+  width: calc(100% - 40px);
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search input[type=text] {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search button:hover {
+  background-color: #45a049;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search button#clear-search-button {
+  background-color: #f44336;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table-search button#clear-search-button:hover {
+  background-color: #e53935;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-header {
+  display: flex;
+  background-color: #4CAF50;
+  flex-direction: row;
+  color: white;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 4px 4px 0 0;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-header .custom-table-header-cell {
+  flex: 1;
+  padding: 10px 15px;
+  text-align: left;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .edit-content-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .edit-content-form input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .edit-content-form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .edit-content-form button:hover {
+  background-color: #45a049;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .custom-table-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .custom-table-row:hover {
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .custom-table-row .custom-table-cell {
+  flex: 1 1 0; /* Force all cells to have the same width */
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  word-wrap: break-word; /* Ensures long text wraps properly */
+  overflow-wrap: break-word; /* Break long words if necessary */
+  word-break: break-word; /* Break very long words */
+  white-space: normal; /* Allow wrapping */
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .pagination .pagination-button {
+  padding: 8px 16px;
+  border: 1px solid #4CAF50;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .pagination .pagination-button:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .pagination .pagination-button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .pagination #current-page {
+  font-size: 14px;
+  color: #333;
 }
 
 .button {

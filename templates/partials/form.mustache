@@ -1,4 +1,6 @@
-<form class="form" action="{{action}}" method="{{method}}">
+<form class="form" action="{{action}}" method="{{method}}" 
+style="{{#width}}width: {{width}};{{/width}}{{#margin}}margin: {{margin}};{{/margin}}{{#max_width}}max-width: {{max_width}};{{/max_width}}"
+>
   <h2>{{title}}</h2>
   {{#description}}
     <p>{{description}}</p>
@@ -41,5 +43,7 @@
       </div>
     {{/fields}}
   </div>
-  <button class="form-submit-btn" type="submit">{{submitText}}</button>
+  {{#submitText}}
+    <button class="form-submit-btn" type="submit">{{submitText}}</button>
+  {{/submitText}}
 </form>

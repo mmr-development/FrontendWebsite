@@ -46,7 +46,6 @@ export const post = async (path, data, auth = false, tried = false) => {
 }
 
 export const get = async (path, auth = false, tried = false) => {
-    console.log("auth: " + auth);
     const response = await fetch(getApiUrl(path), {
         method: 'GET',
         headers: {

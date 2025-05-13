@@ -35,9 +35,9 @@ submitButton.addEventListener('click', async (event) => {
             let role = JSON.parse(atob(res.data.access_token.split('.')[1])).role;
             sessionStorage.setItem('role', role);
             if (role === 'admin') {
-                window.location.href = 'dashboard.html?type=amdin';
-            } else if (role === 'restaurant') {
-                window.location.href = 'dashboard.html?type=restaurant';
+                window.location.href = 'dashboard.html';
+            } else if (role === 'partner') {
+                window.location.href = 'dashboard.html';
             } else {
                 window.location.href = '../index.html';
             }

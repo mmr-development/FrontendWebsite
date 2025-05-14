@@ -15,9 +15,6 @@ const validateUrl = (url) => {
 const reauthenticate = async () => {
     await fetch(getApiUrl('auth/refresh-token/'), {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
         credentials: 'include',
     });
 }

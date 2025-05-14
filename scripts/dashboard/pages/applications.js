@@ -5,7 +5,7 @@ import * as api from '../../utils/api.js';
 const renderPartnerApplications = async (container, offset = 0) => {
     console.log('offset', offset)
     console.log(container)
-    const apiData = await api.get('partner-applications/?limit=5&offset=' + offset).then((res) => {
+    const apiData = await api.get('partner-applications/?limit=2&offset=' + offset).then((res) => {
         if (res.status === 200) {
             return res.data;
         }
@@ -44,7 +44,7 @@ const renderPartnerApplications = async (container, offset = 0) => {
     const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
 
     const templateData = {
-        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), // Format column names
+        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
         rows: rows,
         currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
         totalPages: totalPages,

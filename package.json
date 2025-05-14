@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dawa": "^0.0.0",
     "dawa-autocomplete2": "^1.1.0",
     "mustache": "^4.2.0",
     "sass": "^1.86.3"

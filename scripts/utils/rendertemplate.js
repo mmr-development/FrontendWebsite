@@ -20,7 +20,7 @@ async function loadTemplate(templatePath) {
 
 export { rootpath };
 
-export async function renderTemplate(path, templateId, data) {
+export async function renderTemplate(path, templateId, data = {}) {
     try {
         const template = await loadTemplate(rootpath + path);
         const renderedTemplate = Mustache.render(template, data);

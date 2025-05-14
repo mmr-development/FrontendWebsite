@@ -85,9 +85,10 @@ export const renderCheckout = async () => {
         deliveryoption: 'Delivery Option',
         paymentTitle: 'Payment Method',
         paymentOptions: [
-            { value: 'creditcard', text: 'Credit Card', logo: '../../files/images/checkout/dankort.png'},
+            { value: 'credit_card', text: 'Credit Card', logo: '../../files/images/checkout/dankort.png'},
             { value: 'paypal', text: 'PayPal', logo: '../../files/images/checkout/paypal.png'},
-            { value: 'mobilpay', text: 'Mobil Pay', logo: '../../files/images/checkout/mobilpay.png'},
+            { value: 'mobile_pay', text: 'Mobil Pay', logo: '../../files/images/checkout/mobilpay.png'},
+            { value: 'debit_card', text: 'Debit Card', logo: '../../files/images/checkout/debit-card.png'},
         ],
     };
 
@@ -290,9 +291,14 @@ let validateCheckout = (options) => {
             order: {
                 partner_id: parseInt(restaurantId),
                 delivery_type: restaurantDelivery === true ? "delivery" : "pickup",
+                requested_delivery_time: options.deliveryTime,
+                payment_method: options.paymentMethod,
+                ...(options.deliveryTip ? { tip_amount: parseInt(options.deliveryTip)} : {}),
+                ...(options.deliveryNote ? { customer_note: options.deliveryNote } : {}),
                 items: restaurantCart.map(item => ({
                     catalog_item_id: item.id,
-                    quantity: item.quantity
+                    quantity: item.quantity,
+                    ...(item.note ? { note: item.customizations } : {}),
                 }))
             }
         };
@@ -313,6 +319,7 @@ let validateCheckout = (options) => {
                 order
             ).then(() => {
                 document.querySelector('.c-modal__submit').addEventListener('click', async () => {
+                    console.log(order);
                     await api.post('orders', order, api.includeCredentials).then((res) => {
                         if(res.status === 201) {
                             window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;

@@ -2,28 +2,27 @@ import { renderTemplate } from "../../utils/rendertemplate.js";
 import * as api from '../../utils/api.js';
 import { renderModal } from '../../utils/modal.js';
 
-let partnerid = await api.get('partners/me/', true).then((response) => {
-    if (response.status == 200) {
-        console.log("Partner ID:", response.data.id);
-        return response.data.id;
-    } else {
-        console.error("Error fetching partner ID:", response.data);
-        return null;
-    }
-});
+let partnerid = null;
+let data;
 
-let data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
-    if (response.status == 200) {
-        return response.data;
-    } else {
-        console.error("Error fetching catalogs:", response.data);
-        return null;
-    }
-});
-
-console.log(data);
-
-// --- Helper Functions ---
+const init = async () => {
+    partnerid = await api.get('partners/me/', true).then((response) => {
+        if (response.status == 200) {
+            return response.data.id;
+        } else {
+            console.error("Error fetching partner ID:", response.data);
+            return null;
+        }
+    });
+    data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+        if (response.status == 200) {
+            return response.data;
+        } else {
+            console.error("Error fetching catalogs:", response.data);
+            return null;
+        }
+    });
+}
 
 function addCatalog(container) {
     let catalog = {
@@ -122,8 +121,6 @@ function addItem(e, container) {
         } else {
             console.error("Error adding item:", response.data);
         }
-
-        // Re-render the catalog
         renderCatalog(container);
     }).catch((error) => {
         console.error("API error:", error);
@@ -413,6 +410,9 @@ function editItem(e, container) {
 
 
 export const renderCatalog = async (container) => {
+    if(partnerid == null) {
+        await init();
+    }
     localStorage.setItem('catalogs', JSON.stringify(data));
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',

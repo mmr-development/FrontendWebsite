@@ -12,8 +12,6 @@ const loadRoles = async () => {
     });
 };
 
-console.log(roles);
-
 export const renderUsers = async (container, offset = 0) => {
     // if (roles.length === 0) {
     //     await loadRoles();

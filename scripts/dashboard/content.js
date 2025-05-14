@@ -3,6 +3,7 @@ import { renderCatalog } from "./pages/catalog.js";
 import { renderUsers} from "./pages/users.js";
 import { renderOrders} from "./pages/order.js";
 import { renderApplications } from "./pages/applications.js";
+import { renderPartnerHours } from "./pages/partner-hours.js";
 import * as api from '../utils/api.js';
 import * as auth from "../utils/auth.js";
 
@@ -21,17 +22,29 @@ let pages = [
     { id: 'settings', url: '#settings' },
     { id: 'applications', url: '#applications' },
     { id: 'catalog', url: '#catalog' },
+    { id: 'partner-hours', url: '#partner-hours' },
 ];
 
 export const renderDashboardContent = async () => {
     await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', {pages: pages}).then(async() => {
         if (auth.isAdmin()) {
             // render admin pages
-            await renderOrders();
+            await renderOrders('orders');
             await renderUsers('users');
             await renderApplications('applications');
         } else if (auth.isPartner()) {
+            // get partner id
+            let partnerid = await api.get('partners/me').then((res) => {
+                if (res.status === 200) {
+                    return res.data.id;
+                } else {
+                    console.error("Error fetching partner id:", res);
+                    return null;
+                }
+            });
             await renderCatalog('catalog');
+            await renderOrders('orders',0,partnerid);
+            await renderPartnerHours('partner-hours', partnerid);
         }
     }).then(async () => {
         let pages = document.querySelectorAll('.dashboard-page');

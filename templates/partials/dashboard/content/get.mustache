@@ -1,9 +1,11 @@
 <div class="table-container">
+{{#search}}
     <div class="custom-table-search">
         <input type="text" id="search-input" placeholder="Search..." />
         <button id="search-button">Search</button>
         <button id="clear-search-button">Clear</button>
     </div>
+{{/search}}
     <div class="custom-table">
         <div class="custom-table-header">
             {{#columns}}
@@ -20,9 +22,11 @@
             {{/rows}}
         </div>
     </div>
+{{#paginationid}}
     <div class="pagination" id="{{paginationid}}">
         <button class="pagination-button" id="prev-page" disabled>Previous</button>
         <span id="current-page">Page {{currentPage}} of {{totalPages}}</span>
         <button class="pagination-button" id="next-page">Next</button>
     </div>
+{{/paginationid}}
 </div>

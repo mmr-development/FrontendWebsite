@@ -3,9 +3,7 @@ import * as api from '../../utils/api.js';
 
 
 const renderPartnerApplications = async (container, offset = 0) => {
-    console.log('offset', offset)
-    console.log(container)
-    const apiData = await api.get('partner-applications/?limit=2&offset=' + offset).then((res) => {
+    const apiData = await api.get('partner-applications/?limit=5&offset=' + offset).then((res) => {
         if (res.status === 200) {
             return res.data;
         }
@@ -19,8 +17,6 @@ const renderPartnerApplications = async (container, offset = 0) => {
     ));
 
     columns.push('actions');
-
-    console.log(apiData.applications[0])
     const rows = apiData.applications.map(application => {
         return {
             id: application.id,
@@ -49,6 +45,7 @@ const renderPartnerApplications = async (container, offset = 0) => {
         currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
         totalPages: totalPages,
         paginationid: container + '-pagination',
+        search: false,
     };
 
     await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
@@ -78,13 +75,110 @@ const renderPartnerApplications = async (container, offset = 0) => {
         };
 
         let updatePartner = async (id, applicationStatus) => {
-            const response = await api.patch(`partner-applications/${id}`, { status: applicationStatus }); 
-            response.status === 200 ?? await renderPartnerApplications(container);
+            await api.patch(`partner-applications/${id}`, { status: applicationStatus }).then(async (res) => {
+                if (res.status === 200) {
+                    await renderPartnerApplications(container);
+                }
+            }) ;
         }
     });
 }
 
-const renderCourierApplications = async (applicationsContainer) => {
+const renderCourierApplications = async (container, offset = 0) => {
+    const apiData = await api.get('courier-applications/?limit=5&offset=' + offset).then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        }
+        return [];
+    });
+
+    const columns = Object.keys(apiData.applications[0]).filter(key => (
+        key !== 'created_at' &&
+        key !== 'updated_at' &&
+        key !== 'id'
+    ));
+
+    columns.push('actions');
+    const rows = apiData.applications.map(application => {
+        return {
+            id: application.id,
+            cells: columns.map(column => {
+                if (column === 'actions') {
+                    return `
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="approveApplication('${application.id}')">Approve</button>
+                        <button class="btn btn-danger" onclick="rejectApplication('${application.id}')">Reject</button>
+                    </div>
+                    `;
+                }
+                else if (column === 'delivery_methods') {
+                    return application[column].map(method => method.name).join(', ') || 'N/A';
+                } else if (column === 'documentation' ) {
+                    // if no documentation, return N/A
+                    if (application[column].length === 0) {
+                        return 'N/A';
+                    }
+                } else if (column == 'user' || column == 'address') {
+                    // object object, return string and ignore id
+                    return Object.keys(application[column]).map(key => {
+                        if (key === 'id') {
+                            return '';
+                        }
+                        return application[column][key];
+                    }).join(', ');
+                }
+                return application[column]?.name || application[column];
+            })
+        };
+    });
+
+    
+    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
+
+
+    const templateData = {
+        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
+        rows: rows,
+        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
+        totalPages: totalPages,
+        paginationid: container + '-pagination',
+        search: false,
+    };
+
+    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
+        window.approveApplication = async (id) => {
+            updateCourier(id, 'approved');
+        };
+
+        window.rejectApplication = async (id) => {
+            updateCourier(id, 'rejected');
+        };
+
+        let updateCourier = async (id, applicationStatus) => {
+            await api.patch(`courier-applications/${id}`, { status: applicationStatus }).then(async (res) => {
+                if (res.status === 200) {
+                    await renderCourierApplications(container);
+                }
+            }) ;
+        }
+
+        const pagination = document.querySelector(`#${container}-pagination`);
+        if (pagination) {
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = `#${container}-${i}`;
+                pageLink.textContent = i;
+                pageLink.classList.add('page-link');
+                pageLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log((i - 1) * apiData.pagination.limit)
+                    await renderCourierApplications(container, (i - 1) * apiData.pagination.limit);
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+    });
 }
 
 
@@ -108,5 +202,7 @@ export const renderApplications = async (container) => {
 
     // Render partner applications
     await renderPartnerApplications(partnerApplicationsContainer.id);
+    // Render courier applications
+    await renderCourierApplications(courierApplicationsContainer.id);
 }
 

@@ -1,18 +1,27 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
 import { updateToggleButton } from './restaurant-detail-sidebar-toggle.js';
+import {renderModal} from '../utils/modal.js'
+import * as api from '../utils/api.js';
 
-export const basketUpdate = async ( elementid = 'basket') => {
+export const basketUpdate = async (delivery = true) => {
     // Get restaurantId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('id');
 
-    if (!restaurantId) {
-        console.error('Restaurant ID not found in the URL.');
-        return;
-    }
+    if (!restaurantId) return;
 
     const restaurantCarts = JSON.parse(localStorage.getItem('restaurantCarts')) || {};
     const basket = restaurantCarts[restaurantId] || [];
+
+    let deliveryStorage = JSON.parse(localStorage.getItem('delivery')) || { restaurant: {} };
+    let deliveryOption = deliveryStorage.restaurant[restaurantId];
+    if (deliveryOption) {
+        delivery = !deliveryOption.delivery;
+    } else {
+        deliveryStorage.restaurant[restaurantId] = { delivery: true };
+        localStorage.setItem('delivery', JSON.stringify(deliveryStorage));
+        delivery = true;
+    }
 
     if (basket.length === 0) {
         await renderTemplate('../../templates/partials/restaurant-detail/basket.mustache', 'basket', {empty: true});
@@ -22,38 +31,40 @@ export const basketUpdate = async ( elementid = 'basket') => {
     const totalItems = basket.reduce((total, item) => total + item.quantity, 0);
     const subtotal = basket.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0).toFixed(2);
     let deliveryFee = 39.00
-    let totalPrice = (parseFloat(subtotal) + deliveryFee).toFixed(2);
-
-    let checkedinput = document.getElementById('toggle-checkbox');
-
-    if (checkedinput) {
-        checkedinput.addEventListener('change', () => {
-            console.log('Checkbox changed:', checkedinput.checked);
-            basketUpdate()
-            if (checkedinput.checked) {
-                deliveryFee = 39.00;
-            } else {
-                deliveryFee = 0;
-            }
-            totalPrice = (parseFloat(subtotal) + deliveryFee).toFixed(2);
-        });
-    }
+    let totalPrice = delivery ? (parseFloat(subtotal) + deliveryFee).toFixed(2) : subtotal;
 
     const data = {
         totalItems: totalItems,
         subtotal: subtotal,
-        delivery: checkedinput ? checkedinput.checked : false,
+        delivery: delivery,
         deliveryFee: deliveryFee.toFixed(2),
         totalPrice: totalPrice,
         items: basket.map(item => ({
             id: item.id,
             name: item.name,
             price: item.price.replace('kr.', ''),
-            quantity: item.quantity
+            quantity: item.quantity,
+            note: item.note || '',
         }))
     };
 
     await renderTemplate('../../templates/partials/restaurant-detail/basket.mustache', 'basket', data);
+
+    let checkedinput = document.getElementById('toggle-checkbox');
+
+    if (checkedinput) {
+        checkedinput.addEventListener('change', () => {
+            // update localstorage
+            if (!deliveryStorage.restaurant[restaurantId]) {
+                deliveryStorage.restaurant[restaurantId] = { delivery: checkedinput.checked };
+            } else {
+                deliveryStorage.restaurant[restaurantId].delivery = checkedinput.checked;
+            }
+            localStorage.setItem('delivery', JSON.stringify(deliveryStorage));
+
+            basketUpdate(!checkedinput.checked);
+        });
+    }
 
     updateToggleButton(totalItems, totalPrice);
 
@@ -71,14 +82,13 @@ export const basketUpdate = async ( elementid = 'basket') => {
         });
     });
 
-    // add event listeners for quantity buttons
     let quantitycontainers = document.querySelectorAll('.basket-quantity');
     quantitycontainers.forEach(container => {
         const quantityInput = container.querySelector('.quantity-input');
         const itemId = container.getAttribute('data-id');
         const itemIndex = basket.findIndex(item => item.id === itemId);
-        const max = 50; // Set a maximum limit for quantity
-        const min = 1; // Set a minimum limit for quantity
+        const max = 50; 
+        const min = 1; 
 
         const quantityButtons = container.querySelectorAll('.quantity-button');
         quantityButtons.forEach(button => {
@@ -96,7 +106,6 @@ export const basketUpdate = async ( elementid = 'basket') => {
             });
         });
 
-        // Handle input change
         quantityInput.addEventListener('change', () => {
             let currentValue = parseInt(quantityInput.value);
             if (currentValue > max) {
@@ -112,6 +121,43 @@ export const basketUpdate = async ( elementid = 'basket') => {
             basketUpdate();
         });
     });
+
+    const addNoteButton = document.querySelectorAll('.add-note-button');
+    addNoteButton.forEach(button => {
+        button.addEventListener('click',async () => {
+            await renderModal({
+                title: 'Add a note',
+                content: `
+                    <div class="modal-content">
+                        <textarea id="note-textarea" rows="4" cols="50"></textarea>
+                    </div>
+                `,
+                submit: 'Save',
+                close: 'Close',
+                minWidth: '400px',
+                submitCallback: () => {
+                    const noteTextarea = document.getElementById('note-textarea');
+                    const itemId = button.getAttribute('data-id');
+                    const itemIndex = basket.findIndex(item => item.id === itemId);
+                    if (noteTextarea) {
+                        noteTextarea.value ? basket[itemIndex].note = noteTextarea.value :  
+                        basket[itemIndex].note = '';
+                        localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
+                        const noteDiv = document.querySelector(`.basket-item[data-id="${itemId}"] .note`);
+                        if (noteDiv) {
+                           if (noteTextarea.value) {
+                                 noteDiv.innerHTML = "<p><strong>Note:</strong> " + noteTextarea.value + "</p>"; // Update the note in the basket
+                            }else {
+                                noteDiv.innerHTML = ""; // Update the note in the basket
+                            }
+                        }
+                    }
+                    basketUpdate();
+                },
+            });
+        });
+    });
+
 
     // Add event listener for the checkout button
     const checkoutButton = document.querySelector('.checkout-button');

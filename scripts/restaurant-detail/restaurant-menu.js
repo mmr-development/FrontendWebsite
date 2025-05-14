@@ -12,7 +12,6 @@ if (partner_id) {
 }
 let catalog = await api.get('partners/' + partner_id + '/catalogs/full').then((res) => {
     if (res.status === 200) {
-        console.log(res.data);
         return res.data;
     } else {
         console.error("Error fetching catalog:", res);
@@ -20,7 +19,7 @@ let catalog = await api.get('partners/' + partner_id + '/catalogs/full').then((r
     }
 });
 
-export const menu_data = {
+const menu_data = {
     categories: catalog.catalogs[0].categories.map(category => ({
         name: category.name,
         items: category.items.map(item => ({
@@ -30,5 +29,7 @@ export const menu_data = {
             price: item.price.toFixed(2), // Format price to 2 decimal places
             description: item.description
         }))
-    }))
+    })),
 };
+
+export default menu_data;

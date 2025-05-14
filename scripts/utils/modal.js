@@ -11,12 +11,18 @@ export const renderModal = async (data) => {
     document.querySelectorAll('.c-modal__close').forEach((close) => {
         close.addEventListener('click', () => {
             modal.classList.remove('active');
+            if(data.closeCallback) {
+                data.closeCallback();
+            }
         });
     });
 
     document.querySelectorAll('.c-modal__submit').forEach((submit) => {
         submit.addEventListener('click', () => {
             modal.classList.remove('active');
+            if(data.submitCallback) {
+                data.submitCallback();
+            }
         });
     });
 }

@@ -447,6 +447,46 @@
                     display: flex;
                     flex-direction: column;
 
+.order-details-expand {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin: 0 0 16px 0;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    font-size: 16px;
+    color: #222;
+    animation: fadeIn 0.2s;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    strong {
+        color: #333;
+        font-weight: 600;
+        margin-right: 4px;
+    }
+
+    ul {
+        margin: 8px 0 0 0;
+        padding-left: 20px;
+        list-style: none;
+
+
+        li {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 4px;
+            background: #f7f7f7;
+            border-radius: 4px;
+            padding: 6px 10px;
+        }
+    }
+}
+
                     .edit-content-form{
                         display: flex;
                         flex-direction: column;

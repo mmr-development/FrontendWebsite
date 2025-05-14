@@ -1573,6 +1573,40 @@
   display: flex;
   flex-direction: column;
 }
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .order-details-expand {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin: 0 0 16px 0;
+  padding: 24px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  font-size: 16px;
+  color: #222;
+  animation: fadeIn 0.2s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .order-details-expand div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .order-details-expand strong {
+  color: #333;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .order-details-expand ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  list-style: none;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .order-details-expand ul li {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 4px;
+  background: #f7f7f7;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page .custom-table .custom-table-body .edit-content-form {
   display: flex;
   flex-direction: column;

@@ -24,6 +24,7 @@ if(auth.isAdmin()) {
     data.sidebarLinks = [
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
         { url: "#catalog", label: "Catalog", icon: "fas fa-utensils" },
+        { url: '#partner-hours', label: 'Partner Hours', icon: 'fas fa-clock' },
     ];
 }
 

@@ -256,7 +256,7 @@ let validateCheckout = (options) => {
     }
     let basket = document.getElementsByClassName('basket-total')[0];
     let existingCheckoutButton = document.querySelector('.checkout-button');
-    existingCheckoutButton ?? existingCheckoutButton.remove();
+    if (existingCheckoutButton) existingCheckoutButton.remove();
     let checkoutButton = document.createElement('button');
     checkoutButton.classList.add('checkout-button', 'active');
     checkoutButton.textContent = 'Checkout';
@@ -267,7 +267,7 @@ let validateCheckout = (options) => {
         let restaurantCart = cart[restaurantId];
     
         let delivery = JSON.parse(localStorage.getItem('delivery'));
-        let restaurantDelivery = delivery[restaurantId];
+        let restaurantDelivery = delivery.restaurant[restaurantId].delivery == false;
     
         let addressData = JSON.parse(sessionStorage.getItem('address'))?.data || {};
         let customerAddress = {
@@ -290,22 +290,23 @@ let validateCheckout = (options) => {
             },
             order: {
                 partner_id: parseInt(restaurantId),
-                delivery_type: restaurantDelivery === true ? "delivery" : "pickup",
+                delivery_type: restaurantDelivery ? 'delivery' : 'pickup',
                 requested_delivery_time: options.deliveryTime,
-                payment_method: options.paymentMethod,
                 ...(options.deliveryTip ? { tip_amount: parseInt(options.deliveryTip)} : {}),
-                ...(options.deliveryNote ? { customer_note: options.deliveryNote } : {}),
+                ...(options.deliveryNote ? { note: options.deliveryNote } : {}),
                 items: restaurantCart.map(item => ({
                     catalog_item_id: item.id,
                     quantity: item.quantity,
                     ...(item.note ? { note: item.customizations } : {}),
                 }))
+            },
+            payment: {
+                method: options.paymentMethod,
             }
         };
     
         localStorage.setItem('order', JSON.stringify(order));
-        console.log(order)
-    
+
         renderModal({
             minWidth: '400',
             title: 'Order Confirmation',
@@ -319,7 +320,6 @@ let validateCheckout = (options) => {
                 order
             ).then(() => {
                 document.querySelector('.c-modal__submit').addEventListener('click', async () => {
-                    console.log(order);
                     await api.post('orders', order, api.includeCredentials).then((res) => {
                         if(res.status === 201) {
                             window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;

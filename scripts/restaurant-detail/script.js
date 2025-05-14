@@ -1,5 +1,5 @@
 import {detail_data} from './restaurant-detail.js';
-import {menu_data} from './restaurant-menu.js';
+import menu_data from './restaurant-menu.js';
 import './searchbar.js';
 import { renderTemplate } from '../utils/rendertemplate.js';
 import './restaurant-detail-sidebar.js';
@@ -92,6 +92,8 @@ menu_items.forEach(item => {
             
                 basketUpdate();
             });
+
+
         });
     });
 });

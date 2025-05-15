@@ -1,4 +1,6 @@
 import { renderTemplate } from "../utils/rendertemplate.js";
+import * as api from '../utils/api.js';
+// websocket.
 
 const localStorageData = JSON.parse(localStorage.getItem('order')) || {};
 
@@ -19,4 +21,25 @@ const data = {
     totalPrice: Object.values(localStorageData).reduce((acc, item) => acc + (item.totalPrice ?? 0), 0),
     deliveryTime: '30-40 mins',
     pickupTime: '15-25 mins',
+};
+
+const wsUrl = api.wsurl + 'ws/test'; // Replace with your backend WebSocket URL
+console.log("WebSocket URL:", wsUrl);
+const socket = new WebSocket(wsUrl);
+
+socket.onopen = () => {
+    console.log("WebSocket connection established");
+
+};
+
+socket.onmessage = (event) => {
+ 
+};
+
+socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+};
+
+socket.onclose = () => {
+    console.log("WebSocket connection closed");
 };

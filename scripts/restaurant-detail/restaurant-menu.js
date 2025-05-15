@@ -22,13 +22,18 @@ let catalog = await api.get('partners/' + partner_id + '/catalogs/full').then((r
 const menu_data = {
     categories: catalog.catalogs[0].categories.map(category => ({
         name: category.name,
-        items: category.items.map(item => ({
-            id: item.id.toString(),
-            name: item.name,
-            image: '../../files/images/restaurants/placeholder.png', // Placeholder image
-            price: item.price.toFixed(2), // Format price to 2 decimal places
-            description: item.description
-        }))
+        items: category.items.map(item => {
+            const menuItem = {
+                id: item.id.toString(),
+                name: item.name,
+                price: item.price.toFixed(2),
+                description: item.description
+            };
+            if (item.image_url && item.image_url.trim() !== "") {
+                menuItem.image = api.baseurl + 'public/' + item.image_url;
+            }
+            return menuItem;
+        })
     })),
 };
 

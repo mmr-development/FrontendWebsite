@@ -86,12 +86,16 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                overflow: hidden;
+                border-radius: vars.$border-radius;
+                box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 30px, rgba(0, 0, 0, 0.1) 0px 4px 25px;
     
                 img {
-                    max-width: 100%;
+                    aspect-ratio: 1;
                     max-height: 150px;
-                    border-radius: 10px;
-                    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 30px, rgba(0, 0, 0, 0.1) 0px 4px 25px;
+                    max-width: 150px;
+                    border-radius: vars.$border-radius;
+                    object-fit: cover;
                 }
             }
 

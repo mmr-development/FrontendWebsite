@@ -24,8 +24,8 @@ const renderPartnerApplications = async (container, offset = 0) => {
                 if (column === 'actions') {
                     return `
                     <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="approveApplication('${application.id}')">Approve</button>
-                        <button class="btn btn-danger" onclick="rejectApplication('${application.id}')">Reject</button>
+                        <button class="btn btn-primary" onclick="approvePartnerApplication('${application.id}')">Approve</button>
+                        <button class="btn btn-danger" onclick="rejectPartnerApplication('${application.id}')">Reject</button>
                     </div>
                     `;
                 }
@@ -66,11 +66,11 @@ const renderPartnerApplications = async (container, offset = 0) => {
             }
         }
 
-        window.approveApplication = async (id) => {
+        window.approvePartnerApplication = async (id) => {
             updatePartner(id, 'approved');
         };
 
-        window.rejectApplication = async (id) => {
+        window.rejectPartnerApplication = async (id) => {
             updatePartner(id, 'rejected');
         };
 
@@ -106,8 +106,8 @@ const renderCourierApplications = async (container, offset = 0) => {
                 if (column === 'actions') {
                     return `
                     <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="approveApplication('${application.id}')">Approve</button>
-                        <button class="btn btn-danger" onclick="rejectApplication('${application.id}')">Reject</button>
+                        <button class="btn btn-primary" onclick="approveCourierApplication('${application.id}')">Approve</button>
+                        <button class="btn btn-danger" onclick="rejectCourierApplication('${application.id}')">Reject</button>
                     </div>
                     `;
                 }
@@ -146,11 +146,11 @@ const renderCourierApplications = async (container, offset = 0) => {
     };
 
     await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
-        window.approveApplication = async (id) => {
+        window.approveCourierApplication = async (id) => {
             updateCourier(id, 'approved');
         };
 
-        window.rejectApplication = async (id) => {
+        window.rejectCourierApplication = async (id) => {
             updateCourier(id, 'rejected');
         };
 

@@ -1,6 +1,7 @@
-// const apiurl = 'https://10.130.66.11:8080/v1/'
-const apiurl = 'https://74d7-212-27-16-17.ngrok-free.app/v1/';
-//const apiurl = 'https://eecc-77-214-126-101.ngrok-free.app/v1/';
+const url = '6836-185-19-132-69.ngrok-free.app/'
+export const baseurl = 'https://' + url;
+export const wsurl = 'wss://' + url;
+const apiurl = baseurl + 'v1/';
 export const includeCredentials = true;
 
 const validateUrl = (url) => {
@@ -17,6 +18,10 @@ const reauthenticate = async () => {
     await fetch(getApiUrl('auth/refresh-token/'), {
         method: 'POST',
         credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
     });
 }
 
@@ -113,4 +118,18 @@ export const del = async (path, auth = false, tried = false) => {
     return {
         status: response.status,
     }
+}
+
+export const postImage = async (path, data) => {
+    const response = await fetch(getApiUrl(path), {
+        method: 'POST',
+        credentials: 'include',
+        body: data,
+    });
+
+    console.log(response);
+    return {
+        status: response.status,
+        data: response,
+    } 
 }

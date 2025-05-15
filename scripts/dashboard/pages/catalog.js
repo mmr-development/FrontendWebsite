@@ -386,6 +386,7 @@ function editItem(e, container) {
             item.price = formData.get('item-price');
             item.description = formData.get('item-description');
             let formpic = formData.get('item-picture');
+            let formdata = new FormData();
             if (formpic && formpic.size && formpic.size !== 0) {
                 let reader = new FileReader();
                 reader.onload = function (e) {
@@ -393,7 +394,20 @@ function editItem(e, container) {
                     document.getElementById('item-picture-preview').src = item.picture;
                 };
                 reader.readAsDataURL(formpic);
+
+                formdata.append('file', formpic, formpic.name);
+
+                api.postImage('categories/items/' + item.id + '/upload-image', formdata, true).then((response) => {
+                    console.log("Image upload response:", response);
+                    if (response.status == 200) {
+                        item.picture = response.data.url;
+                    } else {
+                        console.error("Error uploading image:", response.data);
+                    }
+                });
+
             }
+
             api.patch('categories/items/' + item.id, item, true).then((response) => {
                 if (response.status == 200) {
                     item.id = response.data.id;

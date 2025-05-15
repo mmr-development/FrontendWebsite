@@ -1,21 +1,29 @@
 import { renderTemplate } from "../../utils/rendertemplate.js";
 import * as api from '../../utils/api.js';
 
+const orderCache = new Map();
+
 export const renderOrders = async (container, offset = 0, partnerid = 0) => {
-    // Treat null partnerid as 0 (show all partners)
-    const showPartnerId = partnerid === 0 || partnerid === null;
+    const cacheKey = `${offset}_${partnerid}`;
+    let apiData = orderCache.get(cacheKey);
 
-    const apiData = await api.get('orders/?limit=5&offset=' + offset + (partnerid && partnerid !== 0 ? '&partner_id=' + partnerid : '')).then((res) => {
-        if (res.status === 200) {
-            return res.data;
-        }
-        return [];
-    });
-
-    if (!apiData.orders || apiData.orders.length === 0) {
-        return;
+    if (!apiData) {
+        apiData = await api.get('orders/?limit=5&offset=' + offset + (partnerid && partnerid !== 0 ? '&partner_id=' + partnerid : '')).then((res) => {
+            if (res.status === 200) return res.data;
+            return [];
+        });
+        orderCache.set(cacheKey, apiData);
     }
-    // Format rows
+
+    if (!apiData.orders || apiData.orders.length === 0) return;
+
+    const showPartnerId = partnerid === 0 || partnerid === null;
+    const columns = [
+        ...(showPartnerId ? ['Partner_ID'] : []),
+        "Customer Email", "Delivery Type", "Status", "Note",
+        "Total Items", "Total Price", "Payment Methods", "Actions"
+    ];
+
     const rows = apiData.orders.map(order => {
         const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
         const totalPrice = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -28,74 +36,59 @@ export const renderOrders = async (container, offset = 0, partnerid = 0) => {
             totalPrice,
             order.payment?.method || 'N/A',
             `
-            <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="expandOrder('${order.id}')">Expand</button>
-                <button class="btn btn-danger" onclick="deleteOrder('${order.id}')">Delete</button>
+            <div class="action-buttons" data-order-id="${order.id}">
+                <button class="btn btn-secondary expand-btn">Expand</button>
+                <button class="btn btn-danger delete-btn">Delete</button>
             </div>
             `
         ];
-        if (showPartnerId) {
-            cells.unshift(order.partner_id || 'N/A');
-        }
-        return {
-            id: order.id,
-            cells: cells
-        };
+        if (showPartnerId) cells.unshift(order.partner_id || 'N/A');
+        return { id: order.id, cells };
     });
 
-    const columns = [
-        "Customer Email",
-        "Delivery Type",
-        "Status",
-        "Note",
-        "Total Items",
-        "Total Price",
-        "Payment Methods",
-        "Actions",
-    ];
-    if (showPartnerId) {
-        columns.unshift('Partner_ID');
-    }
-
     const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
-
     const templateData = {
-        columns: columns,
-        rows: rows,
-        totalPages: totalPages,
+        columns,
+        rows,
+        totalPages,
         currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
         paginationid: container + '-pagination',
     };
 
-    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
-        // Pagination
-        const pagination = document.getElementById(container + '-pagination');
-        if (pagination) {
-            pagination.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = `#${container}-${i}`;
-                pageLink.textContent = i;
-                pageLink.classList.add('page-link');
-                pageLink.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    await renderOrders(container, (i - 1) * apiData.pagination.limit, partnerid);
-                });
-                pagination.appendChild(pageLink);
-            }
-        }
+    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData);
 
-        // Expand order details
-        window.expandOrder = (id) => {
+    // Fast pagination rendering
+    const pagination = document.getElementById(container + '-pagination');
+    if (pagination) {
+        let html = '';
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<a href="#${container}-${i}" class="page-link" data-page="${i}">${i}</a>`;
+        }
+        pagination.innerHTML = html;
+        pagination.onclick = async (e) => {
+            if (e.target.classList.contains('page-link')) {
+                e.preventDefault();
+                const page = Number(e.target.dataset.page);
+                await renderOrders(container, (page - 1) * apiData.pagination.limit, partnerid);
+            }
+        };
+    }
+
+    // Event delegation for expand/delete
+    document.getElementById(container).onclick = (e) => {
+        const btn = e.target.closest('.expand-btn, .delete-btn');
+        if (!btn) return;
+        const orderId = btn.closest('.action-buttons').dataset.orderId;
+        if (btn.classList.contains('expand-btn')) {
             const existing = document.querySelector('#order-details');
             if (existing) {
-                if (existing.previousElementSibling?.id == id) {
+                if (existing.previousElementSibling?.id == orderId) {
                     existing.remove();
                     return;
                 }
                 existing.remove();
             }
-            const order = apiData.orders.find(o => o.id == id);
+            const order = apiData.orders.find(o => o.id == orderId);
             const detailsDiv = document.createElement('div');
             detailsDiv.id = 'order-details';
             detailsDiv.className = 'order-details-expand';
@@ -112,10 +105,9 @@ export const renderOrders = async (container, offset = 0, partnerid = 0) => {
                     </ul>
                 </div>
             `;
-            const row = document.querySelector(`#${CSS.escape(String(id))}`);
-            if (row) {
-                row.insertAdjacentElement('afterend', detailsDiv);
-            }
-        };
-    });
+            const row = document.querySelector(`#${CSS.escape(String(orderId))}`);
+            if (row) row.insertAdjacentElement('afterend', detailsDiv);
+        }
+        // Add delete logic here if needed
+    };
 };

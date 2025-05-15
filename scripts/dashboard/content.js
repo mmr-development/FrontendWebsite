@@ -6,6 +6,7 @@ import { renderApplications } from "./pages/applications.js";
 import { renderPartnerHours } from "./pages/partner-hours.js";
 import * as api from '../utils/api.js';
 import * as auth from "../utils/auth.js";
+import { renderChatTemplate } from "./pages/chat.js";
 
 // get role from session storage
 const role = sessionStorage.getItem('role');
@@ -23,53 +24,51 @@ let pages = [
     { id: 'applications', url: '#applications' },
     { id: 'catalog', url: '#catalog' },
     { id: 'partner-hours', url: '#partner-hours' },
+    { id: 'chat-window', url: '#chat-window' },
+    { id: 'live-orders', url: '#live-orders' },
 ];
-
 export const renderDashboardContent = async () => {
-    await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', {pages: pages}).then(async() => {
-        if (auth.isAdmin()) {
-            // render admin pages
-            await renderOrders('orders');
-            await renderUsers('users');
-            await renderApplications('applications');
-        } else if (auth.isPartner()) {
-            // get partner id
-            let partnerid = await api.get('partners/me').then((res) => {
-                if (res.status === 200) {
-                    return res.data.id;
-                } else {
-                    console.error("Error fetching partner id:", res);
-                    return null;
-                }
-            });
-            await renderCatalog('catalog');
-            await renderOrders('orders',0,partnerid);
-            await renderPartnerHours('partner-hours', partnerid);
-        }
-    }).then(async () => {
-        let pages = document.querySelectorAll('.dashboard-page');
+    await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', { pages });
 
-        const updateActivePage = () => {
-            let pageId = window.location.hash.substring(1);
-            if (!pageId) {
-                pageId = 'dashboard';
+    if (auth.isAdmin()) {
+        await Promise.all([
+            renderOrders('orders'),
+            renderUsers('users'),
+            renderApplications('applications'),
+            renderChatTemplate('chat-window')
+        ]);
+    } else if (auth.isPartner()) {
+        // Get partner id first
+        let partnerid = null;
+        try {
+            const res = await api.get('partners/me');
+            if (res.status === 200) {
+                partnerid = res.data.id;
+            } else {
+                console.error("Error fetching partner id:", res);
             }
-        
-            pages.forEach(page => {
-                if (page.id === pageId) {
-                    page.classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                }
-            });
-        };
-        
-        // Initial call to set the active page
-        updateActivePage();
-        
-        // Add an event listener to detect URL hash changes
-        window.addEventListener('hashchange', updateActivePage);
-    });
+        } catch (err) {
+            console.error("Error fetching partner id:", err);
+        }
+        // Parallelize partner page rendering
+        await Promise.all([
+            renderCatalog('catalog'),
+            renderOrders('orders', 0, partnerid),
+            // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
+            renderPartnerHours('partner-hours', partnerid)
+        ]);
+    }
+
+    // Handle active page highlighting
+    const pagesEls = document.querySelectorAll('.dashboard-page');
+    const updateActivePage = () => {
+        let pageId = window.location.hash.substring(1) || 'dashboard';
+        pagesEls.forEach(page => {
+            page.classList.toggle('active', page.id === pageId);
+        });
+    };
+    updateActivePage();
+    window.addEventListener('hashchange', updateActivePage);
 };
 
 renderDashboardContent();

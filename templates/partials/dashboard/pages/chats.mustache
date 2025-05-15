@@ -1,0 +1,14 @@
+{{#chats}}
+<div class="chat-list-item" data-chat-id="{{id}}">
+    <div class="chat-list-header">
+        <span class="chat-list-name">{{name}}</span>
+        <span class="chat-list-timestamp">{{timestamp}}</span>
+    </div>
+    <div class="chat-list-last-message">
+        {{last_message}}
+    </div>
+</div>
+{{/chats}}
+{{^chats}}
+<div class="chat-list-empty">No chats available.</div>
+{{/chats}}

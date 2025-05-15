@@ -1,0 +1,22 @@
+ {{#messages}}
+    <div class="chat-message {{#isSender}}sender{{/isSender}}" id="message-{{id}}">
+        <div class="chat-message-meta">
+            <span class="chat-message-sender">{{sender_id}}</span>
+            <span class="chat-message-time">{{created_at}}</span>
+        </div>
+        <div class="chat-message-content">
+            {{#content.text}}
+                <div class="chat-message-text">{{content.text}}</div>
+            {{/content.text}}
+            {{#content.images}}
+                <div class="chat-message-image">
+                    <img src="{{url}}" alt="{{caption}}">
+                    {{#caption}}<div class="chat-message-caption">{{caption}}</div>{{/caption}}
+                </div>
+            {{/content.images}}
+        </div>
+    </div>
+{{/messages}}
+{{^messages}}
+    <div class="chat-messages-empty">No messages yet.</div>
+{{/messages}}

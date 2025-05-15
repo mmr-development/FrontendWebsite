@@ -17,7 +17,7 @@ menu_items.forEach(item => {
         let itemName = item.querySelector('.menu-item-name').textContent;
         let itemPrice = item.querySelector('.menu-item-price').textContent;
         let itemDescription = item.querySelector('.menu-item-description').textContent;
-        let itemImage = item.querySelector('.menu-item-image img').src;
+        let itemImage = item.querySelector('.menu-item-image img') ? item.querySelector('.menu-item-image img').src : '';	
         await renderTemplate('../../templates/partials/restaurant-detail/modal.mustache', 'modal', {
             image: itemImage,
             name: itemName,

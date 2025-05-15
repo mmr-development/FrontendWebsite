@@ -322,6 +322,7 @@ let validateCheckout = (options) => {
                 document.querySelector('.c-modal__submit').addEventListener('click', async () => {
                     await api.post('orders', order, api.includeCredentials).then((res) => {
                         if(res.status === 201) {
+                            localStorage.setItem('orderConfirm', JSON.stringify(res.data));	
                             window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;
                         }
                     });

@@ -19,10 +19,12 @@ if(auth.isAdmin()) {
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
         { url: '#users', label: 'Users', icon: 'fas fa-users' },
         { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
+        { url: '#chat', label: 'Chat', icon: 'fas fa-comments' },
     ];
 } else if(auth.isPartner()) {
     data.sidebarLinks = [
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
+        { url: '#live-orders', label: 'Live Orders', icon: 'fas fa-clock' },
         { url: "#catalog", label: "Catalog", icon: "fas fa-utensils" },
         { url: '#partner-hours', label: 'Partner Hours', icon: 'fas fa-clock' },
     ];

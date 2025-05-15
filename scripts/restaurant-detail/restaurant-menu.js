@@ -19,8 +19,9 @@ let catalog = await api.get('partners/' + partner_id + '/catalogs/full').then((r
     }
 });
 
-const menu_data = {
+export const menu_data = {
     categories: catalog.catalogs[0].categories.map(category => ({
+        id: category.id.toString(),
         name: category.name,
         items: category.items.map(item => {
             const menuItem = {
@@ -37,4 +38,9 @@ const menu_data = {
     })),
 };
 
-export default menu_data;
+export const searchbar_data = {
+   categories: catalog.catalogs[0].categories.map(category => ({
+        name: category.name,
+        value: category.id.toString()
+    })),
+}

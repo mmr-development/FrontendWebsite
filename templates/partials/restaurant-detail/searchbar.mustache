@@ -1,4 +1,11 @@
 <div class="search-bar">
-    <label for="search-input"><i class="fas fa-search"></i></label>
-    <input type="text" placeholder="Search for a restaurant..." id="search-input" />
+    <div class="search-bar-input">
+        <input type="text" placeholder="Search for food, restaurants, or cuisines" id="search-input" />
+        <button id="search-button"><i class="fas fa-search"></i></button>
+    </div>
+    <div class="search-categories">
+        {{#categories}}
+        <div class="search-category" data-value="{{value}}">{{name}}</div>
+        {{/categories}}
+    </div>
 </div>

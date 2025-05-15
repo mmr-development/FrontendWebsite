@@ -693,6 +693,85 @@
   display: flex;
   flex-direction: column;
 }
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 40px);
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ebf8f1;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input input[type=text] {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input input[type=text]:focus {
+  border-color: #2cb673;
+  box-shadow: 0 0 8px rgba(44, 182, 115, 0.5);
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  margin-left: 10px;
+  font-size: 16px;
+  color: #ebf8f1;
+  background-color: #2cb673;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input button i {
+  font-size: 18px;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-bar-input button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-categories .search-category {
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1B5E20;
+  background-color: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-categories .search-category:hover {
+  background-color: #2cb673;
+  color: #ebf8f1;
+  border-color: #2cb673;
+}
+.restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .search-bar .search-categories .search-category.active {
+  background-color: #2cb673;
+  color: #ebf8f1;
+  border-color: #2cb673;
+}
 .restaurant-detail-wrapper .restaurant-detail .restaurant-detail-body .menu-category {
   display: flex;
   flex-direction: column;

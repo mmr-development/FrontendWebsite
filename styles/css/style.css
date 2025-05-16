@@ -1587,7 +1587,7 @@
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item:hover {
   background-color: #c82333;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container {
   display: flex;
   flex-direction: row;
   height: calc(100vh - 40px);
@@ -1596,14 +1596,14 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat {
   display: flex;
   flex-direction: column;
   gap: 0;
   padding: 5px;
   margin: 0;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat #send-message-form {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form {
   display: flex;
   gap: 10px;
   padding: 10px;
@@ -1614,14 +1614,14 @@
   position: sticky;
   bottom: 10px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat #send-message-form input[type=text] {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form input[type=text] {
   flex: 1;
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #ddd;
   font-size: 14px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat #send-message-form button {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -1629,16 +1629,16 @@
   border-radius: 4px;
   cursor: pointer;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat #send-message-form button:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form button:hover {
   background-color: #0056b3;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-messages {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px 0;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message {
   background: #fff;
   border-radius: 8px;
   padding: 12px 16px;
@@ -1648,40 +1648,40 @@
   margin-left: 0;
   margin-bottom: 10px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message.sender {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message.sender {
   background: #e0f7fa;
   margin-right: 0;
   margin-left: auto;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message-meta {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message-meta {
   font-size: 12px;
   color: #888;
   margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message-text {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message-text {
   font-size: 15px;
   color: #222;
   margin-bottom: 6px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message-images {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message-images {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message-image img {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message-image img {
   max-width: 120px;
   border-radius: 4px;
   display: block;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window #chat .chat-message-caption {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-message-caption {
   font-size: 12px;
   color: #555;
   text-align: center;
   margin-top: 2px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chats {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chats {
   width: 320px;
   background: #fff;
   border-right: 1px solid #e0e0e0;
@@ -1689,14 +1689,14 @@
   height: 100%;
   padding: 0;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list {
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 0;
   margin: 0;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-item {
   padding: 18px 20px 14px 20px;
   border-bottom: 1px solid #f0f0f0;
   background: #fff;
@@ -1706,26 +1706,26 @@
   flex-direction: column;
   gap: 4px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-item:hover, .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-item.active {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-item:hover, .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-item.active {
   background: #f2f8ff;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-header {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-name {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-name {
   font-weight: 600;
   color: #222;
   font-size: 16px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-timestamp {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-timestamp {
   font-size: 12px;
   color: #888;
   margin-left: 10px;
   white-space: nowrap;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-list-last-message {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat-list-last-message {
   font-size: 14px;
   color: #555;
   margin-top: 2px;
@@ -1734,7 +1734,7 @@
   text-overflow: ellipsis;
   max-width: 250px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat {
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container .chat {
   flex: 1 1 0;
   background: #f9fafc;
   padding: 0 32px;

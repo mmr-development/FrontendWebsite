@@ -53,9 +53,9 @@ export const renderDashboardContent = async () => {
         // Parallelize partner page rendering
         await Promise.all([
             renderCatalog('catalog'),
-            renderOrders('orders', 0, partnerid),
-            // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
-            renderPartnerHours('partner-hours', partnerid)
+            // renderOrders('orders', 0, partnerid),
+            // // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
+            // renderPartnerHours('partner-hours', partnerid)
         ]);
     }
 

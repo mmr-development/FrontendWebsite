@@ -3,17 +3,21 @@ import * as api from '../../utils/api.js';
 import { renderModal } from '../../utils/modal.js';
 
 let partnerid = null;
+let partners = [];
 let data;
 
 const init = async () => {
-    partnerid = await api.get('partners/me/', true).then((response) => {
+    partners = await api.get('partners/me/', true).then((response) => {
         if (response.status == 200) {
-            return response.data.id;
+            return response.data;
         } else {
             console.error("Error fetching partner ID:", response.data);
             return null;
         }
     });
+    if (partners) {
+        partnerid = partners[0].id;
+    }
     data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
         if (response.status == 200) {
             return response.data;
@@ -22,6 +26,7 @@ const init = async () => {
             return null;
         }
     });
+    console.log("Catalogs data:", data);
 }
 
 function addCatalog(container) {
@@ -428,11 +433,43 @@ export const renderCatalog = async (container) => {
         await init();
     }
     localStorage.setItem('catalogs', JSON.stringify(data));
+
+    // add partners to the data
+    data.partners = partners.map(partner => ({
+        value: partner.id,
+        name: partner.name,
+        selected: partner.id === partnerid ? "selected" : ""
+    }));
+
+    console.log(data);
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',
         container,
         data
     ).then(() => {
+        // if more than 1 partner, show partner select
+        console.log("Partners:", partners);
+        console.log("container:", container);
+        let partnerSelect = document.querySelector('#' + container + ' #partner-select');
+        console.log(partnerSelect);
+        if (partners.length > 1) {
+            partnerSelect.style.display = 'block';
+            partnerSelect.addEventListener('change', (e) => {
+                partnerid = e.target.value;
+                data = api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+                    if (response.status == 200) {
+                        return response.data;
+                    } else {
+                        console.error("Error fetching catalogs:", response.data);
+                        return null;
+                    }
+                });
+                renderCatalog(container);
+            });
+        } else {
+            partnerSelect.style.display = 'none';
+        }
+
         let addCatalogButton = document.querySelector('.add-catalog');
         if (addCatalogButton) {
             addCatalogButton.addEventListener('click', () => addCatalog(container));

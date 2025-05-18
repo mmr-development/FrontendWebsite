@@ -1,4 +1,13 @@
 <div class="table-container">
+{{#select}}
+    <div class="custom-table-select">
+        <select id="custom-select" class="custom-select">
+            {{#options}}
+            <option value="{{value}}" selected="{{selected}}">{{name}}</option>
+            {{/options}}
+        </select>
+    </div>
+{{/select}}
 {{#search}}
     <div class="custom-table-search">
         <input type="text" id="search-input" placeholder="Search..." />

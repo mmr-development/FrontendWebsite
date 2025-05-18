@@ -1,4 +1,11 @@
 <div class="catalog">
+    {{#partners}}
+    <select id="partner-select" class="partner-select">
+        {{#options}}
+        <option value="{{value}}" selected="{{selected}}">{{name}}</option>
+        {{/options}}
+    </select>
+    {{/partners}}
     <button class="add-catalog">Add New Catalog</button>
     {{#catalogs}}
     <div class="catalog-container" data-id="{{id}}" data-temp-id="{{temp_id}}">

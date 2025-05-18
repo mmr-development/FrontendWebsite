@@ -1,7 +1,7 @@
-import { renderTemplate } from "../../utils/rendertemplate.js";
+import { renderGet} from "../components/get.js";
 import * as api from "../../utils/api.js";
 
-export const renderPartnerHours = async (container, partner_id) => {
+export const renderPartnerHours = async (container, partner_id, partners = []) => {
     const partnerHours = await api.get(`partners/${partner_id}/hours`).then((res) => {
         if (res.status === 200) {
             return res.data;
@@ -26,8 +26,18 @@ export const renderPartnerHours = async (container, partner_id) => {
             id: hour.id,
             cells: [
                 ...columns.slice(0, -1).map((column) => {
-                    if (column === "days") {
-                        return hour[column].map((day) => day.name).join(", ") || "N/A";
+                    if (column === "day_of_week") {
+                        // day from 0 to 6
+                        const days = [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                        ];
+                        return days[hour[column]] || "N/A";
                     }
                     return hour[column] || "N/A";
                 }),
@@ -37,14 +47,23 @@ export const renderPartnerHours = async (container, partner_id) => {
         };
     });
     const data = {
-        columns: columns,
-        rows: rows,
-        pagination: false,
-        search: false,
+        data: {
+            columns: columns,
+            rows: rows,
+        },
+        select: partners.length > 0,
+        options: partners.length > 0 ? partners.map((partner) => ({
+            value: partner.id,
+            name: partner.name + " (id:" + partner.id + ")",
+            selected: partner.id == partner_id ? true : false,
+        })) : [],
+        selectCallback: async (selectedPartnerId) => {
+            localStorage.setItem("selectedPartnerId", selectedPartnerId);
+            await renderPartnerHours(container, selectedPartnerId, partners);
+        }
     };
 
-    await renderTemplate(
-        "../../templates/partials/dashboard/content/get.mustache",
+    await renderGet(
         container,
         data
     ).then(() => {

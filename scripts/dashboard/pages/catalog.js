@@ -3,66 +3,90 @@ import * as api from '../../utils/api.js';
 import { renderModal } from '../../utils/modal.js';
 
 let partnerid = null;
-let data = null;
+let partners = [];
+let data;
 
-const getPartnerId = async () => {
-    const response = await api.get('partners/me/', true);
-    if (response.status === 200) return response.data.id;
-    console.error("Error fetching partner ID:", response.data);
-    return null;
-};
-
-const getCatalogs = async (pid) => {
-    const response = await api.get(`partners/${pid}/catalogs/full`, true);
-    if (response.status === 200) return response.data;
-    console.error("Error fetching catalogs:", response.data);
-    return null;
-};
-
-const loadData = async () => {
-    // Try localStorage first
-    let cached = localStorage.getItem('catalogs');
-    if (cached) {
-        data = JSON.parse(cached);
-        partnerid = data.partnerid || null;
-    }
-    if (!partnerid) partnerid = await getPartnerId();
-    if (!data || !data.catalogs) {
-        data = await getCatalogs(partnerid);
-        if (data) {
-            data.partnerid = partnerid;
-            localStorage.setItem('catalogs', JSON.stringify(data));
+const init = async () => {
+    partners = await api.get('partners/me/', true).then((response) => {
+        if (response.status == 200) {
+            return response.data;
+        } else {
+            console.error("Error fetching partner ID:", response.data);
+            return null;
         }
+    });
+    if (partners) {
+        localStorage.getItem('selectedPartnerId') ? partnerid = localStorage.getItem('selectedPartnerId') : partnerid = partners[0].id;            
     }
-};
-
-const findCatalog = (catalogId, tempid) =>
-    data.catalogs.find(c => (catalogId && c.id == catalogId) || (tempid && c.temp_id == tempid));
-
-const findCategory = (categoryId, tempid) => {
-    for (const catalog of data.catalogs) {
-        const cat = catalog.categories.find(cat =>
-            (categoryId && cat.id == categoryId) || (tempid && cat.temp_id == tempid)
-        );
-        if (cat) return { catalog, category: cat };
-    }
-    return {};
-};
-
-const findItem = (itemId, tempid) => {
-    for (const catalog of data.catalogs) {
-        for (const category of catalog.categories) {
-            const item = category.items.find(item =>
-                (itemId && item.id == itemId) || (tempid && item.temp_id == tempid)
-            );
-            if (item) return { catalog, category, item };
+    data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+        if (response.status == 200) {
+            return response.data;
+        } else {
+            console.error("Error fetching catalogs:", response.data);
+            return null;
         }
-    }
-    return {};
-};
+    });
+}
 
-async function addCatalog(e, container) {
-    const catalog = {
+const findCatalog = (catalogId, tempId) => {
+    if (tempId) {
+        return data.catalogs.find(catalog => catalog.temp_id === tempId);
+    } else {
+        return data.catalogs.find(catalog => catalog.id === parseInt(catalogId));
+    }
+}
+const findCategory = (categoryId, tempId) => {
+    if (tempId) {
+        return data.catalogs.reduce((acc, catalog) => {
+            const category = catalog.categories.find(cat => cat.temp_id === tempId);
+            if (category) {
+                acc.catalog = catalog;
+                acc.category = category;
+            }
+            return acc;
+        }, {});
+    } else {
+        return data.catalogs.reduce((acc, catalog) => {
+            const category = catalog.categories.find(cat => cat.id === parseInt(categoryId));
+            if (category) {
+                acc.catalog = catalog;
+                acc.category = category;
+            }
+            return acc;
+        }, {});
+    }
+}
+
+const findItem = (itemId, tempId) => {
+    if (tempId) {
+        return data.catalogs.reduce((acc, catalog) => {
+            catalog.categories.forEach(category => {
+                const item = category.items.find(it => it.temp_id === tempId);
+                if (item) {
+                    acc.category = category;
+                    acc.item = item;
+                }
+            });
+            return acc;
+        }
+        , {});
+    } else {
+        return data.catalogs.reduce((acc, catalog) => {
+            catalog.categories.forEach(category => {
+                const item = category.items.find(it => it.id === parseInt(itemId));
+                if (item) {
+                    acc.category = category;
+                    acc.item = item;
+                }
+            });
+            return acc;
+        }
+        , {});
+    }
+}
+
+async function addCatalog(container) {
+    let catalog = {
         temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
         id: null,
         name: "New Catalog",
@@ -317,27 +341,87 @@ function editItem(e, container) {
 }
 
 export const renderCatalog = async (container) => {
-    if (!partnerid || !data) await loadData();
+    if (!partnerid || !data) await init();
     localStorage.setItem('catalogs', JSON.stringify(data));
+
+    data.partners = data.partners || {};
+    data.partners.options = partners.map((partner) => {
+        return {
+            value: partner.id,
+            name: partner.name + " (id: " + partner.id + ")",
+            selected: partner.id == parseInt(partnerid) ? true : false
+        };
+    });
+
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',
         container,
         data
-    );
-    // Button event bindings
-    [
-        { selector: '.add-catalog', handler: addCatalog },
-        { selector: '.add-category', handler: addCategory },
-        { selector: '.add-item', handler: addItem },
-        { selector: '.delete-catalog', handler: deleteCatalog },
-        { selector: '.delete-category', handler: deleteCategory },
-        { selector: '.delete-item', handler: deleteItem },
-        { selector: '.edit-catalog', handler: editCatalog },
-        { selector: '.edit-category', handler: editCategory },
-        { selector: '.edit-item', handler: editItem },
-    ].forEach(({ selector, handler }) => {
-        document.querySelectorAll(selector).forEach(btn =>
-            btn.addEventListener('click', (e) => handler(e, container))
-        );
+    ).then(() => {
+
+        let partnerSelect = document.querySelector('#' + container + ' #partner-select');
+        if (partners.length > 1) {
+            partnerSelect.style.display = 'block';
+            partnerSelect.addEventListener('change', async (e) => {
+                partnerid = e.target.value;
+                localStorage.setItem('selectedPartnerId', partnerid);
+                data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+                    if (response.status == 200) {
+                        return response.data;
+                    } else {
+                        console.error("Error fetching catalogs:", response.data);
+                        return null;
+                    }
+                });
+                renderCatalog(container);
+            });
+        } else {
+            partnerSelect.style.display = 'none';
+        }
+
+        let addCatalogButton = document.querySelector('.add-catalog');
+        if (addCatalogButton) {
+            addCatalogButton.addEventListener('click', () => addCatalog(container));
+        }
+
+        let addCategoryButtons = document.querySelectorAll('.add-category');
+        addCategoryButtons.forEach((button) => {
+            button.addEventListener('click', (e) => addCategory(e, container));
+        });
+
+        let addItemButtons = document.querySelectorAll('.add-item');
+        addItemButtons.forEach((button) => {
+            button.addEventListener('click', (e) => addItem(e, container));
+        });
+
+        let deleteCatalogButtons = document.querySelectorAll('.delete-catalog');
+        deleteCatalogButtons.forEach((button) => {
+            button.addEventListener('click', (e) => deleteCatalog(e, container));
+        });
+
+        let deleteCategoryButtons = document.querySelectorAll('.delete-category');
+        deleteCategoryButtons.forEach((button) => {
+            button.addEventListener('click', (e) => deleteCategory(e, container));
+        });
+
+        let deleteItemButtons = document.querySelectorAll('.delete-item');
+        deleteItemButtons.forEach((button) => {
+            button.addEventListener('click', (e) => deleteItem(e, container));
+        });
+
+        let editCatalogButtons = document.querySelectorAll('.edit-catalog');
+        editCatalogButtons.forEach((button) => {
+            button.addEventListener('click', (e) => editCatalog(e, container));
+        });
+
+        let editCategoryButtons = document.querySelectorAll('.edit-category');
+        editCategoryButtons.forEach((button) => {
+            button.addEventListener('click', (e) => editCategory(e, container));
+        });
+
+        let editItemButtons = document.querySelectorAll('.edit-item');
+        editItemButtons.forEach((button) => {
+            button.addEventListener('click', (e) => editItem(e, container));
+        });
     });
 };

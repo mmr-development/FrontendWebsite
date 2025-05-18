@@ -1,4 +1,4 @@
-const url = '6836-185-19-132-69.ngrok-free.app/'
+const url = '7445-77-241-136-45.ngrok-free.app/'
 export const baseurl = 'https://' + url;
 export const wsurl = 'wss://' + url;
 const apiurl = baseurl + 'v1/';
@@ -22,6 +22,13 @@ const reauthenticate = async () => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({}),
+    }).then((res) => {
+        if (res.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            sessionStorage.removeItem('role');
+            window.location.href = '/';
+        }
     });
 }
 
@@ -127,7 +134,6 @@ export const postImage = async (path, data) => {
         body: data,
     });
 
-    console.log(response);
     return {
         status: response.status,
         data: response,

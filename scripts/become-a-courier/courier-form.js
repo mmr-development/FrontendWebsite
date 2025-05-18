@@ -4,7 +4,6 @@ import * as api from "../utils/api.js";
 export const renderCourierForm = async () => {
     let preferancehours = await api.get('couriers/hour-preferences/', api.includeCredentials).then((res) => {
         if (res.status === 200) {
-            console.log(res.data);
             return res.data.hour_preferences.map((item) => {
                 return {
                     value: item.id,
@@ -166,7 +165,6 @@ export const renderCourierForm = async () => {
 
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                console.log(data);
                 
                 const structuredData = {
                     personal_details: {
@@ -185,7 +183,6 @@ export const renderCourierForm = async () => {
 
                 api.post('courier-applications/', structuredData, api.includeCredentials).then((res) => {
                     if (res.status === 201) {
-                        console.log(res.data);
                         alert("Ansøgning sendt. Du vil modtage en bekræftelse på din e-mail.");
                         window.location.href = `thank-you.html?type=courier`;
                     } else {

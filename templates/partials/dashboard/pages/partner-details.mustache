@@ -1,0 +1,41 @@
+<div class="partner-details">
+    {{#select}}
+        <div class="custom-table-select">
+            <select id="custom-select" class="custom-select">
+                {{#options}}
+                <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{name}}</option>
+                {{/options}}
+            </select>
+        </div>
+    {{/select}}
+    <h2>Partner Details</h2>
+    <form>
+        <div>
+            <label for="partner-id"><strong>ID:</strong></label>
+            <input id="partner-id" type="text" value="{{id}}" readonly>
+        </div>
+        <div>
+            <label for="partner-name"><strong>Name:</strong></label>
+            <input id="partner-name" type="text" value="{{name}}" readonly>
+        </div>
+        <div>
+            <label for="partner-phone"><strong>Phone Number:</strong></label>
+            <input id="partner-phone" type="text" value="{{phone_number}}" readonly>
+        </div>
+        <div>
+            <label for="partner-fee"><strong>Delivery Fee:</strong></label>
+            <input id="partner-fee" type="text" value="{{delivery_fee}}" readonly>
+        </div>
+        <div>
+            <label for="partner-distance"><strong>Max Delivery Distance:</strong></label>
+            <input id="partner-distance" type="text" value="{{max_deliver_distance}}" readonly>
+        </div>
+        <div>
+            <label for="partner-min-order"><strong>Min Order Value:</strong></label>
+            <input id="partner-min-order" type="text" value="{{min_order_value}}" readonly>
+        </div>
+        <div>
+            <label for="partner-status"><strong>Status:</strong> {{status}}</label>
+        </div>
+    </form>
+</div>

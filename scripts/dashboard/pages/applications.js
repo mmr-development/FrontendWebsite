@@ -59,7 +59,6 @@ const renderPartnerApplications = async (container, offset = 0) => {
                 pageLink.classList.add('page-link');
                 pageLink.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    console.log((i - 1) * apiData.pagination.limit)
                     await renderPartnerApplications(container, (i - 1) * apiData.pagination.limit);
                 });
                 pagination.appendChild(pageLink);
@@ -172,7 +171,6 @@ const renderCourierApplications = async (container, offset = 0) => {
                 pageLink.classList.add('page-link');
                 pageLink.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    console.log((i - 1) * apiData.pagination.limit)
                     await renderCourierApplications(container, (i - 1) * apiData.pagination.limit);
                 });
                 pagination.appendChild(pageLink);

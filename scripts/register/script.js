@@ -35,7 +35,6 @@ submitButton.addEventListener('click', async (event) => {
     };
 
     await api.post('auth/sign-up', data).then((res) => {
-        console.log(res);
         if (res.status === 201) {
             window.location.href = '../index.html';
         } else {

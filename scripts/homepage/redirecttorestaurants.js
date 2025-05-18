@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (addressInput) {
-        console.log("Address input found");
         let savedAddress = sessionStorage.getItem('address') 
         ? JSON.parse(sessionStorage.getItem('address')).tekst 
         : '';
@@ -28,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         dawaAutocomplete.dawaAutocomplete(addressInput, {
             select: function (selected) {
-                console.log(selected);
                 if (addressInput) {
                     addressInput.innerHTML = selected.tekst;
                     submitButton.style.display = "block";

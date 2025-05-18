@@ -4,8 +4,6 @@ import * as api from '../utils/api.js';
 
 const orderConfirm = JSON.parse(localStorage.getItem('orderConfirm')) || {};
 
-console.log("localStorageData", orderConfirm);
-
 const wsUrl = api.wsurl + 'ws/' + orderConfirm.status_url; // Replace with your backend WebSocket URL
 const socket = new WebSocket(wsUrl);
 

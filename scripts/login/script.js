@@ -32,7 +32,8 @@ submitButton.addEventListener('click', async (event) => {
 
     await api.post('auth/sign-in?client_id=' + checkedRadio , data, api.includeCredentials).then((res) => {
         if (res.status === 200) {
-            let role = JSON.parse(atob(res.data.access_token.split('.')[1])).role;
+            let role = JSON.parse(atob(res.data.access_token.split('.')[1])).roles;
+            role = role[0];
             sessionStorage.setItem('role', role);
             if (role === 'admin') {
                 window.location.href = 'dashboard.html';

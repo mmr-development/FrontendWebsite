@@ -135,7 +135,6 @@ export const renderPartnerForm = async () => {
                         longitude: selected.data.y,
                         latitude: selected.data.x,
                     };
-                    console.log(addressdata);
                     if (addressInput) {
                         addressInput.innerHTML = selected.tekst;
                     }
@@ -166,7 +165,6 @@ export const renderPartnerForm = async () => {
             };
             // Send the formatted data to the API
             await api.post('partner-applications', formattedData).then((response) => {
-                console.log(response);
                 if (response.status === 201) {
                     window.location.href = 'thank-you.html?type=partner';
                 } else {

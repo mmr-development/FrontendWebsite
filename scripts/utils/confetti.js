@@ -2,8 +2,6 @@ export const renderConfetti = (divs) => {
     const colors = ['#f94144', '#f3722c', '#f8961e', '#90be6d', '#43aa8b', '#577590'];
     const numPieces = 150;
 
-    console.log("divs", divs);
-
     divs.forEach((div) => {
         const rect = div.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;

@@ -13,7 +13,8 @@ import { renderChatTemplate } from "./pages/chat.js";
 const role = sessionStorage.getItem('role');
 
 if (role === null) {
-    console.log("role is null");
+    console.error("User is not logged in");
+    //window.location.href = '/';
 }
 
 let pages = [
@@ -46,24 +47,32 @@ export const renderDashboardContent = async () => {
         ]);
     } else if (auth.isPartner()) {
         // Get partner id first
-        let partnerid = null;
+        let partnerid = localStorage.getItem('selectedPartnerId') || null;
+        let partners = [];
         try {
             const res = await api.get('partners/me');
             if (res.status === 200) {
-                partnerid = res.data.id;
-            } else {
-                console.error("Error fetching partner id:", res);
+                partners = res.data;
+                if (partners.length > 0) {
+                    // Check if current partnerid is valid
+                    const validPartner = partners.find(p => p.id === parseInt(partnerid));
+                    if (!validPartner) {
+                        partnerid = partners[0].id;
+                        localStorage.setItem('selectedPartnerId', partnerid);
+                    }
+                } else {
+                    console.error("No partners found");
+                }
             }
         } catch (err) {
             console.error("Error fetching partner id:", err);
         }
-        // Parallelize partner page rendering
         await Promise.all([
-            renderCatalog('catalog'),
-            renderOrders('orders', 0, partnerid),
-            // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
-            renderPartnerHours('partner-hours', partnerid),
-            renderParnterDetails('partner-details', partnerid)
+            renderCatalog('catalog', 0, partnerid, partners),
+            renderOrders('orders', 0, partnerid, partners),
+            // // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
+            renderPartnerHours('partner-hours', partnerid, partners),
+            renderParnterDetails('partner-details', partnerid, partners)
         ]);
     }
 

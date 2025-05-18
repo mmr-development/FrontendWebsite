@@ -1448,6 +1448,34 @@
   background-color: #f8f9fa;
   height: auto;
 }
+.dashboard-wrapper #dashboard-content .custom-table-select {
+  margin: 16px 0 12px 0;
+  display: flex;
+  align-items: center;
+}
+.dashboard-wrapper #dashboard-content .custom-table-select .custom-select {
+  width: 220px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #f8fafd;
+  color: #222;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+.dashboard-wrapper #dashboard-content .custom-table-select .custom-select:focus {
+  border-color: #0078d7;
+  box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.2);
+}
+.dashboard-wrapper #dashboard-content .custom-table-select .custom-select option {
+  background: #fff;
+  color: #222;
+  font-size: 1rem;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page {
   display: none;
 }
@@ -1458,6 +1486,36 @@
   padding: 2rem;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
+  /* Optional: style the label if you add one */
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .partner-select {
+  display: block;
+  width: 250px;
+  padding: 8px 12px;
+  margin: 16px 0;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #f9f9f9;
+  color: #222;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .partner-select:focus {
+  border-color: #0078d7;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.2);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .partner-select option {
+  background: #fff;
+  color: #222;
+  font-size: 1rem;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .partner-select-label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+  color: #444;
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .add-catalog {
   background-color: #28a745;

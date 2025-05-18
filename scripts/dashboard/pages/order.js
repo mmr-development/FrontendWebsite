@@ -1,9 +1,9 @@
-import { renderTemplate } from "../../utils/rendertemplate.js";
 import * as api from '../../utils/api.js';
+import { renderGet} from '../components/get.js';
 
 const orderCache = new Map();
 
-export const renderOrders = async (container, offset = 0, partnerid = 0) => {
+export const renderOrders = async (container, offset = 0, partnerid = 0, partners = []) => {
     const cacheKey = `${offset}_${partnerid}`;
     let apiData = orderCache.get(cacheKey);
 
@@ -14,8 +14,6 @@ export const renderOrders = async (container, offset = 0, partnerid = 0) => {
         });
         orderCache.set(cacheKey, apiData);
     }
-
-    if (!apiData.orders || apiData.orders.length === 0) return;
 
     const showPartnerId = partnerid === 0 || partnerid === null;
     const columns = [
@@ -46,68 +44,72 @@ export const renderOrders = async (container, offset = 0, partnerid = 0) => {
         return { id: order.id, cells };
     });
 
-    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
     const templateData = {
-        columns,
-        rows,
-        totalPages,
-        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
-        paginationid: container + '-pagination',
+        totalItems: apiData.pagination.total,
+        itemsPerPage: apiData.pagination.limit,
+        paginationContainer: container + '-pagination',
+        select: true,
+        options: partners.map(partner => ({
+            value: partner.id,
+            name: partner.name + ' (id:' + partner.id + ')',
+            selected: partner.id == partnerid ? true : false,
+        })),
+        search: true,
+        pagination: true,
+        selectCallback: async (selectedPartnerId) => {
+            localStorage.setItem('selectedPartnerId', selectedPartnerId);
+            orderCache.clear();
+            await renderOrders(container, 0, selectedPartnerId, partners);
+        },
+        pageCallback: async (page) => {
+            const offset = (page - 1) * apiData.pagination.limit;
+            orderCache.clear();
+            await renderOrders(container, offset, partnerid, partners);
+        }
     };
 
-    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData);
-
-    // Fast pagination rendering
-    const pagination = document.getElementById(container + '-pagination');
-    if (pagination) {
-        let html = '';
-        for (let i = 1; i <= totalPages; i++) {
-            html += `<a href="#${container}-${i}" class="page-link" data-page="${i}">${i}</a>`;
+    if (rows.length > 0) {
+        templateData.data = {
+            columns,
+            rows,
         }
-        pagination.innerHTML = html;
-        pagination.onclick = async (e) => {
-            if (e.target.classList.contains('page-link')) {
-                e.preventDefault();
-                const page = Number(e.target.dataset.page);
-                await renderOrders(container, (page - 1) * apiData.pagination.limit, partnerid);
-            }
-        };
     }
 
-    // Event delegation for expand/delete
-    document.getElementById(container).onclick = (e) => {
-        const btn = e.target.closest('.expand-btn, .delete-btn');
-        if (!btn) return;
-        const orderId = btn.closest('.action-buttons').dataset.orderId;
-        if (btn.classList.contains('expand-btn')) {
-            const existing = document.querySelector('#order-details');
-            if (existing) {
-                if (existing.previousElementSibling?.id == orderId) {
+    await renderGet(container, templateData).then(() => {
+        document.getElementById(container).onclick = (e) => {
+            const btn = e.target.closest('.expand-btn, .delete-btn');
+            if (!btn) return;
+            const orderId = btn.closest('.action-buttons').dataset.orderId;
+            if (btn.classList.contains('expand-btn')) {
+                const existing = document.querySelector('#order-details');
+                if (existing) {
+                    if (existing.previousElementSibling?.id == orderId) {
+                        existing.remove();
+                        return;
+                    }
                     existing.remove();
-                    return;
                 }
-                existing.remove();
+                const order = apiData.orders.find(o => o.id == orderId);
+                const detailsDiv = document.createElement('div');
+                detailsDiv.id = 'order-details';
+                detailsDiv.className = 'order-details-expand';
+                detailsDiv.innerHTML = `
+                    <div>
+                        <strong>Customer:</strong> ${order.customer.first_name} ${order.customer.last_name}<br>
+                        <strong>Email:</strong> ${order.customer.email}<br>
+                        <strong>Phone:</strong> ${order.customer.phone_number}<br>
+                        <strong>Address:</strong> ${order.customer.address.street}, ${order.customer.address.city}, ${order.customer.address.country}, ${order.customer.address.postal_code}<br>
+                        <strong>Requested Delivery Time:</strong> ${order.requested_delivery_time}<br>
+                        <strong>Items:</strong>
+                        <ul>
+                            ${order.items.map(item => `<li>Item ID: ${item.catalog_item_id}, Qty: ${item.quantity}, Price: ${item.price}, Note: ${item.note}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                const row = document.querySelector(`#${CSS.escape(String(orderId))}`);
+                if (row) row.insertAdjacentElement('afterend', detailsDiv);
             }
-            const order = apiData.orders.find(o => o.id == orderId);
-            const detailsDiv = document.createElement('div');
-            detailsDiv.id = 'order-details';
-            detailsDiv.className = 'order-details-expand';
-            detailsDiv.innerHTML = `
-                <div>
-                    <strong>Customer:</strong> ${order.customer.first_name} ${order.customer.last_name}<br>
-                    <strong>Email:</strong> ${order.customer.email}<br>
-                    <strong>Phone:</strong> ${order.customer.phone_number}<br>
-                    <strong>Address:</strong> ${order.customer.address.street}, ${order.customer.address.city}, ${order.customer.address.country}, ${order.customer.address.postal_code}<br>
-                    <strong>Requested Delivery Time:</strong> ${order.requested_delivery_time}<br>
-                    <strong>Items:</strong>
-                    <ul>
-                        ${order.items.map(item => `<li>Item ID: ${item.catalog_item_id}, Qty: ${item.quantity}, Price: ${item.price}, Note: ${item.note}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-            const row = document.querySelector(`#${CSS.escape(String(orderId))}`);
-            if (row) row.insertAdjacentElement('afterend', detailsDiv);
-        }
-        // Add delete logic here if needed
-    };
+            // Add delete logic here if needed
+        };
+    })
 };

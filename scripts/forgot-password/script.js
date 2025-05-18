@@ -25,7 +25,6 @@ submitButton.addEventListener('click', async (event) => {
     };
 
     await api.post('auth/forgot-password', data).then((res) => {
-        console.log(res);
         if (res.status === 200) {
             successMessage.innerHTML = 'En e-mail med instruktioner til nulstilling af din adgangskode er blevet sendt til din e-mailadresse.';
         } else {

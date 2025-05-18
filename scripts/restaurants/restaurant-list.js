@@ -10,8 +10,6 @@ if (city) {
     city = sessionStorage.getItem('city');
 }
 
-console.log(city);
-
 let restaurants = await api.get('partners/?city=' + city).then((res) => {
     if (res.status === 200) {
         return res.data;
@@ -26,8 +24,6 @@ let restaurants = await api.get('partners/?city=' + city).then((res) => {
 params.delete('city');
 const newUrl = url.origin + url.pathname + '?' + params.toString();
 window.history.replaceState({}, document.title, newUrl);
-
-console.log(restaurants);
 
 const formattedData = {
     "restaurant-lists": [
@@ -77,8 +73,6 @@ const data = {
         },
     ]
 };
-console.log(formattedData);
-console.log(data);
 
 await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', formattedData);
 

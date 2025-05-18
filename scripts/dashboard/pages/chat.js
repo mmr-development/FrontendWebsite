@@ -1,19 +1,16 @@
 import { renderTemplate } from '../../utils/rendertemplate.js';
 import * as api from '../../utils/api.js';
 
-// Message cache and socket cache
 const chatMessageCache = {};
 const chatSocketCache = {};
 
 export const renderMessages = async (container, chat_id) => {
-    // If messages are cached, render them immediately
     if (chatMessageCache[chat_id]) {
         await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: chatMessageCache[chat_id] });
         const chatContainer = document.getElementById('chat');
         if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // Connect to websocket if not already connected
     if (!chatSocketCache[chat_id]) {
         chatSocketCache[chat_id] = new WebSocket(api.wsurl + 'ws/chat/' + chat_id);
     }
@@ -32,7 +29,6 @@ export const renderMessages = async (container, chat_id) => {
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         if (data.type === 'message') {
-            // Append new message to cache and DOM
             chatMessageCache[chat_id] = chatMessageCache[chat_id] || [];
             chatMessageCache[chat_id].push(data.message);
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] }, true);
@@ -58,7 +54,6 @@ export const renderChat = async (container, chat_id) => {
             e.preventDefault();
             const message = messageInput.value.trim();
             if (!message) return;
-            // Use existing socket
             let socket = chatSocketCache[chat_id];
             if (!socket || socket.readyState !== 1) {
                 socket = new WebSocket(api.wsurl + 'ws/chat/' + chat_id);

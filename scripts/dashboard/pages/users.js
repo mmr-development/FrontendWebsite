@@ -138,11 +138,9 @@ export const renderUsers = async (container, offset = 0) => {
                 const data = Object.fromEntries(formData.entries());
                 await api.put('users/' + id, data).then((res) => {
                     if (res.status === 200) {
-                        console.log('User updated successfully');
-                        // Reload the users list
                         renderUsers(container);
                     } else {
-                        console.log('Error updating user');
+                        console.error('Error updating user');
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -154,11 +152,9 @@ export const renderUsers = async (container, offset = 0) => {
             if (confirm('Are you sure you want to delete this user?')) {
                 api.del('users/' + id).then((res) => {
                     if (res.status === 200) {
-                        console.log('User deleted successfully');
-                        // Reload the users list
                         renderUsers(container);
                     } else {
-                        console.log('Error deleting user');
+                        console.error('Error deleting user');
                     }
                 }).catch((error) => {
                     console.error(error);

@@ -4,8 +4,6 @@ import * as api from './scripts/utils/api.js';
 // get session storage data role
 const role = sessionStorage.getItem('role') || null;
 
-console.log(role)
-
 const headerData = {
     logoUrl: rootpath + "",
     logoSrc: rootpath + "/files/images/logo.png",

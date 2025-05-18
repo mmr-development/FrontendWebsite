@@ -4,6 +4,7 @@ import { renderUsers} from "./pages/users.js";
 import { renderOrders} from "./pages/order.js";
 import { renderApplications } from "./pages/applications.js";
 import { renderPartnerHours } from "./pages/partner-hours.js";
+import { renderParnterDetails } from "./pages/partner-details.js";
 import * as api from '../utils/api.js';
 import * as auth from "../utils/auth.js";
 import { renderChatTemplate } from "./pages/chat.js";
@@ -17,17 +18,23 @@ if (role === null) {
 
 let pages = [
     { id: 'dashboard', url: '#dashboard', active: true },
-    { id: 'orders', url: '#orders' },
-    { id: 'products', url: '#products' },
-    { id: 'users', url: '#users' },
-    { id: 'settings', url: '#settings' },
-    { id: 'applications', url: '#applications' },
-    { id: 'catalog', url: '#catalog' },
-    { id: 'partner-hours', url: '#partner-hours' },
-    { id: 'chat-window', url: '#chat-window' },
-    { id: 'live-orders', url: '#live-orders' },
 ];
 export const renderDashboardContent = async () => {
+    if (auth.isAdmin()) {
+        pages.push(
+            { id: 'orders', url: '#orders' },
+            { id: 'users', url: '#users' },
+            { id: 'applications', url: '#applications' },
+            { id: 'chat-window', url: '#chat-window' }
+        );
+    } else if (auth.isPartner()) {
+        pages.push(
+            { id: 'orders', url: '#orders' },
+            { id: 'catalog', url: '#catalog' },
+            { id: 'partner-hours', url: '#partner-hours' },
+            { id: 'partner-details', url: '#partner-details' }
+        );
+    }
     await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', { pages });
 
     if (auth.isAdmin()) {
@@ -55,7 +62,8 @@ export const renderDashboardContent = async () => {
             renderCatalog('catalog'),
             renderOrders('orders', 0, partnerid),
             // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
-            renderPartnerHours('partner-hours', partnerid)
+            renderPartnerHours('partner-hours', partnerid),
+            renderParnterDetails('partner-details', partnerid)
         ]);
     }
 

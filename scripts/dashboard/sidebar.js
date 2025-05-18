@@ -19,15 +19,16 @@ if(auth.isAdmin()) {
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
         { url: '#users', label: 'Users', icon: 'fas fa-users' },
         { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
-        { url: '#chat', label: 'Chat', icon: 'fas fa-comments' },
+        { url: '#chat-window', label: 'Chat', icon: 'fas fa-comments' },
     ];
 } else if(auth.isPartner()) {
     data.sidebarLinks = [
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
-        { url: '#live-orders', label: 'Live Orders', icon: 'fas fa-clock' },
+        { url: '#live-orders', label: 'Live Orders', icon: 'fas fa-bolt' }, // Changed icon to 'bolt'
         { url: "#catalog", label: "Catalog", icon: "fas fa-utensils" },
         { url: '#partner-hours', label: 'Partner Hours', icon: 'fas fa-clock' },
-    ];
+        { url: '#partner-details', label: 'Partner Details', icon: 'fas fa-user' },
+    ]
 }
 
 export const renderSidebar = async () => {
@@ -50,7 +51,7 @@ export const renderSidebar = async () => {
                     if (res.status === 200) {
                         window.location.href = '/';
                     } else {
-                        console.log('Logout failed');
+                        console.error('Logout failed');
                     }
                 }).catch((error) => {
                     console.error(error);

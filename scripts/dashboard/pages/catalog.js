@@ -3,99 +3,114 @@ import * as api from '../../utils/api.js';
 import { renderModal } from '../../utils/modal.js';
 
 let partnerid = null;
-let data;
+let data = null;
 
-const init = async () => {
-    partnerid = await api.get('partners/me/', true).then((response) => {
-        if (response.status == 200) {
-            return response.data.id;
-        } else {
-            console.error("Error fetching partner ID:", response.data);
-            return null;
-        }
-    });
-    data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
-        if (response.status == 200) {
-            return response.data;
-        } else {
-            console.error("Error fetching catalogs:", response.data);
-            return null;
-        }
-    });
-}
+const getPartnerId = async () => {
+    const response = await api.get('partners/me/', true);
+    if (response.status === 200) return response.data.id;
+    console.error("Error fetching partner ID:", response.data);
+    return null;
+};
 
-function addCatalog(container) {
-    let catalog = {
+const getCatalogs = async (pid) => {
+    const response = await api.get(`partners/${pid}/catalogs/full`, true);
+    if (response.status === 200) return response.data;
+    console.error("Error fetching catalogs:", response.data);
+    return null;
+};
+
+const loadData = async () => {
+    // Try localStorage first
+    let cached = localStorage.getItem('catalogs');
+    if (cached) {
+        data = JSON.parse(cached);
+        partnerid = data.partnerid || null;
+    }
+    if (!partnerid) partnerid = await getPartnerId();
+    if (!data || !data.catalogs) {
+        data = await getCatalogs(partnerid);
+        if (data) {
+            data.partnerid = partnerid;
+            localStorage.setItem('catalogs', JSON.stringify(data));
+        }
+    }
+};
+
+const findCatalog = (catalogId, tempid) =>
+    data.catalogs.find(c => (catalogId && c.id == catalogId) || (tempid && c.temp_id == tempid));
+
+const findCategory = (categoryId, tempid) => {
+    for (const catalog of data.catalogs) {
+        const cat = catalog.categories.find(cat =>
+            (categoryId && cat.id == categoryId) || (tempid && cat.temp_id == tempid)
+        );
+        if (cat) return { catalog, category: cat };
+    }
+    return {};
+};
+
+const findItem = (itemId, tempid) => {
+    for (const catalog of data.catalogs) {
+        for (const category of catalog.categories) {
+            const item = category.items.find(item =>
+                (itemId && item.id == itemId) || (tempid && item.temp_id == tempid)
+            );
+            if (item) return { catalog, category, item };
+        }
+    }
+    return {};
+};
+
+async function addCatalog(e, container) {
+    const catalog = {
         temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
         id: null,
         name: "New Catalog",
         is_active: false,
         categories: []
     };
-    api.post('partners/' + partnerid + "/catalogs", catalog, true).then((response) => {
-        if (response.status == 201) {
-            catalog.id = response.data.id;
-            catalog.temp_id = null;
-            data.catalogs ? data.catalogs.push(catalog) : data.catalogs = [catalog];
-            localStorage.setItem('catalogs', JSON.stringify(data));
-            renderCatalog(container);
-        } else {
-            console.error("Error adding catalog:", response.data);
-        }
-    });
-}
-
-function addCategory(e, container) {
-    let catalogId = e.target.dataset.catalogId;
-    let tempid = e.target.dataset.tempId;
-    let catalog = catalogId == ''
-        ? data.catalogs.find(c => c.temp_id == tempid)
-        : data.catalogs.find(c => c.id == catalogId);
-    if (catalog) {
-        let category = {
-            temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
-            id: null,
-            name: "New Category",
-            catalog_id: catalog.id,
-            items: []
-        };
-        api.post('catalog/' + catalog.id + "/categories/", category, true).then((response) => {
-            if(response.status == 201) {
-                category.id = response.data.id;
-                category.temp_id = null;
-                if (catalog.categories) {
-                    catalog.categories.push(category);
-                } else {
-                    catalog.categories = [category];
-                }
-                localStorage.setItem('catalogs', JSON.stringify(data));
-                renderCatalog(container);
-            }else {
-                console.error("Error adding category:", response.data);
-            }
-        })
-        renderCatalog(container);
+    const response = await api.post(`partners/${partnerid}/catalogs`, catalog, true);
+    if (response.status === 201) {
+        catalog.id = response.data.id;
+        catalog.temp_id = null;
+        data.catalogs = data.catalogs || [];
+        data.catalogs.push(catalog);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error adding catalog:", response.data);
     }
 }
 
-function addItem(e, container) {
-    let categoryId = e.target.dataset.categoryId;
-    let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c =>
-        c.categories.some(cat =>
-            (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid)
-        )
-    );
+async function addCategory(e, container) {
+    const { catalogId, tempId } = e.target.dataset;
+    const catalog = findCatalog(catalogId, tempId);
     if (!catalog) return;
+    const category = {
+        temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
+        id: null,
+        name: "New Category",
+        catalog_id: catalog.id,
+        items: []
+    };
+    const response = await api.post(`catalog/${catalog.id}/categories/`, category, true);
+    if (response.status === 201) {
+        category.id = response.data.id;
+        category.temp_id = null;
+        catalog.categories = catalog.categories || [];
+        catalog.categories.push(category);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error adding category:", response.data);
+    }
+}
 
-    let category = catalog.categories.find(cat =>
-        (categoryId && cat.id == categoryId) ||
-        (tempid && cat.temp_id == tempid)
-    );
-    if (!category) return;
-
-    let item = {
+async function addItem(e, container) {
+    const { categoryId, tempId } = e.target.dataset;
+    const { catalog, category } = findCategory(categoryId, tempId);
+    if (!catalog || !category) return;
+    const item = {
         temp_id: "temp_" + Math.random().toString(36).substr(2, 9),
         id: null,
         name: "New Item",
@@ -103,118 +118,64 @@ function addItem(e, container) {
         description: "Description",
         category_id: category.id
     };
-
-    api.post('categories/' + category.id + "/items/", item, true).then((response) => {
-        if (response.status === 201) {
-            console.log("API response:", response.data);
-            item.id = response.data.id;
-            item.temp_id = null;
-            catalog.categories = catalog.categories.map(cat => {
-                if (cat.id === category.id) {
-                    cat.items = cat.items ? [...cat.items, item] : [item];
-                }
-                return cat;
-            });
-
-            localStorage.setItem('catalogs', JSON.stringify(data));
-            console.log("Updated catalogs:", data.catalogs);
-        } else {
-            console.error("Error adding item:", response.data);
-        }
-        renderCatalog(container);
-    }).catch((error) => {
-        console.error("API error:", error);
-    });
+    const response = await api.post(`categories/${category.id}/items/`, item, true);
+    if (response.status === 201) {
+        item.id = response.data.id;
+        item.temp_id = null;
+        category.items = category.items || [];
+        category.items.push(item);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error adding item:", response.data);
+    }
 }
 
-function deleteCatalog(e, container) {
-    let catalogId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = catalogId == ''
-        ? data.catalogs.find(c => c.temp_id == tempid)
-        : data.catalogs.find(c => c.id == catalogId);
+async function deleteCatalog(e, container) {
+    const { id: catalogId, tempId } = e.target.dataset;
+    const catalog = findCatalog(catalogId, tempId);
     if (!catalog) return;
-    api.del(`partners/` + partnerid + `/catalogs/` + catalog.id, true).then((response) => {
-        if (response.status == 204) {
-            data.catalogs = data.catalogs.filter(c => c != catalog);
-            localStorage.setItem('catalogs', JSON.stringify(data));
-            renderCatalog(container);
-        } else {
-            console.error("Error deleting catalog:", response.data);
-        }
-    })
-    renderCatalog(container);
+    const response = await api.del(`partners/${partnerid}/catalogs/${catalog.id}`, true);
+    if (response.status === 204) {
+        data.catalogs = data.catalogs.filter(c => c !== catalog);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error deleting catalog:", response.data);
+    }
 }
 
-function deleteCategory(e, container) {
-    let categoryId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c => {
-        return c.categories.some(cat =>
-            (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid)
-        );
-    });
-    if (!catalog) return;
-    let category = catalog.categories.find(cat => {
-        return (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid);
-    });
-    if (!category) return;
-    api.del(`catalog/categories/${category.id}`, true).then((response) => {
-        if (response.status == 204) {
-            catalog.categories = catalog.categories.filter(c => c != category);
-            localStorage.setItem('catalogs', JSON.stringify(data));
-            renderCatalog(container);
-        } else {
-            console.error("Error deleting category:", response.data);
-        }
-    })
-    renderCatalog(container);
+async function deleteCategory(e, container) {
+    const { id: categoryId, tempId } = e.target.dataset;
+    const { catalog, category } = findCategory(categoryId, tempId);
+    if (!catalog || !category) return;
+    const response = await api.del(`catalog/categories/${category.id}`, true);
+    if (response.status === 204) {
+        catalog.categories = catalog.categories.filter(c => c !== category);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error deleting category:", response.data);
+    }
 }
 
-function deleteItem(e, container) {
-    let itemId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c => {
-        return c.categories.some(cat => {
-            return cat.items.some(item =>
-                (itemId && item.id == itemId) ||
-                (tempid && item.temp_id == tempid)
-            );
-        });
-    });
-    if (!catalog) return;
-    let category = catalog.categories.find(cat => {
-        return cat.items.some(item =>
-            (itemId && item.id == itemId) ||
-            (tempid && item.temp_id == tempid)
-        );
-    });
-    if (!category) return;
-    let item = category.items.find(item => {
-        return (itemId && item.id == itemId) ||
-            (tempid && item.temp_id == tempid);
-    });
-    if (!item) return;
-    api.del(`categories/items/${item.id}`, true).then((response) => {
-        if (response.status == 204) {
-            category.items = category.items.filter(i => i != item);
-            localStorage.setItem('catalogs', JSON.stringify(data));
-            renderCatalog(container);
-        } else {
-            console.error("Error deleting item:", response.data);
-        }
-    })
-    renderCatalog(container);
+async function deleteItem(e, container) {
+    const { id: itemId, tempId } = e.target.dataset;
+    const { category, item } = findItem(itemId, tempId);
+    if (!category || !item) return;
+    const response = await api.del(`categories/items/${item.id}`, true);
+    if (response.status === 204) {
+        category.items = category.items.filter(i => i !== item);
+        localStorage.setItem('catalogs', JSON.stringify(data));
+        await renderCatalog(container);
+    } else {
+        console.error("Error deleting item:", response.data);
+    }
 }
 
 function editCatalog(e, container) {
-    let catalogId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = catalogId == ''
-        ? data.catalogs.find(c => c.temp_id == tempid)
-        : data.catalogs.find(c => c.id == catalogId);
+    const { id: catalogId, tempId } = e.target.dataset;
+    const catalog = findCatalog(catalogId, tempId);
     if (!catalog) return;
 
     renderModal({
@@ -229,60 +190,37 @@ function editCatalog(e, container) {
         `,
         submit: "Save",
     }).then(() => {
-        let form = document.getElementById('edit-catalog-form');
-        if (!form) return;
-        let submitButton = document.querySelector('.c-modal__submit');
-        if (!submitButton) return;
-        submitButton.addEventListener('click', (e) => {
+        const form = document.getElementById('edit-catalog-form');
+        const submitButton = document.querySelector('.c-modal__submit');
+        if (!form || !submitButton) return;
+        submitButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            let formData = new FormData(form);
+            const formData = new FormData(form);
             catalog.name = formData.get('catalog-name');
-            catalog.is_active = formData.get('catalog-active') == 'on' ? true : false;
+            catalog.is_active = formData.get('catalog-active') === 'on';
             if (catalog.is_active) {
-                data.catalogs.forEach(c => {
-                    if (c.id != catalog.id) {
-                        c.is_active = false;
-                    }
-                });
+                data.catalogs.forEach(c => { if (c.id !== catalog.id) c.is_active = false; });
             }
-            console.log({
+            const response = await api.patch(`partners/${partnerid}/catalogs/${catalog.id}`, {
                 name: catalog.name,
                 is_active: catalog.is_active
-            })
-            api.patch('partners/' + partnerid + "/catalogs/" + catalog.id, {
-                name: catalog.name,
-                is_active: catalog.is_active
-            }, true).then((response) => {
-                if (response.status == 200) {
-                    catalog.id = response.data.id;
-                    catalog.temp_id = null;
-                    localStorage.setItem('catalogs', JSON.stringify(data));
-                } else {
-                    console.error("Error updating catalog:", response.data);
-                }
-            });
-            renderCatalog(container);
+            }, true);
+            if (response.status === 200) {
+                catalog.id = response.data.id;
+                catalog.temp_id = null;
+                localStorage.setItem('catalogs', JSON.stringify(data));
+            } else {
+                console.error("Error updating catalog:", response.data);
+            }
+            await renderCatalog(container);
         });
     });
 }
 
 function editCategory(e, container) {
-    let categoryId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c => {
-        return c.categories.some(cat =>
-            (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid)
-        );
-    });
-    if (!catalog)
-        return;
-    let category = catalog.categories.find(cat => {
-        return (categoryId && cat.id == categoryId) ||
-            (tempid && cat.temp_id == tempid);
-    });
-    if (!category)
-        return;
+    const { id: categoryId, tempId } = e.target.dataset;
+    const { category } = findCategory(categoryId, tempId);
+    if (!category) return;
     renderModal({
         title: "Edit Category",
         content: `
@@ -293,57 +231,26 @@ function editCategory(e, container) {
         `,
         submit: "Save",
     }).then(() => {
-        let form = document.getElementById('edit-category-form');
-        if (!form)
-            return;
-        let submitButton = document.querySelector('.c-modal__submit');
-        if (!submitButton) return;
-        submitButton.addEventListener('click', (e) => {
+        const form = document.getElementById('edit-category-form');
+        const submitButton = document.querySelector('.c-modal__submit');
+        if (!form || !submitButton) return;
+        submitButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            let formData = new FormData(form);
+            const formData = new FormData(form);
             category.name = formData.get('category-name');
-            api.patch('catalog/categories/' + category.id, category, true).then((response) => {
-                if (response.status == 200) {
-
-                } else {
-                    console.error("Error updating category:", response.data);
-                }
-            })
-            renderCatalog(container);
+            const response = await api.patch(`catalog/categories/${category.id}`, category, true);
+            if (response.status !== 200) {
+                console.error("Error updating category:", response.data);
+            }
+            await renderCatalog(container);
         });
     });
 }
 
-
 function editItem(e, container) {
-    let itemId = e.target.dataset.id;
-    let tempid = e.target.dataset.tempId;
-    let catalog = data.catalogs.find(c => {
-        return c.categories.some(cat => {
-            return cat.items.some(item =>
-                (itemId && item.id == itemId) ||
-                (tempid && item.temp_id == tempid)
-            );
-        });
-    });
-    if (!catalog)
-        return;
-
-    let category = catalog.categories.find(cat => {
-        return cat.items.some(item =>
-            (itemId && item.id == itemId) ||
-            (tempid && item.temp_id == tempid)
-        );
-    });
-    if (!category)
-        return;
-
-    let item = category.items.find(item => {
-        return (itemId && item.id == itemId) ||
-            (tempid && item.temp_id == tempid);
-    });
-    if (!item)
-        return;
+    const { id: itemId, tempId } = e.target.dataset;
+    const { category, item } = findItem(itemId, tempId);
+    if (!category || !item) return;
     renderModal({
         title: "Edit Item",
         content: `
@@ -356,126 +263,81 @@ function editItem(e, container) {
                 <textarea id="item-description" name="item-description">${item.description}</textarea>
                 <label for="item-picture">Item Picture</label>
                 <input type="file" id="item-picture" name="item-picture" accept="image/*">
-                <img id="item-picture-preview" src="${item.picture}" alt="Item Picture" style="display: ${item.picture ? 'block' : 'none'};">
+                <img id="item-picture-preview" src="${item.picture || ''}" alt="Item Picture" style="display: ${item.picture ? 'block' : 'none'};">
             </form>
         `,
         submit: "Save",
     }).then(() => {
-        let form = document.getElementById('edit-item-form');
-        if (!form) return;
-        let submitButton = document.querySelector('.c-modal__submit');
-        let pictureInput = document.getElementById('item-picture');
-        if (!pictureInput) return;
-        pictureInput.addEventListener('change', (e) => {
-            let file = e.target.files[0];
-            if (file && file.size !== 0) {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('item-picture-preview').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-        
+        const form = document.getElementById('edit-item-form');
+        const submitButton = document.querySelector('.c-modal__submit');
+        const pictureInput = document.getElementById('item-picture');
+        if (!form || !submitButton) return;
 
-        if (!submitButton) return;
-        submitButton.addEventListener('click', (e) => {
+        if (pictureInput) {
+            pictureInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file && file.size !== 0) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('item-picture-preview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        submitButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            let formData = new FormData(form);
+            const formData = new FormData(form);
             item.name = formData.get('item-name');
             item.price = formData.get('item-price');
             item.description = formData.get('item-description');
-            let formpic = formData.get('item-picture');
-            let formdata = new FormData();
+            const formpic = formData.get('item-picture');
             if (formpic && formpic.size && formpic.size !== 0) {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    item.picture = e.target.result;
-                    document.getElementById('item-picture-preview').src = item.picture;
-                };
-                reader.readAsDataURL(formpic);
-
-                formdata.append('file', formpic, formpic.name);
-
-                api.postImage('categories/items/' + item.id + '/upload-image', formdata, true).then((response) => {
-                    console.log("Image upload response:", response);
-                    if (response.status == 200) {
-                        item.picture = response.data.url;
-                    } else {
-                        console.error("Error uploading image:", response.data);
-                    }
-                });
-
-            }
-
-            api.patch('categories/items/' + item.id, item, true).then((response) => {
-                if (response.status == 200) {
-                    item.id = response.data.id;
-                    item.temp_id = null;
-                    localStorage.setItem('catalogs', JSON.stringify(data));
+                const imgForm = new FormData();
+                imgForm.append('file', formpic, formpic.name);
+                const imgResponse = await api.postImage(`categories/items/${item.id}/upload-image`, imgForm, true);
+                if (imgResponse.status === 201) {
+                    item.picture = imgResponse.data.url;
                 } else {
-                    console.error("Error updating item:", response.data);
+                    console.error("Error uploading image:", imgResponse.data);
                 }
-            });
-            renderCatalog(container);
+            }
+            const response = await api.patch(`categories/items/${item.id}`, item, true);
+            if (response.status === 200) {
+                item.id = response.data.id;
+                item.temp_id = null;
+                localStorage.setItem('catalogs', JSON.stringify(data));
+            } else {
+                console.error("Error updating item:", response.data);
+            }
+            await renderCatalog(container);
         });
     });
 }
 
-
 export const renderCatalog = async (container) => {
-    if(partnerid == null) {
-        await init();
-    }
+    if (!partnerid || !data) await loadData();
     localStorage.setItem('catalogs', JSON.stringify(data));
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',
         container,
         data
-    ).then(() => {
-        let addCatalogButton = document.querySelector('.add-catalog');
-        if (addCatalogButton) {
-            addCatalogButton.addEventListener('click', () => addCatalog(container));
-        }
-
-        let addCategoryButtons = document.querySelectorAll('.add-category');
-        addCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => addCategory(e, container));
-        });
-
-        let addItemButtons = document.querySelectorAll('.add-item');
-        addItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => addItem(e, container));
-        });
-
-        let deleteCatalogButtons = document.querySelectorAll('.delete-catalog');
-        deleteCatalogButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteCatalog(e, container));
-        });
-
-        let deleteCategoryButtons = document.querySelectorAll('.delete-category');
-        deleteCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteCategory(e, container));
-        });
-
-        let deleteItemButtons = document.querySelectorAll('.delete-item');
-        deleteItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteItem(e, container));
-        });
-
-        let editCatalogButtons = document.querySelectorAll('.edit-catalog');
-        editCatalogButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editCatalog(e, container));
-        });
-
-        let editCategoryButtons = document.querySelectorAll('.edit-category');
-        editCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editCategory(e, container));
-        });
-
-        let editItemButtons = document.querySelectorAll('.edit-item');
-        editItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editItem(e, container));
-        });
+    );
+    // Button event bindings
+    [
+        { selector: '.add-catalog', handler: addCatalog },
+        { selector: '.add-category', handler: addCategory },
+        { selector: '.add-item', handler: addItem },
+        { selector: '.delete-catalog', handler: deleteCatalog },
+        { selector: '.delete-category', handler: deleteCategory },
+        { selector: '.delete-item', handler: deleteItem },
+        { selector: '.edit-catalog', handler: editCatalog },
+        { selector: '.edit-category', handler: editCategory },
+        { selector: '.edit-item', handler: editItem },
+    ].forEach(({ selector, handler }) => {
+        document.querySelectorAll(selector).forEach(btn =>
+            btn.addEventListener('click', (e) => handler(e, container))
+        );
     });
 };

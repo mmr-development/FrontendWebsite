@@ -30,6 +30,6 @@ export async function renderTemplate(path, templateId, data = {}, append = false
             document.getElementById(templateId).innerHTML = renderedTemplate;
         }
     } catch (error) {
-        console.log(path, error);
+        console.error(path, error);
     }
 }

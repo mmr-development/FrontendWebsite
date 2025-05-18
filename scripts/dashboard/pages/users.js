@@ -1,21 +1,8 @@
-import { renderTemplate } from "../../utils/rendertemplate.js";
+import { renderGet } from "../components/get.js";
 import * as api from '../../utils/api.js';
 
 let roles = [];
-
-const loadRoles = async () => {
-    roles = await api.get('users/roles').then((response) => {
-        if (response.status === 200) {
-            return response.data.roles;
-        }
-        return [];
-    });
-};
-
 export const renderUsers = async (container, offset = 0) => {
-    // if (roles.length === 0) {
-    //     await loadRoles();
-    // }
     const apiData = await api.get('users/?limit=5&offset=' + offset).then((res) => {
         if (res.status === 200) {
             return res.data;
@@ -57,37 +44,28 @@ export const renderUsers = async (container, offset = 0) => {
         };
     });
 
-    // Calculate total pages
-    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
-
     // Create templateData
     const templateData = {
-        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), // Format column names
-        rows: rows,
-        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
-        totalPages: totalPages,
-        paginationid: container + '-pagination',
+        data: {
+            columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), // Format column names
+            rows: rows,
+        },
+        totalItems: apiData.pagination.total,
+        itemsPerPage: apiData.pagination.limit,
+        paginationContainer: container + '-pagination',
+        search: true,
+        select: false,
+        pagination: true,
+        pageCallback: (selectedValue) => {
+            console.log('Selected value:', selectedValue);
+            // calculate offset based on selected value
+            const selectedOffset = (selectedValue - 1) * apiData.pagination.limit;
+            renderUsers(container, selectedOffset);
+        }
     };
 
     // Render the template
-    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
-        // implement the pagination
-        const pagination = document.querySelector(`#${container}-pagination`);
-        if (pagination) {
-            pagination.innerHTML = ''; // Clear existing pagination
-            for (let i = 1; i <= totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = `#${container}-${i}`;
-                pageLink.textContent = i;
-                pageLink.classList.add('page-link');
-                pageLink.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    await renderUsers(container, (i - 1) * apiData.pagination.limit);
-                });
-                pagination.appendChild(pageLink);
-            }
-        }
-
+    await renderGet(container, templateData).then(() => {
         // id edit user
         window.editUser = (id) => {
             // Check if the edit-user div already exists

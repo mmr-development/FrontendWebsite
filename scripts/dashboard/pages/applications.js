@@ -1,4 +1,4 @@
-import { renderTemplate } from "../../utils/rendertemplate.js";
+import { renderGet} from '../components/get.js';
 import * as api from '../../utils/api.js';
 
 
@@ -36,35 +36,28 @@ const renderPartnerApplications = async (container, offset = 0) => {
             })
         };
     });
-
     const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
 
     const templateData = {
-        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
-        rows: rows,
-        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
-        totalPages: totalPages,
-        paginationid: container + '-pagination',
+        totalItems: apiData.pagination.total,
+        itemsPerPage: apiData.pagination.limit,
+        paginationContainer: container + '-pagination',
         search: false,
+        select: false,
+        pagination: true,
+        pageCallback: async (page) => {
+            const offset = (page - 1) * apiData.pagination.limit;
+            await renderPartnerApplications(container, offset);
+        }
+    };
+    if (apiData.applications) {
+        templateData.data = {
+            columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
+            rows: rows,
+        }
     };
 
-    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
-        const pagination = document.querySelector(`#${container}-pagination`);
-        if (pagination) {
-            pagination.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = `#${container}-${i}`;
-                pageLink.textContent = i;
-                pageLink.classList.add('page-link');
-                pageLink.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    await renderPartnerApplications(container, (i - 1) * apiData.pagination.limit);
-                });
-                pagination.appendChild(pageLink);
-            }
-        }
-
+    await renderGet(container, templateData).then(() => {
         window.approvePartnerApplication = async (id) => {
             updatePartner(id, 'approved');
         };
@@ -90,6 +83,19 @@ const renderCourierApplications = async (container, offset = 0) => {
         }
         return [];
     });
+
+    console.log(apiData);
+
+    if (!apiData.applications) {
+        const templateData = {
+            currentPage: 1,
+            totalPages: 1,
+            paginationid: container + '-pagination',
+            search: false,
+        };
+        await renderGet(container, templateData);
+        return;
+    }
 
     const columns = Object.keys(apiData.applications[0]).filter(key => (
         key !== 'created_at' &&
@@ -131,20 +137,24 @@ const renderCourierApplications = async (container, offset = 0) => {
         };
     });
 
-    
-    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
-
-
     const templateData = {
-        columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
-        rows: rows,
-        currentPage: Math.floor(apiData.pagination.offset / apiData.pagination.limit) + 1,
-        totalPages: totalPages,
-        paginationid: container + '-pagination',
+        data: {
+            columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()),
+            rows: rows,
+        },
+        totalItems: apiData.pagination.total,
+        itemsPerPage: apiData.pagination.limit,
+        paginationContainer: container + '-pagination',
         search: false,
+        select: false,
+        pagination: true,
+        pageCallback: async (page) => {
+            const offset = (page - 1) * apiData.pagination.limit;
+            await renderCourierApplications(container, offset);
+        }
     };
 
-    await renderTemplate('../../templates/partials/dashboard/content/get.mustache', container, templateData).then(() => {
+    await renderGet(container, templateData).then(() => {
         window.approveCourierApplication = async (id) => {
             updateCourier(id, 'approved');
         };
@@ -159,22 +169,6 @@ const renderCourierApplications = async (container, offset = 0) => {
                     await renderCourierApplications(container);
                 }
             }) ;
-        }
-
-        const pagination = document.querySelector(`#${container}-pagination`);
-        if (pagination) {
-            pagination.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = `#${container}-${i}`;
-                pageLink.textContent = i;
-                pageLink.classList.add('page-link');
-                pageLink.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    await renderCourierApplications(container, (i - 1) * apiData.pagination.limit);
-                });
-                pagination.appendChild(pageLink);
-            }
         }
     });
 }

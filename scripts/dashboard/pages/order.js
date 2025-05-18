@@ -22,6 +22,9 @@ export const renderOrders = async (container, offset = 0, partnerid = 0, partner
         "Total Items", "Total Price", "Payment Methods", "Actions"
     ];
 
+    console.log(apiData);
+
+
     const rows = apiData.orders.map(order => {
         const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
         const totalPrice = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -43,12 +46,13 @@ export const renderOrders = async (container, offset = 0, partnerid = 0, partner
         if (showPartnerId) cells.unshift(order.partner_id || 'N/A');
         return { id: order.id, cells };
     });
+    
 
     const templateData = {
         totalItems: apiData.pagination.total,
         itemsPerPage: apiData.pagination.limit,
         paginationContainer: container + '-pagination',
-        select: true,
+        select: partners && partners.length > 0,
         options: partners.map(partner => ({
             value: partner.id,
             name: partner.name + ' (id:' + partner.id + ')',

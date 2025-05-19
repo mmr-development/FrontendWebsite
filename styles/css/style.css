@@ -1567,6 +1567,9 @@
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories {
   margin-top: 1rem;
 }
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories.collapsed {
+  display: none;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .add-category {
   background-color: #17a2b8;
   color: white;
@@ -1584,6 +1587,7 @@
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
+  z-index: 5;
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category h3 {
   margin: 0 0 0.5rem;
@@ -1596,6 +1600,9 @@
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items {
   list-style: none;
   padding-left: 0;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items.collapsed {
+  display: none;
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items .add-item {
   background-color: #ffc107;
@@ -1800,6 +1807,154 @@
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details {
+  max-width: 480px;
+  margin: 32px auto;
+  padding: 32px 28px 24px 28px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  font-family: Arial, sans-serif;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form {
+  margin: 28px 0 0 0;
+  padding: 20px 24px 18px 24px;
+  background: #f8fafd;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 420px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form div,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form div label,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form div label {
+  min-width: 90px;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form div label strong,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form div label strong {
+  font-weight: 700;
+  color: #222;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form div input[type=file],
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form div input[type=file] {
+  flex: 1;
+  font-size: 1rem;
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  color: #333;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form .partner-image-preview,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form .partner-image-preview {
+  justify-content: flex-start;
+  padding-left: 104px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form .partner-image-preview img.preview,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form .partner-image-preview img.preview {
+  display: block;
+  max-width: 260px;
+  max-height: 90px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  object-fit: contain;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form button.btn,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form button.btn {
+  margin-left: auto;
+  padding: 8px 22px;
+  border-radius: 6px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-banner-form button.btn:hover,
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details .partner-logo-form button.btn:hover {
+  background: #0056b3;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.7rem;
+  color: #222;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div label {
+  min-width: 160px;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div label strong {
+  font-weight: 700;
+  color: #222;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div input[type=text] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #f7f7f7;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: border 0.2s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div input[type=text]:read-only {
+  background: #f7f7f7;
+  color: #888;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-of-type:not(:has(button)) label {
+  color: #666;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-child {
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-child .btn {
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-child .btn:hover {
+  background: #0056b3;
 }
 .dashboard-wrapper #dashboard-content .dashboard-page .table-container {
   width: calc(100% - 40px);

@@ -14,7 +14,7 @@
             <button class="edit-catalog" data-id="{{id}}" data-temp-id="{{temp_id}}">Edit Catalog</button>
             <button class="delete-catalog" data-id="{{id}}" data-temp-id="{{temp_id}}">Delete Catalog</button>
         </div>
-        <div class="categories" data-id="{{id}}">
+        <div class="categories {{#collapsed}}collapsed{{/collapsed}}" data-id="{{id}}">
             <button class="add-category" data-catalog-id="{{id}}" data-temp-id="{{temp_id}}">Add New Category</button>
             {{#categories}}
             <div class="category" data-id="{{id}}" data-temp-id="{{temp_id}}">
@@ -23,7 +23,7 @@
                     <button class="edit-category" data-id="{{id}}" data-temp-id="{{temp_id}}">Edit Category</button>
                     <button class="delete-category" data-id="{{id}}" data-temp-id="{{temp_id}}">Delete Category</button>
                 </div>
-                <ul class="items">
+                <ul class="items {{#collapsed}} collapsed {{/collapsed}}" data-id="{{id}}">
                     <button class="add-item" data-id="{{id}}" data-temp-id="{{temp_id}}" data-category-id="{{id}}">Add New Item</button>
                     {{#items}}
                     <li data-id="{{id}}" data-temp-id="{{temp_id}}">

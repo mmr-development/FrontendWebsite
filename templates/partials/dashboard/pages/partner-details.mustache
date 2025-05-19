@@ -9,11 +9,7 @@
         </div>
     {{/select}}
     <h2>Partner Details</h2>
-    <form>
-        <div>
-            <label for="partner-id"><strong>ID:</strong></label>
-            <input id="partner-id" type="text" value="{{id}}" readonly>
-        </div>
+    <form id="partner-form" class="partner-form">
         <div>
             <label for="partner-name"><strong>Name:</strong></label>
             <input id="partner-name" type="text" value="{{name}}" readonly>
@@ -36,6 +32,33 @@
         </div>
         <div>
             <label for="partner-status"><strong>Status:</strong> {{status}}</label>
+        </div>
+        <div>
+            <button id="partner-edit" type="button" class="btn btn-primary">Edit</button>
+        </div>
+    </form>
+    <form id="partner-banner-form" class="partner-banner-form">
+        <div>
+            <label for="partner-banner"><strong>Banner:</strong></label>
+            <input id="partner-banner" type="file" accept="image/*">
+        </div>
+        <div class="partner-image-preview">
+            <img id="partner-banner-preview" src="{{banner}}" alt="Partner Banner" class="preview">
+        </div>
+        <div>
+            <button id="partner-banner-upload" type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+    <form id="partner-logo-form" class="partner-logo-form">
+        <div>
+            <label for="partner-logo"><strong>Logo:</strong></label>
+            <input id="partner-logo" type="file" accept="image/*">
+        </div>
+        <div class="partner-image-preview">
+            <img id="partner-logo-preview" src="{{logo}}" alt="Partner Logo" class="preview">
+        </div>
+        <div>
+            <button id="partner-logo-upload" type="submit" class="btn btn-primary">Upload</button>
         </div>
     </form>
 </div>

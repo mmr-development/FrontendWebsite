@@ -37,14 +37,10 @@ export const renderGet = async (container,data) => {
     }
 
     const pagination = document.querySelector('#' + container + ' #' + container + '-pagination');
-    console.log('Pagination:', pagination);
-    console.log('#' + container + ' #' + container + '-pagination');
     if (pagination) {
         let totalPages = Math.ceil(data.totalItems / data.itemsPerPage);
-        console.log('Total Pages:', totalPages);
         pagination.innerHTML = '';
         for (let i = 1; i <= totalPages; i++) {
-            console.log('Page:', i);
             const pageLink = document.createElement('a');
             pageLink.href = `#${container}-${i}`;
             pageLink.textContent = i;
@@ -58,5 +54,3 @@ export const renderGet = async (container,data) => {
         }
     }
 }
-
-

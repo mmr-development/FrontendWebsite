@@ -84,8 +84,6 @@ const renderCourierApplications = async (container, offset = 0) => {
         return [];
     });
 
-    console.log(apiData);
-
     if (!apiData.applications) {
         const templateData = {
             currentPage: 1,

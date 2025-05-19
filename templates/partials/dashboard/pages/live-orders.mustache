@@ -1,0 +1,14 @@
+{{#select}}
+    <div class="custom-table-select">
+        <select id="custom-select" class="custom-select">
+            {{#options}}
+            <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{name}}</option>
+            {{/options}}
+        </select>
+    </div>
+{{/select}}
+<div class="live-orders">
+    <h2>Live Orders</h2>
+    <div id="order-list"></div>
+    <div id="order-modal"></div>
+</div>

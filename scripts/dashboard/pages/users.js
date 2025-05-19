@@ -57,8 +57,6 @@ export const renderUsers = async (container, offset = 0) => {
         select: false,
         pagination: true,
         pageCallback: (selectedValue) => {
-            console.log('Selected value:', selectedValue);
-            // calculate offset based on selected value
             const selectedOffset = (selectedValue - 1) * apiData.pagination.limit;
             renderUsers(container, selectedOffset);
         }

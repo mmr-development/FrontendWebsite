@@ -340,6 +340,11 @@ function editItem(e, container) {
     });
 }
 
+const collapsedState = {
+    catalogs: {},    // { [catalogId]: true/false }
+    categories: {},  // { [categoryId]: true/false }
+};
+
 export const renderCatalog = async (container) => {
     if (!partnerid || !data) await init();
     localStorage.setItem('catalogs', JSON.stringify(data));
@@ -352,6 +357,22 @@ export const renderCatalog = async (container) => {
             selected: partner.id == parseInt(partnerid) ? true : false
         };
     });
+
+data.catalogs.forEach(catalog => {
+    // Collapse by default if not already set
+    if (collapsedState.catalogs[catalog.id] === undefined) {
+        collapsedState.catalogs[catalog.id] = true;
+    }
+    catalog.collapsed = !!collapsedState.catalogs[catalog.id];
+    if (catalog.categories) {
+        catalog.categories.forEach(category => {
+            if (collapsedState.categories[category.id] === undefined) {
+                collapsedState.categories[category.id] = true;
+            }
+            category.collapsed = !!collapsedState.categories[category.id];
+        });
+    }
+});
 
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',
@@ -386,42 +407,153 @@ export const renderCatalog = async (container) => {
 
         let addCategoryButtons = document.querySelectorAll('.add-category');
         addCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => addCategory(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addCategory(e, container);
+            });
         });
 
         let addItemButtons = document.querySelectorAll('.add-item');
         addItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => addItem(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addItem(e, container);
+            });
         });
 
         let deleteCatalogButtons = document.querySelectorAll('.delete-catalog');
         deleteCatalogButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteCatalog(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteCatalog(e, container);
+            });
         });
 
         let deleteCategoryButtons = document.querySelectorAll('.delete-category');
         deleteCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteCategory(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteCategory(e, container);
+            });
         });
 
         let deleteItemButtons = document.querySelectorAll('.delete-item');
         deleteItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => deleteItem(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteItem(e, container);
+            });
         });
 
         let editCatalogButtons = document.querySelectorAll('.edit-catalog');
         editCatalogButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editCatalog(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                editCatalog(e, container);
+            });
         });
 
         let editCategoryButtons = document.querySelectorAll('.edit-category');
         editCategoryButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editCategory(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                editCategory(e, container);
+            });
         });
 
         let editItemButtons = document.querySelectorAll('.edit-item');
         editItemButtons.forEach((button) => {
-            button.addEventListener('click', (e) => editItem(e, container));
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                editItem(e, container);
+            });
+        });
+
+        // implement drag and drop to order the items in the category, and categories in the catalog
+        // Drag and drop for items in categories
+        let catalogs = document.querySelectorAll('.catalog');
+        catalogs.forEach((catalog) => {
+            let categories = catalog.querySelectorAll('.category');
+            categories.forEach((category) => {
+                let itemsContainer = category.querySelector('.items');
+                if (!itemsContainer) return;
+                let items = itemsContainer.querySelectorAll('li');
+                items.forEach((item) => {
+                    item.setAttribute('draggable', 'true');
+                    item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('item-id', e.target.dataset.id);
+                    e.dataTransfer.effectAllowed = 'move';
+                    });
+                    item.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    });
+                    item.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    let id = e.dataTransfer.getData('item-id');
+                    let draggedItem = document.querySelector(`[data-id="${id}"]`);
+                    if (draggedItem && draggedItem !== item) {
+                        itemsContainer.insertBefore(draggedItem, item.nextSibling);
+                        // Optionally update order in the database here
+                        await api.patch(`categories/items/${draggedItem.dataset.id}`, {
+                            index: Array.from(itemsContainer.children).indexOf(draggedItem)
+                        }, true);
+                    }
+                    });
+                });
+            });
+
+            // Drag and drop for categories in catalog
+            let categoriesContainer = catalog.querySelector('.categories');
+            if (!categoriesContainer) return;
+            let categoryElems = categoriesContainer.querySelectorAll('.category');
+            categoryElems.forEach((catElem) => {
+                catElem.setAttribute('draggable', 'true');
+                catElem.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('category-id', catElem.dataset.id);
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+                catElem.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });
+                catElem.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    let id = e.dataTransfer.getData('category-id');
+                    let draggedCategory = categoriesContainer.querySelector(`[data-id="${id}"]`);
+                    if (draggedCategory && draggedCategory !== catElem) {
+                        categoriesContainer.insertBefore(draggedCategory, catElem.nextSibling);
+
+                        await api.patch(`catalog/categories/${draggedCategory.dataset.id}`, {
+                            index: Array.from(categoriesContainer.children).indexOf(draggedCategory)
+                        }, true);
+                        // Optionally update order in the database here
+                    }
+                });
+            });
+
+            document.querySelectorAll('.catalog-container').forEach(catalogElem => {
+                const catalogId = catalogElem.dataset.id;
+                const categoriesElem = catalogElem.querySelector('.categories');
+                if (categoriesElem) {
+                    catalogElem.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        collapsedState.catalogs[catalogId] = !categoriesElem.classList.contains('collapsed');
+                        renderCatalog(container);
+                    });
+                }
+                catalogElem.querySelectorAll('.category').forEach(categoryElem => {
+                    const categoryId = categoryElem.dataset.id;
+                    const itemsElem = categoryElem.querySelector('.items');
+                    if (itemsElem) {
+                        categoryElem.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            collapsedState.categories[categoryId] = !itemsElem.classList.contains('collapsed');
+                            renderCatalog(container);
+                        });
+                    }
+                });
+            });
         });
     });
 };

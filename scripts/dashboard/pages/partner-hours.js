@@ -103,8 +103,10 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                     e.preventDefault();
                     const startTime = e.target.start_time.value;
                     const endTime = e.target.end_time.value;
+                    console.log("Updating hour:", hourId, startTime, endTime);
+                    console.log("Partner ID:", partner_id);
                     await api
-                    .put(`partners/${partner_id}/hours/${hourId}`, {
+                    .patch(`partners/${partner_id}/hours/${hourId}`, {
                         start_time: startTime,
                         end_time: endTime,
                     })

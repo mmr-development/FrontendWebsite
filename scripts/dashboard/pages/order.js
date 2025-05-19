@@ -22,8 +22,6 @@ export const renderOrders = async (container, offset = 0, partnerid = 0, partner
         "Total Items", "Total Price", "Payment Methods", "Actions"
     ];
 
-    console.log(apiData);
-
 
     const rows = apiData.orders.map(order => {
         const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);

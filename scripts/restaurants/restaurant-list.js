@@ -25,24 +25,27 @@ params.delete('city');
 const newUrl = url.origin + url.pathname + '?' + params.toString();
 window.history.replaceState({}, document.title, newUrl);
 
+console.log(restaurants.partners);
 const formattedData = {
-    "restaurant-lists": [
+    restaurant_lists: [
         {
-            "restaurant-list-name": "All Restaurants",
+            restaurant_list_name: "All Restaurants",
             "restaurants": restaurants.partners.map(partner => ({
                 id: partner.id.toString(),
                 name: partner.name,
-                image: "../../files/images/restaurants/placeholder.png", // Placeholder image
+                banner: partner.banner_url ? api.baseurl + 'public' + partner.banner_url : "../../files/images/restaurants/placeholder.png",
+                logo: partner.logo_url ? api.baseurl + 'public' + partner.logo_url : "../../files/images/restaurants/placeholder.png",
                 rating: "4.0", // Default rating (can be updated dynamically)
-                "top-picks": "N/A", // Placeholder for top picks
-                "estimated-delivery-time": "30-40 mins", // Default delivery time
-                "delivery-fee": "$3.99", // Default delivery fee
-                "minimum-order": "$15.00", // Default minimum order
+                top_picks: "N/A", // Placeholder for top picks
+                estimated_delivery_time: 'N/A', // Placeholder for estimated delivery time
+                delivery_fee: partner.delivery.fee ? partner.delivery.fee + 'dkk' : "N/A",
+                minimum_order: partner.delivery.minimum_order_value ? partner.delivery.minimum_order_value + 'dkk' : "N/A",
                 address: `${partner.address.street}, ${partner.address.city}, ${partner.address.postal_code}, ${partner.address.country}`
             }))
         }
     ]
 };
+console.log(formattedData);
 
 const data = {
     "restaurnat-lists": [

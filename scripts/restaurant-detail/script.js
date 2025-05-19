@@ -1,13 +1,12 @@
-import {detail_data} from './restaurant-detail.js';
+import {getRestaurantDetail} from './restaurant-detail.js';
 import {menu_data, searchbar_data} from './restaurant-menu.js';
 import './searchbar.js';
 import { renderTemplate } from '../utils/rendertemplate.js';
 import './restaurant-detail-sidebar.js';
 import { basketUpdate } from './basket.js';
-import { updateToggleButton} from './restaurant-detail-sidebar-toggle.js';
 
 await Promise.all([
-    renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail', detail_data),
+    renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail', await getRestaurantDetail()),
     renderTemplate('../../templates/partials/restaurant-detail/searchbar.mustache', 'restaurant-searchbar', searchbar_data),
     renderTemplate('../../templates/partials/restaurant-detail/restaurant-menu.mustache', 'restaurant-menu', menu_data)
 ]).then(() => {

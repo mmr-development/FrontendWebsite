@@ -593,12 +593,21 @@
   max-width: 200px;
   padding: 0;
   display: flex;
+  position: relative;
 }
-#restaurants-container .restaurants-list .restaurants-list .restaurants-item .restaurants-image img {
+#restaurants-container .restaurants-list .restaurants-list .restaurants-item .restaurants-image .restaurant-banner {
   width: 100%;
   height: 100%;
   border-radius: 15px 0 0 15px;
   object-fit: cover;
+}
+#restaurants-container .restaurants-list .restaurants-list .restaurants-item .restaurants-image .restaurant-logo {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
 }
 #restaurants-container .restaurants-list .restaurants-list .restaurants-item .restaurants-details {
   display: flex;

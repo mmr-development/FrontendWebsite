@@ -1,37 +1,53 @@
-export const detail_data = {
-    image: '../../files/images/restaurants/placeholder.png',
-    name: 'Restaurant Name',
-    rating: 4.5,
-    min_order: "$10",
-    delivery_fee: "$2",
-    opening_hours: [
-        {
-            day: 'Monday',
-            hours: '9:00 AM - 10:00 PM'
-        },
-        {
-            day: 'Tuesday',
-            hours: '9:00 AM - 10:00 PM'
-        },
-        {
-            day: 'Wednesday',
-            hours: '9:00 AM - 10:00 PM'
-        },
-        {
-            day: 'Thursday',
-            hours: '9:00 AM - 10:00 PM'
-        },
-        {
-            day: 'Friday',
-            hours: '9:00 AM - 11:00 PM'
-        },
-        {
-            day: 'Saturday',
-            hours: '10:00 AM - 11:00 PM'
-        },
-        {
-            day: 'Sunday',
-            hours: '10:00 AM - 10:00 PM'
+import * as api from '../utils/api.js';
+
+export const getRestaurantDetail = async () => {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    let id = params.get('id');
+
+    let restaurantDetail = await api.get('partners/' + id).then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        } else {
+            console.error("Error fetching restaurant detail:", res);
+            return [];
         }
-    ]
+    }).catch((error) => {
+        console.error("Error fetching restaurant detail:", error);
+        return [];
+    });
+
+    let opening_hours = await api.get('partners/' + id + '/hours').then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        } else {
+            console.error("Error fetching restaurant opening hours:", res);
+            return [];
+        }
+    });
+    // order of the days of the week from 0 to 6
+    opening_hours.hours = opening_hours.hours.sort((a, b) => a.day_of_week - b.day_of_week);
+
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    console.log(restaurantDetail)
+    let templateData = {
+        id: restaurantDetail.id.toString(),
+        name: restaurantDetail.name,
+        banner: restaurantDetail.banner_url ? api.baseurl + 'public' + restaurantDetail.banner_url : "../../files/images/restaurants/placeholder.png",
+        logo: restaurantDetail.logo_url ? api.baseurl + 'public' + restaurantDetail.logo_url : "../../files/images/restaurants/placeholder.png",
+        top_picks: "N/A", // Placeholder for top picks
+        estimated_delivery_time: restaurantDetail.delivery_time ? restaurantDetail.delivery_time + " mins" : "N/A",
+        delivery_fee: restaurantDetail.delivery_fee ? restaurantDetail.delivery_fee + 'dkk ' : "N/A",
+        minimum_order: restaurantDetail.min_order_value ? restaurantDetail.min_order_value + 'dkk ' : "N/A",
+        address: 'temporary address',
+        opening_hours: opening_hours.hours.map((item) => {
+            return {
+                day: daysOfWeek[item.day_of_week], // Map day_of_week to day name
+                hours: `${item.opens_at.slice(0, 5)} - ${item.closes_at.slice(0, 5)}` // Format opening and closing hours
+            };
+        })
+    };
+
+    return templateData;
 }

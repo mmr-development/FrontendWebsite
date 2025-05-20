@@ -24,8 +24,6 @@ const reauthenticate = async () => {
         body: JSON.stringify({}),
     }).then((res) => {
         if (res.status === 401) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
             sessionStorage.removeItem('role');
             window.location.href = '/';
         }

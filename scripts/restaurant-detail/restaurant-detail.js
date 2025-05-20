@@ -29,8 +29,7 @@ export const getRestaurantDetail = async () => {
     opening_hours.hours = opening_hours.hours.sort((a, b) => a.day_of_week - b.day_of_week);
 
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-    console.log(restaurantDetail)
+    
     let templateData = {
         id: restaurantDetail.id.toString(),
         name: restaurantDetail.name,

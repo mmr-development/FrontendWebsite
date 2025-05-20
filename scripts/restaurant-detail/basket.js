@@ -4,7 +4,6 @@ import {renderModal} from '../utils/modal.js'
 import * as api from '../utils/api.js';
 
 export const basketUpdate = async (delivery = true) => {
-    // Get restaurantId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('id');
 
@@ -25,7 +24,9 @@ export const basketUpdate = async (delivery = true) => {
 
     if (basket.length === 0) {
         await renderTemplate('../../templates/partials/restaurant-detail/basket.mustache', 'basket', {empty: true});
-        return;
+        return {
+            empty: true,
+        }
     }
 
     const totalItems = basket.reduce((total, item) => total + item.quantity, 0);
@@ -168,5 +169,5 @@ export const basketUpdate = async (delivery = true) => {
     }
 };
 
-basketUpdate();
+await basketUpdate();
 

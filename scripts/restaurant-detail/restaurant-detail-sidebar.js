@@ -8,7 +8,6 @@ const data = {
 await renderTemplate('../../templates/partials/restaurant-detail/restaurant-detail-sidebar.mustache', 'restaurant-detail-sidebar', data).then(() => {
     let toggleDeliveryOption = document.getElementById('toggle-checkbox');
 
-    // get utl id
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 

@@ -7,6 +7,11 @@ const orderConfirm = JSON.parse(localStorage.getItem('orderConfirm')) || {};
 const wsUrl = api.wsurl + 'ws/' + orderConfirm.status_url; // Replace with your backend WebSocket URL
 const socket = new WebSocket(wsUrl);
 
+// remove from localstorage
+localStorage.removeItem('order');
+localStorage.removeItem('delivery');
+localStorage.removeItem('restaunrantCarts');
+
 socket.onopen = () => {
 };
 

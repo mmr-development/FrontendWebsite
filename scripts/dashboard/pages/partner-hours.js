@@ -88,9 +88,9 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                 editDiv.innerHTML = `
                 <form>
                     <label for="start_time_${hourId}">Start Time:</label>
-                    <input type="time" id="start_time_${hourId}" name="start_time" value="${hourData.start_time}" required>
+                    <input type="time" id="start_time_${hourId}" name="start_time" value="${hourData.start_time ? hourData.start_time : ''}" required>
                     <label for="end_time_${hourId}">End Time:</label>
-                    <input type="time" id="end_time_${hourId}" name="end_time" value="${hourData.end_time}" required>
+                    <input type="time" id="end_time_${hourId}" name="end_time" value="${hourData.end_time ? hourData.end_time : ''}" required>
                     <button type="submit">Save</button>
                 </form>
                 `;
@@ -105,10 +105,9 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                     const endTime = e.target.end_time.value;
                     console.log("Updating hour:", hourId, startTime, endTime);
                     console.log("Partner ID:", partner_id);
-                    await api
-                    .patch(`partners/${partner_id}/hours/${hourId}`, {
-                        start_time: startTime,
-                        end_time: endTime,
+                    await api.patch(`partners/${partner_id}/hours/${hourId}`, {
+                        opens_at: startTime,
+                        closes_at: endTime,
                     })
                     .then((res) => {
                         if (res.status === 200) {

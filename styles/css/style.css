@@ -593,8 +593,8 @@
 }
 #restaurants-container .restaurants-list .restaurants-list .restaurants-item .restaurants-image {
   min-height: 100%;
-  max-height: 204px;
-  aspect-ratio: 1/1;
+  max-height: 150px;
+  aspect-ratio: 1.25/1;
   border-radius: 15px 0 0 15px;
   background-color: #ebf8f1;
   display: flex;

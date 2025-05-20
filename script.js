@@ -32,28 +32,34 @@ const footerData = {
 };
 
 async function baseRenderTemplates() {
-    renderTemplate('templates/partials/header.mustache', 'header', headerData).then(() => {
-      document.querySelector('.login-button').addEventListener('click', (event) => {
-        // prevent default action
-        event.preventDefault();
-        if (role === null) {
-          window.location.href = '/pages/login.html';
-        } else {
-          api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
-            if (res.status === 200) {
-              sessionStorage.removeItem('role');
-              localStorage.removeItem('delivery');
-              localStorage.removeItem('restaurantCarts');
-              localStorage.removeItem('order');
-              window.location.href = '/index.html';
-            } else {
-              console.error('Error logging out:', res);
-            }
-          });
-        }
+    let header = document.getElementById('header');
+    let footer = document.getElementById('footer');
+    if (header) {
+      renderTemplate('templates/partials/header.mustache', header.id, headerData).then(() => {
+        document.querySelector('.login-button').addEventListener('click', (event) => {
+          // prevent default action
+          event.preventDefault();
+          if (role === null) {
+            window.location.href = '/pages/login.html';
+          } else {
+            api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
+              if (res.status === 200) {
+                sessionStorage.removeItem('role');
+                localStorage.removeItem('delivery');
+                localStorage.removeItem('restaurantCarts');
+                localStorage.removeItem('order');
+                window.location.href = '/index.html';
+              } else {
+                console.error('Error logging out:', res);
+              }
+            });
+          }
+        });
       });
-    });
-    renderTemplate('templates/partials/footer.mustache', 'footer', footerData)
+    }
+    if (footer) {
+      renderTemplate('templates/partials/footer.mustache', footer.id, footerData);
+    }
 }
 
 baseRenderTemplates();

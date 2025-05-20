@@ -416,14 +416,14 @@
   transition: color 0.3s ease;
   font-family: Arial, sans-serif;
   text-align: center;
-  width: 33.33%; /* Equal width for each radio button */
+  width: 25%; /* Equal width for each radio button */
 }
 .auth-container .auth-form .auth-form-content .radio-container .slider {
   position: absolute;
   top: 5px;
   bottom: 5px;
   left: 5px;
-  width: calc(33.33% - 5px); /* Equal width for each radio button */
+  width: calc(25% - 5px); /* Equal width for each radio button */
   background: #4caf50;
   border-radius: 8px;
   transition: transform 0.3s ease;
@@ -439,6 +439,9 @@
 }
 .auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(3):checked ~ .slider {
   transform: translateX(calc(200% + 5px)); /* Adjust for padding */
+}
+.auth-container .auth-form .auth-form-content .radio-container input:nth-of-type(4):checked ~ .slider {
+  transform: translateX(calc(300% + 7.5px)); /* Adjust for padding */
 }
 .auth-container .auth-form .auth-form-content .radio-container input:checked + label {
   color: #fff;
@@ -1986,6 +1989,86 @@
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-child .btn:hover {
   background: #0056b3;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 16px 0;
+  width: 100%;
+  height: 600px;
+  background-color: #fff;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-day {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-day .planner-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-day .planner-day-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-event {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-event .planner-note {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-event .planner-status {
+  font-size: 14px;
+  font-weight: 600;
+  color: #007bff;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-event .planner-time {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table .content .planner-event .planner-no-events {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999;
+}
+@media (max-width: 1100px) {
+  .dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table {
+    flex-direction: column;
+    height: auto;
+  }
 }
 .dashboard-wrapper #dashboard-content .dashboard-page .table-container {
   width: calc(100% - 40px);

@@ -35,12 +35,10 @@ submitButton.addEventListener('click', async (event) => {
             let role = JSON.parse(atob(res.data.access_token.split('.')[1])).roles;
             role = role[0];
             sessionStorage.setItem('role', role);
-            if (role === 'admin') {
+            if (role === 'customer') 
+                {window.location.href = '../index.html';
+            } else{
                 window.location.href = 'dashboard.html';
-            } else if (role === 'partner') {
-                window.location.href = 'dashboard.html';
-            } else {
-                window.location.href = '../index.html';
             }
         } else {
             errorMessage.innerHTML = 'Forkert brugernavn eller adgangskode.';

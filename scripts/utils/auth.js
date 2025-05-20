@@ -12,3 +12,8 @@ export const isPartner = () => {
     const token = sessionStorage.getItem('role');
     return token === 'partner';
 }
+
+export const isSupport = () => {
+    const token = sessionStorage.getItem('role');
+    return token === 'support';
+}

@@ -8,6 +8,7 @@ import { renderParnterDetails } from "./pages/partner-details.js";
 import * as api from '../utils/api.js';
 import * as auth from "../utils/auth.js";
 import { renderChatTemplate } from "./pages/chat.js";
+import { renderSchemaPlanner } from "./pages/schema-planner.js";
 
 // get role from session storage
 const role = sessionStorage.getItem('role');
@@ -33,7 +34,13 @@ export const renderDashboardContent = async () => {
             { id: 'orders', url: '#orders' },
             { id: 'catalog', url: '#catalog' },
             { id: 'partner-hours', url: '#partner-hours' },
-            { id: 'partner-details', url: '#partner-details' }
+            { id: 'partner-details', url: '#partner-details' },
+            { id: 'schema-planner', url: '#schema-planner' }
+        );
+    } else if (auth.isSupport()) {
+        pages.push(
+            { id: 'schema-planner', url: '#schema-planner' },
+            { id: 'chat-window', url: '#chat-window' }
         );
     }
     await renderTemplate('../../templates/partials/dashboard/content.mustache', 'dashboard-content', { pages });
@@ -43,7 +50,6 @@ export const renderDashboardContent = async () => {
             renderOrders('orders'),
             renderUsers('users'),
             renderApplications('applications'),
-            renderChatTemplate('chat-window')
         ]);
     } else if (auth.isPartner()) {
         // Get partner id first
@@ -72,10 +78,14 @@ export const renderDashboardContent = async () => {
             renderOrders('orders', 0, partnerid, partners),
             // // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
             renderPartnerHours('partner-hours', partnerid, partners),
-            renderParnterDetails('partner-details', partnerid, partners)
+            renderParnterDetails('partner-details', partnerid, partners),
+        ]);
+    } else if (auth.isSupport()) {
+        await Promise.all([
+            renderSchemaPlanner('schema-planner'),
+            renderChatTemplate('chat-window')
         ]);
     }
-
     // Handle active page highlighting
     const pagesEls = document.querySelectorAll('.dashboard-page');
     const updateActivePage = () => {

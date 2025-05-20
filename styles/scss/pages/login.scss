@@ -80,7 +80,7 @@
                     transition: color 0.3s ease;
                     font-family: Arial, sans-serif;
                     text-align: center;
-                    width: 33.33%; /* Equal width for each radio button */
+                    width: 25%; /* Equal width for each radio button */
                 }
             
                 .slider {
@@ -88,7 +88,7 @@
                     top: 5px;
                     bottom: 5px;
                     left: 5px;
-                    width: calc(33.33% - 5px); /* Equal width for each radio button */
+                    width: calc(25% - 5px); /* Equal width for each radio button */
                     background: #4caf50;
                     border-radius: vars.$border-radius;
                     transition: transform 0.3s ease;
@@ -108,6 +108,9 @@
             
                 input:nth-of-type(3):checked ~ .slider {
                     transform: translateX(calc(200% + 5px)); /* Adjust for padding */
+                }
+                input:nth-of-type(4):checked ~ .slider {
+                    transform: translateX(calc(300% + 7.5px)); /* Adjust for padding */
                 }
             
                 /* Optional: Change label color when checked */

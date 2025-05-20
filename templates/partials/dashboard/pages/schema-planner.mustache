@@ -1,0 +1,47 @@
+{{#search}}
+<div class="custom-table-search">
+    <input type="text" id="search-input" placeholder="{{searchPlaceholder}}" />
+    <button id="search-button">Search</button>
+    <button id="clear-search-button">Clear</button>
+</div>
+{{/search}}
+{{#select}}
+<div class="custom-table-select">
+    <select id="custom-select" class="custom-select">
+        {{#options}}
+        <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{label}}</option>
+        {{/options}}
+    </select>
+</div>
+{{/select}}
+{{#data}}
+<div class="schedule-planner-table">
+    {{#days}}
+        <div class="content">
+            <div class="planner-day">
+                <span class="planner-date">{{date}}</span>
+                <span class="planner-day-name">{{wekkdayname}}</span>
+            </div>
+            {{#schedules}}
+            <div class="planner-event">
+                <span class="planner-note">{{note}}</span>
+                <span class="planner-status {{status}}">{{status}}</span>
+                <span class="planner-time">{{start_datetime}} - {{end_datetime}}</span>
+            </div>
+            {{/schedules}}
+            {{^schedules}}
+                <span class="planner-no-events">No schedules available</span>
+            {{/schedules}}
+        </div>
+    {{/days}}
+</div>
+{{/data}}
+{{^data}}
+<div class="no-data">
+    <p>No data available</p>
+</div>
+{{/data}}
+{{#pagination}}
+<div class="pagination" id="{{paginationContainer}}">
+</div>
+{{/pagination}}

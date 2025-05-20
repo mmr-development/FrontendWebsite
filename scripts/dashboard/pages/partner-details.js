@@ -9,6 +9,8 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
         return [];
     });
 
+    console.log(partner);
+
     let templatedata = {
         id: partner.id,
         name: partner.name,
@@ -16,6 +18,8 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
         delivery_fee: partner.delivery_fee,
         max_deliver_distance: partner.max_delivery_distance,
         min_order_value: partner.min_order_value,
+        min_delivery_time: partner.min_preparation_time_minutes,
+        max_delivery_time: partner.max_preparation_time_minutes,
         status: partner.status,
         logo: partner.logo_url ? api.baseurl + 'public' +partner.logo_url : '/assets/images/default-partner-logo.png',
         banner: partner.banner_url ? api.baseurl + 'public' + partner.banner_url : '/assets/images/default-partner-banner.png',

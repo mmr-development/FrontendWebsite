@@ -132,8 +132,8 @@ export const renderPartnerForm = async () => {
                         city: selected.data.postnrnavn,
                         postal_code: selected.data.postnr,
                         country: 'denmark',
-                        longitude: selected.data.y,
-                        latitude: selected.data.x,
+                        latitude: selected.data.y,
+                        longitude: selected.data.x,
                     };
                     if (addressInput) {
                         addressInput.innerHTML = selected.tekst;

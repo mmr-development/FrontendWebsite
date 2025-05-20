@@ -5,17 +5,71 @@ import * as api from '../utils/api.js';
 let userinfo = {};
 
 export const renderCheckout = async () => {
-    let ropening = new Date().setHours(10, 0, 0, 0);
-    let rclosing = new Date().setHours(22, 0, 0, 0);
+    let urlParams = new URLSearchParams(window.location.search);
+    let id = urlParams.get('id');
+    let partnerdetail = await api.get('partners/' + id).then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        } else {
+            console.error("Error fetching restaurant detail:", res);
+            return [];
+        }
+    });
+    let opening_hours = await api.get('partners/' + id + '/hours').then((res) => {
+        if (res.status === 200) {
+            return res.data;
+        }
+        else {
+            console.error("Error fetching restaurant opening hours:", res);
+            return [];
+        }
+    });
 
-    let deliveryTimeOptions = [{ value: "asap", text: "As soon as possible",}];
-    let deliveryTime = new Date(ropening);
-    while (deliveryTime < rclosing) {
-        deliveryTimeOptions.push({
-            value: deliveryTime.toISOString(),
-            text: deliveryTime.toLocaleDateString([], { weekday: "long" }).charAt(0).toUpperCase() + deliveryTime.toLocaleDateString([], { weekday: "long" }).slice(1) + " " + deliveryTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        });
-        deliveryTime.setMinutes(deliveryTime.getMinutes() + 5);
+    let deliveryTimeOptions = [{ value: "asap", text: "As soon as possible" }];
+    const today = new Date();
+    const todayDayOfWeek = today.getDay();
+    const todayHours = opening_hours.hours.find(h => h.day_of_week === todayDayOfWeek);
+    const minPrep = partnerdetail.min_preparation_time_minutes || 0;
+    const maxPrep = partnerdetail.max_preparation_time_minutes || minPrep;
+
+    if (todayHours) {
+        const [openHour, openMinute] = todayHours.opens_at.split(':').map(Number);
+        const [closeHour, closeMinute] = todayHours.closes_at.split(':').map(Number);
+
+        let opening = new Date(today);
+        opening.setHours(openHour, openMinute, 0, 0);
+
+        let closing = new Date(today);
+        closing.setHours(closeHour, closeMinute, 0, 0);
+        if (closing <= opening) {
+            closing.setDate(closing.getDate() + 1);
+        }
+        let start = new Date(Math.max(opening.getTime(), Date.now()));
+        start.setMinutes(start.getMinutes() + minPrep);
+        let last = new Date(closing);
+        last.setMinutes(last.getMinutes() - maxPrep);
+        start.setMinutes(Math.ceil(start.getMinutes() / 5) * 5, 0, 0);
+
+        while (start <= last) {
+            let slotEnd = new Date(start);
+            slotEnd.setMinutes(slotEnd.getMinutes() + (maxPrep - minPrep));
+            if (slotEnd > closing) slotEnd = new Date(closing);
+
+            deliveryTimeOptions.push({
+                value: start.toISOString(),
+                text:
+                    start.toLocaleDateString([], { weekday: "long" }).charAt(0).toUpperCase() +
+                    start.toLocaleDateString([], { weekday: "long" }).slice(1) +
+                    " " +
+                    start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                    ' (' +
+                    start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                    ' - ' +
+                    slotEnd.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                    ')'
+            });
+            start.setMinutes(start.getMinutes() + 5);
+        }
     }
 
     let formdata = {
@@ -92,11 +146,6 @@ export const renderCheckout = async () => {
         ],
     };
 
-    // get id from url
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-
-    // get data from local storage
     const deliveryRestaurants = JSON.parse(localStorage.getItem('delivery')) || {};
     const delivery = deliveryRestaurants.restaurant[id];
 
@@ -185,7 +234,7 @@ export const renderCheckout = async () => {
                         tip.classList.remove('selected');
                     });
                     tip.classList.add('selected');
-                    validateCheckout(filledoutoptions); // Validate after updating the tip
+                    validateCheckout(filledoutoptions);
                 });
             });
         }

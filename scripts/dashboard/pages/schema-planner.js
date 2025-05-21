@@ -1,9 +1,9 @@
 import { renderTemplate} from '../../utils/rendertemplate.js';
 import * as api from '../../utils/api.js';
 
-export const renderSchemaPlanner = async (container, userid = null) => {
-    let users = await api.get('users').then(res => res.data);
-    let data = await api.get('couriers/schedules/?courier_id=' + (userid ? userid : users.users[0].id)).then(res => res.data);
+export const renderSchemaPlanner = async (container, courierid = null) => {
+    let couriers = await api.get('couriers/').then(res => res.data);
+    let data = await api.get('couriers/schedules/?courier_id=' + (courierid ? courierid : couriers.couriers[1].id)).then(res => res.data);
 
     let daysOfWeek = generateDaysOfWeek();
 
@@ -24,40 +24,19 @@ export const renderSchemaPlanner = async (container, userid = null) => {
         };
     });
 
-    console.log('daysofweekwithschedules', daysofweekwithschedules);
-
-    // if (userid !== null) {
-    //     data = await api.get('couriers/schedules/?courier_id=' + userid).then(res => res.data);
-    // }
-
-    console.log({
-        search: true,
-        searchPlaceholder: 'Search users',
-        select: true,
-        options: users.map(user => ({
-            value: user.id,
-            label: user.email,
-            selected: user.id === userid,
-        })),
-        data: {
-            days: daysofweekwithschedules,
-        },
-    });
-
     await renderTemplate('templates/partials/dashboard/pages/schema-planner.mustache', container, {
         search: true,
         searchPlaceholder: 'Search users',
         select: true,
-        options: users.map(user => ({
-            value: user.id,
-            label: user.email,
-            selected: user.id === userid,
+        options: couriers.couriers.map(courier => ({
+            value: courier.id,
+            label: courier.email,
+            selected: courier.id === courierid,
         })),
         data: {
             days: daysofweekwithschedules,
         },
     }).then(async() => {
-        // Add event listeners for search and select
         const containerDiv = document.getElementById(container);
         const searchInput = containerDiv.querySelector('#search-input');
         const selectInput = containerDiv.querySelector('#custom-select');
@@ -65,12 +44,12 @@ export const renderSchemaPlanner = async (container, userid = null) => {
         if (searchInput) {
             searchInput.addEventListener('input', async (event) => {
                 const value = event.target.value.toLowerCase();
-                const filteredUsers = users.filter(user => user.email.toLowerCase().includes(value));
+                const filteredUsers = couriers.filter(courier => courier.email.toLowerCase().includes(value));
                 selectInput.innerHTML = '';
-                filteredUsers.forEach(user => {
+                filteredUsers.forEach(courier => {
                     const option = document.createElement('option');
-                    option.value = user.id;
-                    option.textContent = user.email;
+                    option.value = courier.id;
+                    option.textContent = courier.email;
                     selectInput.appendChild(option);
                 });
             });
@@ -79,8 +58,8 @@ export const renderSchemaPlanner = async (container, userid = null) => {
         if (selectInput) {
             selectInput.addEventListener('change', async (event) => {
                 const selectedUserId = event.target.value;
-                userid = parseInt(selectedUserId);
-                await renderSchemaPlanner(container, userid);
+                courierid = parseInt(selectedUserId);
+                await renderSchemaPlanner(container, courierid);
             });
         }
     });

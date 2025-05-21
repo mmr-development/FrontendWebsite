@@ -158,8 +158,6 @@ renderPage().then(() => {
                 
                     await basketUpdate();
                 });
-
-
             });
         });
     });

@@ -230,11 +230,29 @@ export const renderCheckout = async () => {
                     let selectedTip = tip.getAttribute('data-value');
                     filledoutoptions.deliveryTip = selectedTip;
                     document.getElementById('deliverytipform-final').textContent = ': ' + selectedTip + ',00 kr.';
-                    document.querySelectorAll('.predefinedTips').forEach((tip) => {
-                        tip.classList.remove('selected');
+                    let basket = document.querySelector('.basket-calculation');
+                    document.querySelectorAll('.predefinedTips').forEach((tipVal) => {
+                        tipVal.classList.remove('selected');
+                        // remove the tip div
+                        let tipDiv = basket.querySelector('.tip');
+                        if (tipDiv) {
+                            tipDiv.remove();
+                        }
                     });
                     tip.classList.add('selected');
+                    let tipP = document.createElement('p');
+                    tipP.classList.add('tip');
+                    let tipText = document.createElement('span');
+                    tipText.textContent = 'Tip: ';
+                    let tipValue = document.createElement('span');
+                    tipValue.textContent = selectedTip + '.00 kr.';
+                    tipValue.classList.add('tip-value');
+                    tipP.appendChild(tipText);
+                    tipP.appendChild(tipValue);
+                    basket.appendChild(tipP);
                     validateCheckout(filledoutoptions);
+                    console.log(filledoutoptions);
+
                 });
             });
         }
@@ -247,21 +265,32 @@ export const renderCheckout = async () => {
                     content: '<input type="number" id="custom-tip-input" placeholder="Enter custom tip amount">',
                     close: "Close",
                     submit: "Submit",
-                }).then(() => {
-                    const input = document.getElementById('custom-tip-input');
-                    input.addEventListener('input', () => {
+                    submitCallback: () => {
+                        const input = document.getElementById('custom-tip-input');
                         let tip = input.value;
                         if (tip.length > 0) {
                             filledoutoptions.deliveryTip = tip;
-                            document.querySelectorAll('.predefinedTips').forEach((tip) => {
-                                tip.classList.remove('selected');
-                            });
+                            document.getElementById('deliverytipform-final').textContent = ': ' + tip + ',00 kr.';
+                            let basket = document.querySelector('.basket-calculation');
+                            let tipDiv = basket.querySelector('.tip');
+                            if (tipDiv) {
+                                tipDiv.remove();
+                            }
+                            let tipP = document.createElement('p');
+                            tipP.classList.add('tip');
+                            let tipText = document.createElement('span');
+                            tipText.textContent = 'Tip: ';
+                            let tipValue = document.createElement('span');
+                            tipValue.textContent = tip + '.00 kr.';
+                            tipValue.classList.add('tip-value');
+                            tipP.appendChild(tipText);
+                            tipP.appendChild(tipValue);
+                            basket.appendChild(tipP);
                         } else {
                             delete filledoutoptions.deliveryTip;
                         }
-                        document.getElementById('deliverytipform-final').textContent = ': ' + tip + ',00 kr.';
                         validateCheckout(filledoutoptions);
-                    });
+                    }
                 });
             });
         }

@@ -1,0 +1,25 @@
+<div class="restaurant-detail-header">
+    <img src="{{banner}}" alt="{{name}}" class="restaurant-image" />
+    <img src="{{logo}}" alt="{{name}}" class="restaurant-logo" />
+</div>
+<div class="restaurant-detail-body">  
+    <h2 class="restaurant-full-name">{{name}}
+        {{#smiley}}
+        <a href="{{smiley_url}}"><img src="{{smiley_img}}"/></a>
+        {{/smiley}}
+    </h2>
+    <div class="row">
+        <p> Min price: {{minimum_order}}</p>
+        <p> Delivery fee: {{delivery_fee}}</p>
+    </div>
+    <div id="restaurant-searchbar"></div>
+    <div id="restaurant-menu"></div>
+    <div class="opening-hours">
+        <h3>Opening Hours</h3>
+        <ul>
+            {{#opening_hours}}
+            <li>{{day}}: {{hours }}</li>
+            {{/opening_hours}}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="dashboard-partner-catalog">
+    <h1>Partner Catalog</h1>
+    {{#catalog-section}}
+    <div class="catalog-section">
+        <h1>{{sectionTitle}}</h1>
+        <div class="catalog-items">
+            {{#items}}
+                <div class="catalog-item">
+                    <h2>{{itemTitle}}</h2>
+                    <p>{{itemDescription}}</p>
+                    {{#itemActions}}
+                        <button class="{{buttonClass}}" id="{{id}}">{{label}}</button>
+                    {{/itemActions}}
+                </div>
+            {{/items}}
+        </div>
+    </div>
+    {{^catalog-section}}
+</div>

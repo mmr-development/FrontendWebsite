@@ -1,0 +1,14 @@
+
+{{#chat_id}}
+<div id="chat-messages">
+</div>
+<div id="send-message-form">
+    <input type="text" name="message" placeholder="Type a message..." required>
+    <button type="submit" class="btn btn-primary">Send</button>
+</div>
+{{/chat_id}}
+{{^chat_id}}
+<div class="chat-room-empty">
+    <p>No chat room selected. Please select a chat room to start chatting.</p>
+</div>
+{{/chat_id}}

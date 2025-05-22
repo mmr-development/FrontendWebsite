@@ -20,11 +20,16 @@ async function loadTemplate(templatePath) {
 
 export { rootpath };
 
-export async function renderTemplate(path, templateId, data) {
+export async function renderTemplate(path, templateId, data = {}, append = false) {
     try {
         const template = await loadTemplate(rootpath + path);
         const renderedTemplate = Mustache.render(template, data);
-        document.getElementById(templateId).innerHTML = renderedTemplate;
+        if(append) {
+            document.getElementById(templateId).insertAdjacentHTML('beforeend', renderedTemplate);
+        }else {
+            document.getElementById(templateId).innerHTML = renderedTemplate;
+        }
     } catch (error) {
+        console.error(path, error);
     }
 }

@@ -1,0 +1,22 @@
+<div class="dashboard-sidebar">
+    <div class="sidebar-header">
+        <button class="dashboard-toggle-button" id="dashboard-sidebar-toggle-button"><i class="fas fa-bars"></i></button>
+        <h2>{{sidebarTitle}}</h2>
+    </div>
+    <div class="sidebar-content">
+        <div class="sidebar-links">
+            {{#sidebarLinks}}
+                <a href="{{url}}" class="sidebar-link">
+                    <i class="{{icon}}"></i>
+                    <span class="sidebar-label">{{label}}</span>
+                </a>
+            {{/sidebarLinks}}
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <button class="logout-button" id="logout-button">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>{{logoutText}}</span>
+        </button>
+    </div>
+</div>

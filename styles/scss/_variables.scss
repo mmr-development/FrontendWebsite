@@ -5,10 +5,14 @@ $background: #ebf8f1;        // soft greenish-white for background
 $background-darker: #b1e2c6; // slightly darker background for contrast
 $background-light: #ebf8f1;  // light green for sections
 $text-color: #1B5E20;        // deep green for text
+$text-color-muted: #6c757d;  // muted gray for secondary text
+$text-color-dark: #0d3b12;   // darker green for emphasis
 $border-color: #b1e2c6;      // light green for borders
 $footer-bg: #2cb673;         // vibrant green for footer background
 $footer-text: #ebf8f1;       // light text for footer
 $hover-color: #1e8f5a;       // darker green for hover effects
+$danger-color: #dc3545;      // red for danger elements
+$danger-color-dark: #a71d2a; // darker red for hover effects on danger elements
 
 // Typography
 $font-family: 'Inter', sans-serif; // primary font

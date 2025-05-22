@@ -1,0 +1,72 @@
+<div class="partner-details">
+    {{#select}}
+        <div class="custom-table-select">
+            <select id="custom-select" class="custom-select">
+                {{#options}}
+                <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{name}}</option>
+                {{/options}}
+            </select>
+        </div>
+    {{/select}}
+    <h2>Partner Details</h2>
+    <form id="partner-form" class="partner-form">
+        <div>
+            <label for="partner-name"><strong>Name:</strong></label>
+            <input id="partner-name" type="text" value="{{name}}" readonly>
+        </div>
+        <div>
+            <label for="partner-phone"><strong>Phone Number:</strong></label>
+            <input id="partner-phone" type="text" value="{{phone_number}}" readonly>
+        </div>
+        <div>
+            <label for="partner-fee"><strong>Delivery Fee:</strong></label>
+            <input id="partner-fee" type="text" value="{{delivery_fee}}" readonly>
+        </div>
+        <div>
+            <label for="partner-distance"><strong>Max Delivery Distance:</strong></label>
+            <input id="partner-distance" type="text" value="{{max_deliver_distance}}" readonly>
+        </div>
+        <div>
+            <label for="partner-min-order"><strong>Min Order Value:</strong></label>
+            <input id="partner-min-order" type="text" value="{{min_order_value}}" readonly>
+        </div>
+        <div>
+            <label for="partner-min-delivery-time"><strong>Min Preparation Time:</strong></label>
+            <input id="partner-min-delivery-time" type="text" value="{{min_delivery_time}}" readonly>
+        </div>
+        <div>
+            <label for="partner-max-delivery-time"><strong>Max Preparation Time:</strong></label>
+            <input id="partner-max-delivery-time" type="text" value="{{max_delivery_time}}" readonly>
+        </div>
+        <div>
+            <label for="partner-status"><strong>Status:</strong> {{status}}</label>
+        </div>
+        <div>
+            <button id="partner-edit" type="button" class="btn btn-primary">Edit</button>
+        </div>
+    </form>
+    <form id="partner-banner-form" class="partner-banner-form">
+        <div>
+            <label for="partner-banner"><strong>Banner:</strong></label>
+            <input id="partner-banner" type="file" accept="image/*">
+        </div>
+        <div class="partner-image-preview">
+            <img id="partner-banner-preview" src="{{banner}}" alt="Partner Banner" class="preview">
+        </div>
+        <div>
+            <button id="partner-banner-upload" type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+    <form id="partner-logo-form" class="partner-logo-form">
+        <div>
+            <label for="partner-logo"><strong>Logo:</strong></label>
+            <input id="partner-logo" type="file" accept="image/*">
+        </div>
+        <div class="partner-image-preview">
+            <img id="partner-logo-preview" src="{{logo}}" alt="Partner Logo" class="preview">
+        </div>
+        <div>
+            <button id="partner-logo-upload" type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+</div>

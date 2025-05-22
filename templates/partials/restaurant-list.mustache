@@ -1,24 +1,24 @@
-<div class="restaurant-list">
-    {{#restaurnat-lists}}
-     <h2>{{restaunrat-list-name}}</h2>
+<div class="restaurants-list">
+    {{#restaurant_lists}}
+     <h2>{{restaurant_list_name}}</h2>
        {{#restaurants}}
-        <div class="restaurant-item" data-id="{{id}}">
-            <div class="restaurant-image">
-                <img src="{{image}}" alt="{{name}}">
+        <div class="restaurants-item" data-id="{{id}}">
+            <div class="restaurants-image" style="position: relative;">
+                <img src="{{banner}}" alt="{{name}}" class="restaurant-banner"/>
+                <img src="{{logo}}" alt="{{name}} logo" class="restaurant-logo"/>
             </div>
-            <div class="restaurant-details">
+            <div class="restaurants-details">
                 <h3>{{name}}</h3>
                 <div>
-                    <p>Rating: {{rating}}</p>
-                    <p>Top picks: {{top-picks}}</p>
+                    <p>Top picks: {{top_picks}}</p>
                 </div>
                 <div>
-                    <p><i class="fas fa-clock"></i> {{estimated-delivery-time}}</p>
-                    <p><i class="fas fa-dollar-sign"></i> {{delivery-fee}}</p>
-                    <p><i class="fas fa-shopping-cart"></i> min: {{minimum-order}}</p>
+                    <p><i class="fas fa-clock"></i> {{estimated_delivery_time}} </p>
+                    <p><i class="fas fa-dollar-sign"></i> {{delivery_fee}} </p>
+                    <p><i class="fas fa-shopping-cart"></i> min: {{minimum_order}} </p>
                 </div>
             </div>
         </div>
        {{/restaurants}}
-    {{/restaurnat-lists}}
+    {{/restaurant_lists}}
 </div>

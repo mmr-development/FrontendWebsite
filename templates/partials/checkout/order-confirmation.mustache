@@ -1,0 +1,42 @@
+<div class="order-confirmation">
+    <h2 class="order-confirmation__title">Order Confirmation</h2>
+    <p class="order-confirmation__text">Thank you for your order!</p>
+    <div class="order-confirmation__details">
+        <h3>Order Details</h3>
+        <ul>
+            <li><strong>Restaurant ID:</strong> {{order.partner_id}}</li>
+            <li><strong>Delivery Type:</strong> {{order.delivery_type}}</li>
+            {{#deliveryTime}}
+            <li><strong>Delivery Time:</strong> {{deliveryTime}}</li>
+            {{/deliveryTime}}
+            {{#deliveryNote}}
+            <li><strong>Delivery Note:</strong> {{deliveryNote}}</li>
+            {{/deliveryNote}}
+            {{#deliveryTip}}
+            <li><strong>Delivery Tip:</strong> {{deliveryTip}},00 kr.</li>
+            {{/deliveryTip}}
+            <li><strong>Payment Method:</strong> {{paymentMethod}}</li>
+        </ul>
+    </div>
+    <div class="order-confirmation__items">
+        <h3>Items</h3>
+        <ul>
+            {{#order.items}}
+            <li>
+                <strong>Item ID:</strong> {{catalog_item_id}} - Quantity: {{quantity}}
+            </li>
+            {{/order.items}}
+        </ul>
+    </div>
+    <div class="order-confirmation__items">
+        <h3>Customer Information</h3>
+        <ul>
+            <li><strong>Name:</strong> {{customer.first_name}} {{customer.last_name}}</li>
+            <li><strong>Email:</strong> {{customer.email}}</li>
+            <li><strong>Phone Number:</strong> {{customer.phone_number}}</li>
+            <li><strong>Address:</strong> {{customer.address.street}}, {{customer.address.city}}, {{customer.address.postal_code}}, {{customer.address.country}}</li>
+            <li><strong>Address Detail:</strong> {{customer.address.address_detail}}</li>
+        </ul>
+    </div>
+    <p class="order-confirmation__footer">We hope you enjoy your meal!</p>
+</div>

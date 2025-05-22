@@ -1,0 +1,45 @@
+<div class="table-container">
+{{#select}}
+    <div class="custom-table-select">
+        <select id="custom-select" class="custom-select">
+            {{#options}}
+            <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{name}}</option>
+            {{/options}}
+        </select>
+    </div>
+{{/select}}
+{{#search}}
+    <div class="custom-table-search">
+        <input type="text" id="search-input" placeholder="Search..." />
+        <button id="search-button">Search</button>
+        <button id="clear-search-button">Clear</button>
+    </div>
+{{/search}}
+{{#data}}
+    <div class="custom-table">
+        <div class="custom-table-header">
+            {{#columns}}
+            <div class="custom-table-header-cell">{{.}}</div>
+            {{/columns}}
+        </div>
+        <div class="custom-table-body" id="table-body">
+            {{#rows}}
+            <div class="custom-table-row" id="{{id}}">
+                {{#cells}}
+                <div class="custom-table-cell">{{{.}}}</div>
+                {{/cells}}
+            </div>
+            {{/rows}}
+        </div>
+    </div>
+{{/data}}
+{{^data}}
+    <div class="no-data">
+        <p>No data available</p>
+    </div>
+{{/data}}
+{{#pagination}}
+    <div class="pagination" id="{{paginationContainer}}">
+    </div>
+{{/pagination}}
+</div>

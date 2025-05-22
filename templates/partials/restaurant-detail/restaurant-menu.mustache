@@ -1,0 +1,19 @@
+{{#categories}}
+<div class="menu-category" data-value="{{id}}">
+    <h3>{{name}}</h3>
+    {{#items}}
+    <div class="menu-item" data-id="{{id}}">
+        <div class="menu-item-content">
+            <h4 class="menu-item-name">{{name}}</h4>
+            <p class="menu-item-price">{{price}} kr.</p>
+            <p class="menu-item-description">{{description}}</p>
+        </div>
+        {{#image}}
+        <div class="menu-item-image">
+            <img src="{{image}}" alt="{{name}}" class="menu-item-img" />
+        </div>
+        {{/image}}
+    </div>
+    {{/items}}
+</div>
+{{/categories}}

@@ -1,0 +1,28 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h2>{{name}}</h2>
+        <button class="close-modal" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="menu-item-content">
+            <h4>{{name}}</h4>
+            <p class="menu-item-price">{{price}}</p>
+            <p>{{description}}</p>
+        </div>
+        {{#image}}
+        <div class="menu-item-image">
+            <img src="{{image}}" alt="{{name}}" class="menu-item-img" />
+        </div>
+        {{/image}}
+    </div>
+    <div class="modal-footer">
+        <div class="modal-quantity">
+            <button class="quantity-button" data-action="decrease">-</button>
+            <input id="quantity-input-menu-item" type="number" class="quantity-input" value="1" min="{{min}}" max="{{max}}" aria-label="Quantity" />
+            <button class="quantity-button" data-action="increase">+</button>
+        </div>
+        <div>        
+            <button class="add-to-cart" data-id="{{id}}">Add to Cart</button>
+        </div>
+    </div>
+</div>

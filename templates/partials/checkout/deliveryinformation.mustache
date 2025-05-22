@@ -1,0 +1,45 @@
+<div class="contact-form row" id="deliverytimeform">
+    <h3 class="contact-form__title">{{deliveryTimeTitle}}</h3>
+    <div class="contact-form__content c-form-content">
+        <div class="contact-form__input-group c-form-group">
+            <label for="deliveryoption" id="deliverytimeform-final">{{deliveryoption}}</label>
+        </div>
+        <label> <i class="fas fa-arrow-right"></i></label>
+    </div>
+</div>
+{{#deliveryNoteTitle}}
+<div class="contact-form row" id="deliverynoteform">
+    <h3 class="contact-form__title">{{deliveryNoteTitle}}</h3>
+    <div class="contact-form__content c-form-content">
+        <div class="contact-form__input-group c-form-group">
+            <label for="deliverynote" id="deliverynoteform-final">{{deliveryNote}}</label>
+        </div>
+        <label> <i class="fas fa-arrow-right"></i> </label>
+    </div>
+</div>
+{{/deliveryNoteTitle}}
+{{#deliveryTipTitle}}
+<div class="contact-form row" id="deliverytipform">
+    <h3 class="contact-form__title">{{deliveryTipTitle}}</h3>
+    <div class="contact-form__content c-form-content">
+        <div class="contact-form__input-group c-form-group tipform">
+        {{#deliveryTipOptions}}
+            <label class="predefinedTips" data-value="{{value}}">{{text}}</label>
+        {{/deliveryTipOptions}}
+            <label id="customTipOption">Custom <span id="deliverytipform-final"></label></label>
+        </div>
+    </div>
+</div>
+{{/deliveryTipTitle}}
+<div class="contact-form row" id="paymentmethodform">
+    <h3 class="contact-form__title">{{paymentTitle}}</h3>
+    <div class="contact-form__content c-form-content">
+        <div class="contact-form__input-group c-form-group">
+            <label for="deliverynote" id="paymentmethod-final">Select a payment method</label>
+        </div>
+        <label>
+            <i class="fas fa-arrow-right"></i> <!-- FontAwesome arrow right icon -->
+        </label>
+    </div>
+</div>
+<div id="c-modal"></div>

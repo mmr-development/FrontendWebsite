@@ -1,0 +1,162 @@
+@use '../_variables' as vars;
+
+.auth-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    height: auto;
+    flex-direction: column;
+    background-color: vars.$background-light;
+    padding: 20px !important;
+    
+    .auth-form{
+        margin: 10px auto;
+        width: calc(100% - 40px);
+        max-width: 500px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: vars.$border-radius;
+        .auth-form-content {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: vars.$spacing;
+            margin-bottom: 20px;
+
+            .auth-form-group {
+                margin-bottom: vars.$spacing;
+                margin: 0;
+                width: 100%;
+                position: relative;
+
+                label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-family: vars.$font-family;
+                    color: vars.$text-color;
+                }
+
+                input {
+                    width: calc(100% - vars.$spacing);
+                    padding: 0.5rem;
+                    border: 1px solid vars.$text-color;
+                    border-radius: vars.$border-radius;
+                    font-family: vars.$font-family;
+                    font-size: large;
+
+                    &:focus {
+                        border-color: vars.$primary-color;
+                        outline: none;
+                    }
+                }
+            }
+
+            .radio-container {
+                display: flex;
+                position: relative;
+                background: #f0f0f0;
+                border-radius: vars.$border-radius;
+                padding: 5px;
+                width: 100%;
+                justify-content: space-between;
+            
+                input[type="radio"] {
+                    display: none;
+                }
+            
+                label {
+                    padding: 10px 0;
+                    cursor: pointer;
+                    z-index: 1;
+                    transition: color 0.3s ease;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    width: 25%; /* Equal width for each radio button */
+                }
+            
+                .slider {
+                    position: absolute;
+                    top: 5px;
+                    bottom: 5px;
+                    left: 5px;
+                    width: calc(25% - 5px); /* Equal width for each radio button */
+                    background: #4caf50;
+                    border-radius: vars.$border-radius;
+                    transition: transform 0.3s ease;
+                    z-index: 0;
+                    padding: 0;
+                    margin: 0;
+                }
+            
+                /* Slide the background based on checked radio */
+                input:nth-of-type(1):checked ~ .slider {
+                    transform: translateX(0);
+                }
+            
+                input:nth-of-type(2):checked ~ .slider {
+                    transform: translateX(calc(100% + 2.5px));
+                }
+            
+                input:nth-of-type(3):checked ~ .slider {
+                    transform: translateX(calc(200% + 5px)); /* Adjust for padding */
+                }
+                input:nth-of-type(4):checked ~ .slider {
+                    transform: translateX(calc(300% + 7.5px)); /* Adjust for padding */
+                }
+            
+                /* Optional: Change label color when checked */
+                input:checked + label {
+                    color: #fff;
+                }
+            }
+        }
+        .auth-form-button {
+            width: 100%;
+            padding: 10px;
+            background-color: vars.$primary-color;
+            color: vars.$text-color;
+            border: none;
+            border-radius: vars.$border-radius;
+            font-family: vars.$font-family;
+            font-size: large;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+                background-color: vars.$button-bg-color-hover;
+                color: vars.$background-light;
+            }
+        }
+    }
+
+    p {
+        font-family: vars.$font-family;
+        color: vars.$text-color;
+        margin: 0px;
+        padding: 0px;
+        text-align: center;
+        margin-right: auto;
+
+        a {
+            color: vars.$accent-color;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: large;
+            transition: color 0.1s ease, text-decoration 0.3s ease;
+
+            &:hover {
+                color: black;
+                text-decoration: underline;
+            }
+        }
+    }
+}

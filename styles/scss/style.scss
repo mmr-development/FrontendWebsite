@@ -10,6 +10,14 @@
 @use 'pages/contact';
 @use 'pages/login';
 @use 'pages/restaurants';
+@use 'pages/restaurant-detail';
+@use 'pages/checkout';
+@use 'pages/await-confirmation.scss';
+@use 'pages/checkout-order-confirm';
+@use 'pages/become-a-partner';
+@use 'pages/become-a-courier';
+@use 'pages/thank-you';
+@use 'pages/dashboard.scss';
 
 @use 'components/button';
 @use 'components/card';
@@ -18,6 +26,19 @@
 @use 'components/table';
 @use 'components/tooltip';
 @use 'components/slider';
+@use 'components/sidebar';
+@use 'components/basket';
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  opacity: 0.8;
+  pointer-events: none;
+  will-change: transform;
+  border-radius: 50%;
+}
 
 body {
     background-color: vars.$background;
@@ -25,20 +46,28 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     min-height: 100vh;
+    width: 100%;
     position: relative;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width: 950px) {
+  body.no-scroll {
+      overflow: hidden;
+  }
+}
+  
+a {
+  color: vars.$accent-color;
+  text-decoration: none;
+
+  &:hover {
+    color: scale(vars.$accent-color, black, -10%);
   }
   
-  a {
-    color: vars.$accent-color;
-    text-decoration: none;
-  
-    &:hover {
-      color: scale(vars.$accent-color, black, -10%);
-    }
-}
+} 
 
 // Default container styling
 .container {
@@ -54,62 +83,7 @@ body {
   flex-direction: column;
 }
 
-// Login form styling
-#login-form {
-  background-color: #f9f9f9; // Light background for contrast
-  border: 1px solid #ddd; // Subtle border
-  border-radius: 8px; // Rounded corners
-  padding: 20px; // Inner padding
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Add a shadow for depth
-
-  h1 {
-    color: #333; // Main text color
-    text-align: center; // Center the heading
-    margin-bottom: 20px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555; // Slightly darker text for labels
-  }
-
-  input {
-    width: 100%; // Full width inputs
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc; // Subtle border
-    border-radius: 4px; // Rounded corners
-    box-sizing: border-box;
-  }
-
-  button {
-    width: 100%; // Full width button
-    padding: 10px;
-    background-color: #007BFF; // Main theme color (blue)
-    color: white; // White text for contrast
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-
-    &:hover {
-      background-color: #0056b3; // Darker blue on hover
-    }
-  }
-
-  p {
-    text-align: center;
-    margin-top: 15px;
-
-    a {
-      color: #007BFF; // Link color matching the theme
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+.row {
+  display: flex;
+  flex-wrap: wrap;
 }

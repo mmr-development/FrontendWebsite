@@ -1,0 +1,44 @@
+<div class="catalog">
+    {{#partners}}
+    <select id="partner-select" class="partner-select">
+        {{#options}}
+        <option value="{{value}}" {{#selected}} selected="{{selected}}" {{/selected}}>{{name}}</option>
+        {{/options}}
+    </select>
+    {{/partners}}
+    <button class="add-catalog">Add New Catalog</button>
+    {{#catalogs}}
+    <div class="catalog-container" data-id="{{id}}" data-temp-id="{{temp_id}}">
+        <h2>{{name}}</h2>
+        <div class="catalog-actions">
+            <button class="edit-catalog" data-id="{{id}}" data-temp-id="{{temp_id}}">Edit Catalog</button>
+            <button class="delete-catalog" data-id="{{id}}" data-temp-id="{{temp_id}}">Delete Catalog</button>
+        </div>
+        <div class="categories {{#collapsed}}collapsed{{/collapsed}}" data-id="{{id}}">
+            {{#categories}}
+            <div class="category" data-id="{{id}}" data-temp-id="{{temp_id}}">
+                <h3>{{name}}</h3>
+                <div class="catalog-actions">
+                    <button class="edit-category" data-id="{{id}}" data-temp-id="{{temp_id}}">Edit Category</button>
+                    <button class="delete-category" data-id="{{id}}" data-temp-id="{{temp_id}}">Delete Category</button>
+                </div>
+                <ul class="items {{#collapsed}} collapsed {{/collapsed}}" data-id="{{id}}">
+                    {{#items}}
+                    <li data-id="{{id}}" data-temp-id="{{temp_id}}">
+                        <span class="item-name">{{name}}</span>
+                        <span class="item-price">{{price}}</span>
+                        <span class="item-description">{{description}}</span>
+                        <button class="edit-item" data-id="{{id}}" data-temp-id="{{temp_id}}">Edit Item</button>
+                        <button class="delete-item" data-id="{{id}}" data-temp-id="{{temp_id}}">Delete Item</button>
+                    </li>
+                    {{/items}}
+                    <button class="add-item" data-id="{{id}}" data-temp-id="{{temp_id}}" data-category-id="{{id}}">Add New Item</button>
+                </ul>
+            </div>
+            {{/categories}}
+            <button class="add-category" data-catalog-id="{{id}}" data-temp-id="{{temp_id}}">Add New Category</button>
+        </div>
+    </div>
+    {{/catalogs}}
+    <div id="c-modal"></div>
+</div>

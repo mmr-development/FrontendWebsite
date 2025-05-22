@@ -3,7 +3,11 @@
     <img src="{{logo}}" alt="{{name}}" class="restaurant-logo" />
 </div>
 <div class="restaurant-detail-body">  
-    <h2 class="restaurant-full-name">{{name}}</h2>
+    <h2 class="restaurant-full-name">{{name}}
+        {{#smiley}}
+        <a href="{{smiley_url}}"><img src="{{smiley_img}}"/></a>
+        {{/smiley}}
+    </h2>
     <div class="row">
         <p> Min price: {{minimum_order}}</p>
         <p> Delivery fee: {{delivery_fee}}</p>

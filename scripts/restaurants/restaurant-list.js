@@ -25,7 +25,6 @@ params.delete('city');
 const newUrl = url.origin + url.pathname + '?' + params.toString();
 window.history.replaceState({}, document.title, newUrl);
 
-console.log(restaurants.partners);
 const formattedData = {
     restaurant_lists: [
         {
@@ -45,7 +44,6 @@ const formattedData = {
         }
     ]
 };
-console.log(formattedData);
 
 const data = {
     "restaurnat-lists": [

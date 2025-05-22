@@ -29,7 +29,7 @@ export const getRestaurantDetail = async () => {
     opening_hours.hours = opening_hours.hours.sort((a, b) => a.day_of_week - b.day_of_week);
 
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    
+
     let templateData = {
         id: restaurantDetail.id.toString(),
         name: restaurantDetail.name,
@@ -45,8 +45,11 @@ export const getRestaurantDetail = async () => {
                 day: daysOfWeek[item.day_of_week], // Map day_of_week to day name
                 hours: `${item.opens_at.slice(0, 5)} - ${item.closes_at.slice(0, 5)}` // Format opening and closing hours
             };
-        })
+        }),
+        smiley: restaurantDetail.smiley_report_link ? {
+            smiley_url: restaurantDetail.smiley_report_link,
+            smiley_img: restaurantDetail.smiley_image_url,
+        } : null,
     };
-
     return templateData;
 }

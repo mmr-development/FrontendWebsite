@@ -1,14 +1,14 @@
-    {{#orders}}
-    <div class="order" data-id="{{id}}">
-        <div class="order-header">
-            <span class="order-id">Order ID: {{id}}</span>
-            <span class="order-status">{{status}}</span>
-        </div>
-        <div class="order-details">
-            <p><strong>Customer Name:</strong> {{customer_name}}</p>
-            <p><strong>Delivery Address:</strong> {{delivery_address}}</p>
-            <p><strong>Total Amount:</strong> {{total_amount}}</p>
-        </div>
-        <button class="view-order-details" data-id="{{id}}">View Details</button>
+{{#orders}}
+<div class="order" data-id="{{id}}">
+    <div class="order-header">
+        <span class="order-id">Order ID: {{id}}</span>
+        <span class="order-status">{{status}}</span>
     </div>
-    {{/orders}}
+    <div class="order-details">
+        <p><strong>Customer Name:</strong> {{customer_name}}</p>
+        <p><strong>Delivery Address:</strong> {{delivery_address}}</p>
+        <p><strong>Total Amount:</strong> {{total_amount}}</p>
+    </div>
+    <button class="view-order-details" data-id="{{id}}">View Details</button>
+</div>
+{{/orders}}

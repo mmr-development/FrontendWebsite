@@ -2,39 +2,7 @@ import { renderTemplate } from "../utils/rendertemplate.js";
 import * as api from "../utils/api.js";
 
 export const renderCourierForm = async () => {
-    let preferancehours = await api.get('couriers/hour-preferences/', api.includeCredentials).then((res) => {
-        if (res.status === 200) {
-            return res.data.hour_preferences.map((item) => {
-                return {
-                    value: item.id,
-                    text: item.name,
-                };
-            });
-        }
-        return null;
-    });
-    let preferanceavailability = await api.get('couriers/schedule-preferences/', api.includeCredentials).then((res) => {
-        if (res.status === 200) {
-            return res.data.schedule_preferences.map((item) => {
-                return {
-                    value: item.id,
-                    text: item.name,
-                };
-            });
-        }
-        return null;
-    });
-    let vehicleTypes = await api.get('couriers/vehicle-types/', api.includeCredentials).then((res) => {
-        if (res.status === 200) {
-            return res.data.vehicle_types.map((item) => {
-                return {
-                    value: item.id,
-                    text: item.name,
-                };
-            });
-        }
-        return null;
-    });
+
     let formdata = {
         action: 'thank-you.html',
         method: '',
@@ -101,7 +69,6 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'vehicle',
-                options: vehicleTypes,
             },
             {
                 id: 'availability',
@@ -111,7 +78,6 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'availability',
-                options: preferanceavailability,
             },
             {
                 id: 'work-hours',
@@ -121,13 +87,58 @@ export const renderCourierForm = async () => {
                 required: true,
                 select: true,
                 name: 'work-hours',
-                options: preferancehours,
             }
         ],
         title: 'Bliv bud',
         description: 'Udfyld formularen nedenfor for at blive bud.',
         submitText: 'Send ansøgning',
     };
+    renderTemplate(
+        '../../templates/partials/form.mustache',
+        'become-a-courier-form',
+        formdata
+    )
+    let preferancehours = await api.get('couriers/hour-preferences/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            return res.data.hour_preferences.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
+    formdata.fields.find((field) => field.id === 'work-hours').options = preferancehours;
+    let preferanceavailability = await api.get('couriers/schedule-preferences/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            return res.data.schedule_preferences.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
+    formdata.fields.find((field) => field.id === 'availability').options = preferanceavailability;
+    let vehicleTypes = await api.get('couriers/vehicle-types/', api.includeCredentials).then((res) => {
+        if (res.status === 200) {
+            return res.data.vehicle_types.map((item) => {
+                return {
+                    value: item.id,
+                    text: item.name,
+                };
+            });
+        }
+        return null;
+    });
+    formdata.fields.find((field) => field.id === 'vehicle').options = vehicleTypes;
+    if(!vehicleTypes || !preferanceavailability || !preferancehours) {
+        console.error("Failed to fetch vehicle types, availability preferences or work hours preferences.");
+        alert("Der opstod en fejl under indlæsning af formularen. Prøv igen senere.");
+        return;
+    }
     await renderTemplate(
         '../../templates/partials/form.mustache',
         'become-a-courier-form',

@@ -71,6 +71,15 @@ export const renderCheckout = async () => {
             start.setMinutes(start.getMinutes() + 5);
         }
     }
+    let userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+    if (userInfo)
+        userinfo = {
+            'customer-firstname': userInfo.first_name || '',
+            'customer-lastname': userInfo.last_name || '',
+            'customer-email': userInfo.email || '',
+            'customer-phone': userInfo.phone_number || ''
+        };
+        
 
     let formdata = {
         title: 'Contact Information',
@@ -86,6 +95,7 @@ export const renderCheckout = async () => {
                 placeholder: 'Enter your name',
                 required: true,
                 name: 'customer-firstname',
+                value: userInfo.first_name || '',
             },
             {
                 id: 'customer-lastname',
@@ -94,7 +104,7 @@ export const renderCheckout = async () => {
                 placeholder: 'Enter your lastname',
                 required: true,
                 name: 'customer-lastname',
-
+                value: userInfo.last_name || '',
             },
             {
                 id: 'customer-email',
@@ -103,6 +113,7 @@ export const renderCheckout = async () => {
                 placeholder: 'Enter your email',
                 required: true,
                 name: 'customer-email',
+                value: userInfo.email || '',
             },
             {
                 id: 'customer-phone',
@@ -111,6 +122,7 @@ export const renderCheckout = async () => {
                 placeholder: 'Enter your phone number',
                 required: true,
                 name: 'customer-phone',
+                value: userInfo.phone_number || '',
             }
         ]
     }
@@ -326,7 +338,8 @@ export const renderCheckout = async () => {
 
 
 let validateCheckout = (options) => {
-    if (!options.deliveryTime || !options.paymentMethod || Object.keys(userinfo).length !== 4) {
+    console.log(userinfo);
+    if (!options.paymentMethod || Object.keys(userinfo).length !== 4) {
         let checkoutButton = document.querySelector('.checkout-button');
         checkoutButton ?? checkoutButton.remove();
         return;
@@ -368,7 +381,7 @@ let validateCheckout = (options) => {
             order: {
                 partner_id: parseInt(restaurantId),
                 delivery_type: restaurantDelivery ? 'delivery' : 'pickup',
-                requested_delivery_time: options.deliveryTime,
+                requested_delivery_time: options.deliveryTime ? options.deliveryTime : new Date().toISOString(),
                 ...(options.deliveryTip ? { tip_amount: parseInt(options.deliveryTip)} : {}),
                 ...(options.deliveryNote ? { note: options.deliveryNote } : {}),
                 items: restaurantCart.map(item => ({

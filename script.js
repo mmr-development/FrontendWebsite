@@ -57,124 +57,246 @@ let renderDivBelow = (elementid) => {
 }
 
 async function baseRenderTemplates() {
-    let header = document.getElementById('header');
-    let footer = document.getElementById('footer');
-    if (header) {
-      renderTemplate('templates/partials/header.mustache', header.id, headerData).then(() => {
-        let isLoggedin = auth.isLoggedIn();
-          if (isLoggedin) {
-            const userInfoButton = document.querySelector('.user-info');
-            if (userInfoButton) {
-              userInfoButton.addEventListener('click', () => {
-                renderTemplate('templates/partials/user-info-modal.mustache', 'c-modal', {}).then(() => {
-                  const modal = document.getElementById('c-modal');
-                  console.log('Modal:', modal);
-                  modal.classList.add('active');
-                  if (modal) {
-                    const submitButton = modal.querySelector('.c-modal__close');
-                    console.log('Submit Button:', submitButton);
-                    submitButton.addEventListener('click', () => {
-                      modal.classList.remove('active');
-                    });
-                    let buttons = modal.querySelectorAll('.user-info-link');
-                    buttons.forEach((button) => {
-                      button.addEventListener('click', async (event) => {
-                      event.preventDefault();
-                      switch (button.id) {
-                        case 'user-orders':
-                        // get local storage data
-                        let orders = localStorage.getItem('userOrders');
-                        if (!orders) {
-                          orders = await api.get('orders').then((response) => {
-                            if (response.status === 200) {
-                              return response.data;
-                            }
-                            return [];
-                          });
-                          localStorage.setItem('userOrders', JSON.stringify(orders));
-                        }
+  let header = document.getElementById('header');
+  let footer = document.getElementById('footer');
 
-                        if (typeof orders === 'string') orders = JSON.parse(orders);
+  if (header) {
+    await renderTemplate('templates/partials/header.mustache', header.id, headerData);
 
-                        let orderFormated = orders.orders.map((order) => {
-                          order.formatedDate = new Date(order.requested_delivery_time).toLocaleDateString();
-                          order.formatedTime = new Date(order.requested_delivery_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                          order.formatedPrice = order.total_amount.toFixed(2);
-                          order.total_items = order.items.reduce((total, item) => total + item.quantity, 0);
-                          order.items = order.items.map(item => ({
-                            name: item.name,
-                            quantity: item.quantity,
-                            price: item.price
-                          }));
-                          return order;
-                        });
-                        renderDivBelow(button.id).innerHTML = `
-                        <div class="orders-list">
-                        ${orderFormated.map(order => `
-                        <div class="order-item" id="order-${order.id}">
-                        <h3>Order #${order.id}</h3>
-                        <p>Date: ${order.formatedDate}</p>
-                        <p>Time: ${order.formatedTime}</p>
-                        <p>Total Items: ${order.total_items}</p>
-                        <p>Total Price: $${order.formatedPrice}</p>
-                        </div>
-                        `).join('')}
-                        </div>`;
+    let isLoggedin = auth.isLoggedIn();
+    if (isLoggedin) {
+      const userInfoButtons = document.querySelectorAll('.user-info');
+      let orders = localStorage.getItem('userOrders');
+      if (!orders) {
+        orders = await api.get('orders').then((response) => {
+          if (response.status === 200) {
+            console.log('Orders fetched:', response.data);
+            return response.data;
+          }
+          return [];
+        });
+        localStorage.setItem('userOrders', JSON.stringify(orders));
+      }
 
-                        let orderItems = document.querySelectorAll('.order-item');
-                        orderItems.forEach((orderItem) => {
-                          orderItem.addEventListener('click', () => {
-                            if (orderItem.classList.contains('active')) {
-                              orderItem.classList.remove('active');
-                              return;
-                            }
-                            orderItems.forEach(item => item.classList.remove('active'));
-                            orderItem.classList.add('active');
-                          });
-                        });
-                          
-                        break;
-                        case 'user-info':
-                        let userInfo = localStorage.getItem('userInfo');
-                        if (!userInfo) {
-                          userInfo = await api.get('auth/user-info').then((response) => {
-                            if (response.status === 200) {
-                              return response.data;
-                            }
-                            return {};
-                          });
-                          localStorage.setItem('userInfo', JSON.stringify(userInfo));
-                        }
-                        renderDivBelow(button.id).innerHTML = '<p>User Orders List</p>';
-                        break;
-                        case 'user-settings':
-                        // Show user settings
-                        renderDivBelow(button.id).innerHTML = '<p>User Settings</p>';
-                        break;
-                        default:
-                        renderDivBelow(button.id).innerHTML = '<p>Unknown action</p>';
+      let userInfo = localStorage.getItem('userInfo');
+      if (!userInfo) {
+        userInfo = await api.get('users/profile/').then((response) => {
+          if (response.status === 200) {
+            console.log('User Info fetched:', response.data);
+            return response.data;
+          }
+          return {};
+        });
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      }
+      console.log('User Info:', userInfo);
+
+      if (userInfoButtons) {
+        userInfoButtons.forEach(userInfoButton => {
+          userInfoButton.addEventListener('click', async () => {
+          console.log('User info button clicked');
+          await renderTemplate('templates/partials/user-info-modal.mustache', 'c-modal', {});
+          const modal = document.getElementById('c-modal');
+          if (!modal) return;
+          modal.classList.add('active');
+
+          const submitButton = modal.querySelector('.c-modal__close');
+          if (submitButton) {
+            submitButton.addEventListener('click', () => {
+              modal.classList.remove('active');
+            });
+          }
+
+          let buttons = modal.querySelectorAll('.user-info-link');
+          buttons.forEach((button) => {
+            button.addEventListener('click', async (event) => {
+              event.preventDefault();
+              switch (button.id) {
+                case 'user-orders': {
+                  if (typeof orders === 'string') orders = JSON.parse(orders);
+
+                  let orderFormated = orders.orders.map((order) => {
+                    order.formatedDate = new Date(order.requested_delivery_time).toLocaleDateString();
+                    order.formatedTime = new Date(order.requested_delivery_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    order.formatedPrice = order.total_amount.toFixed(2);
+                    order.total_items = order.items.reduce((total, item) => total + item.quantity, 0);
+                    order.items = order.items.map(item => ({
+                      name: item.name,
+                      quantity: item.quantity,
+                      price: item.price
+                    }));
+                    return order;
+                  });
+
+                  let div = renderDivBelow(button.id);
+                  if (div) {
+                    div.innerHTML = `
+                    <div class="orders-list">
+                    ${orderFormated.map(order => `
+                    <div class="order-item" id="order-${order.id}">
+                    <h3>Order #${order.id}</h3>
+                    <p>Date: ${order.formatedDate}</p>
+                    <p>Time: ${order.formatedTime}</p>
+                    <p>Total Items: ${order.total_items}</p>
+                    <p>Total Price: $${order.formatedPrice}</p>
+                    </div>
+                    `).join('')}
+                    </div>`;
+                  }
+
+                  let orderItems = document.querySelectorAll('.order-item');
+                  orderItems.forEach((orderItem) => {
+                    orderItem.addEventListener('click', () => {
+                      if (orderItem.classList.contains('active')) {
+                        orderItem.classList.remove('active');
+                        return;
                       }
-                      });
+                      orderItems.forEach(item => item.classList.remove('active'));
+                      orderItem.classList.add('active');
+                    });
+                  });
+                  break;
+                }
+                case 'user-info': {
+                  if (typeof userInfo === 'string') userInfo = JSON.parse(userInfo);
+                  let div = renderDivBelow(button.id);
+                    // Disable the user info form by adding the 'disabled' attribute to all inputs and disabling the submit button
+                    
+                    if (Array.isArray(userInfo.address)) {
+                      userInfo.address = userInfo.address
+                        .map(address => `${address.street} ${address.address_detail}, ${address.postal_code} ${address.city}`)
+                        .join('; ');
+                    } else if (userInfo.address && typeof userInfo.address === 'object') {
+                      userInfo.address = `${userInfo.address.street || ''} ${userInfo.address.address_detail || ''}, ${userInfo.address.postal_code || ''} ${userInfo.address.city || ''}`;
+                    } else if (typeof userInfo.address === 'string') {
+                      // Already a string, do nothing
+                    }
+                    console.log('User Info:', userInfo);
+                    div.innerHTML =
+                      `<form class="user-info-edit-form">
+                        <div>
+                          <label for="first_name"><strong>First Name:</strong></label>
+                          <input type="text" id="first_name" name="first_name" value="${userInfo.first_name || ''}" required >
+                          <label for="last_name"><strong>Last Name:</strong></label>
+                          <input type="text" id="last_name" name="last_name" value="${userInfo.last_name || ''}" required>
+                        </div>
+                        <div>
+                          <label for="email"><strong>Email:</strong></label>
+                          <input type="email" id="email" name="email" value="${userInfo.email || ''}" required disabled>
+                        </div>
+                        <div>
+                          <label for="phone_number"><strong>Phone:</strong></label>
+                          <input type="tel" id="phone_number" name="phone_number" value="${userInfo.phone_number || ''}" >
+                        </div>
+                        <div>
+                          <label for="address"><strong>Address:</strong></label>
+                          <input type="text" id="address" name="address" value="${userInfo.address || ''}" >
+                          <div id="dawa-autocomplete-container"></div>
+                        </div>
+                        <button type="submit">Save</button>
+                      </form>`;
+
+                  let form = div.querySelector('.user-info-edit-form');
+                  if (form) {
+                    // add dawa autocomplete to the address input
+                    let addressInput = form.querySelector('#address');
+                    let customerAddress;
+                    let selectedAddress;
+                    console.log(window.dawaAutocomplete);
+                    if (window.dawaAutocomplete) {
+                        window.dawaAutocomplete.dawaAutocomplete(addressInput, {
+                          container: form.querySelector('#dawa-autocomplete-container'),
+                          maxResults: 5,
+                          select: function(selected) {
+                            addressInput.value = selected.tekst;
+                            if (submitButton) submitButton.style.display = "block";
+                            const addressData = {
+                              ...selected.data,
+                              latitude: selected.data.x || null,
+                              longitude: selected.data.y || null
+                            };
+                            customerAddress = {
+                              country: "Denmark", // Default country
+                              country_iso: "DK", // Default ISO code
+                              city: addressData.postnrnavn || "",
+                              street: addressData.vejnavn || "",
+                              postal_code: addressData.postnr || "",
+                              address_detail: `${addressData.husnr || ""} ${addressData.etage || ""} ${addressData.dør || ""}`.trim(),
+                              latitude: addressData.latitude,
+                              longitude: addressData.longitude
+                            };
+                            selected.data.longitude = addressData.longitude;
+                            selected.data.latitude = addressData.latitude;
+                            selectedAddress = selected;
+                          }
+                        });
+                    }
+                    form.addEventListener('submit', async (e) => {
+                      e.preventDefault();
+                      let formData = new FormData(form);
+                      let data = {
+                        first_name: formData.get('first_name'),
+                        last_name: formData.get('last_name'),
+                        email: form.querySelector('#email').value,
+                        phone_number: formData.get('phone_number'),
+                        address: customerAddress
+                      };
+                      let response = await api.patch('users/profile/', data);
+                      if (response.status === 200) {
+                        localStorage.setItem('userInfo', JSON.stringify(data));
+                        sessionStorage.setItem('address', JSON.stringify(selectedAddress));
+                        userInfo = data;
+                      }
                     });
                   }
-                });
-              });
-            }
-          }
-
-        document.querySelector('.login-button').addEventListener('click', (event) => {
-          event.preventDefault();
-          if (role === null) {
-            window.location.href = '/pages/login.html';
-          } else {
-            auth.Logout();
-          }
+                  break;
+                }
+                case 'user-settings': {
+                  let div = renderDivBelow(button.id);
+                  if (div) div.innerHTML = '<p>User Settings</p>';
+                  break;
+                }
+                default: {
+                  let div = renderDivBelow(button.id);
+                  if (div) div.innerHTML = '<p>Unknown action</p>';
+                }
+              }
+              
+            });
+          });
         });
+        });
+      }
+    }
+
+    const loginButton = document.querySelector('.login-button');
+    if (loginButton) {
+      loginButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (role === null) {
+          window.location.href = '/pages/login.html';
+        } else {
+          auth.Logout();
+        }
       });
     }
-    if (footer) {
-      renderTemplate('templates/partials/footer.mustache', footer.id, footerData);
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuOverlay = document.getElementById('menu-overlay');
+    if (menuToggle && menuOverlay) {
+      menuToggle.addEventListener('click', () => {
+        menuOverlay.classList.toggle('active');
+      });
+
+      menuOverlay.addEventListener('click', (e) => {
+        if (e.target === menuOverlay) menuOverlay.classList.remove('active');
+      });
     }
+  }
+
+  if (footer) {
+    renderTemplate('templates/partials/footer.mustache', footer.id, footerData);
+  }
 }
 
 baseRenderTemplates();

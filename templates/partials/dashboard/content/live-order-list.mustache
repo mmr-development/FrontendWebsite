@@ -5,10 +5,20 @@
         <span class="order-status">{{status}}</span>
     </div>
     <div class="order-details">
-        <p><strong>Customer Name:</strong> {{customer_name}}</p>
-        <p><strong>Delivery Address:</strong> {{delivery_address}}</p>
-        <p><strong>Total Amount:</strong> {{total_amount}}</p>
+        <p><strong>Note:</strong> {{note}}</p>
+        <p><strong>Requested At:</strong> {{requested_delivery_time}}</p>
     </div>
-    <button class="view-order-details" data-id="{{id}}">View Details</button>
+    <div class="order-items">
+        {{#items}}
+        <div class="order-item">
+            <span class="item-name">{{name}}</span>
+            <span class="item-quantity">Quantity: {{quantity}}</span>
+        </div>
+        {{/items}}
+    </div>
+    <div class="order-actions">
+        <button class="btn btn-primary" data-order-id="{{id}}" data-action="reject">Reject</button>
+        <button class="btn btn-secondary" data-order-id="{{id}}" data-action="accpet">{{nextStatus}}</button>
+    </div>
 </div>
 {{/orders}}

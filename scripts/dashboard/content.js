@@ -36,7 +36,8 @@ export const renderDashboardContent = async () => {
             { id: 'catalog', url: '#catalog' },
             { id: 'partner-hours', url: '#partner-hours' },
             { id: 'partner-details', url: '#partner-details' },
-            { id: 'schema-planner', url: '#schema-planner' }
+            { id: 'schema-planner', url: '#schema-planner' },
+            { id: 'live-orders', url: '#live-orders' }
         );
     } else if (auth.isSupport()) {
         pages.push(

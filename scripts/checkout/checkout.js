@@ -251,7 +251,6 @@ export const renderCheckout = async () => {
                     tipP.appendChild(tipValue);
                     basket.appendChild(tipP);
                     validateCheckout(filledoutoptions);
-                    console.log(filledoutoptions);
 
                 });
             });
@@ -401,7 +400,13 @@ let validateCheckout = (options) => {
                     await api.post('orders', order, api.includeCredentials).then((res) => {
                         if(res.status === 201) {
                             localStorage.setItem('orderConfirm', JSON.stringify(res.data));	
+                            localStorage.removeItem('restaurantCarts');
+                            localStorage.removeItem('delivery');
+                            localStorage.removeItem('orderConfirm');
+                            localStorage.removeItem('restaurantCarts');
+                            localStorage.removeItem('userOrders');
                             window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;
+                        
                         }
                     });
                 });

@@ -107,6 +107,36 @@
           background-color: vars.$hover-color;
         }
       }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: vars.$background;
+        border: 1px solid vars.$border-color;
+        border-radius: vars.$border-radius;
+        padding: 0.5rem 1rem;
+        color: vars.$text-color;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s;
+
+        .user-icon {
+          font-size: 1.3rem;
+          color: vars.$primary-color;
+        }
+
+        .user-name {
+          font-size: 1rem;
+        }
+
+        &:hover, &:focus {
+          background: vars.$hover-color;
+          color: vars.$background;
+          .user-icon {
+            color: vars.$background;
+          }
+        }
+      }
     }
   }
 

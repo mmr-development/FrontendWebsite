@@ -23,7 +23,14 @@
           {{/languages}}
         </select>
         <a href="{{authUrl}}" class="login-button">{{authText}}</a>
+        {{#userInfo}}
+        <button class="user-info"  aria-label="User Info">
+          <i class="fa fa-user user-icon"></i>
+        </button>
+        <div id="user-info-modal"></div>
+        {{/userInfo}}
       </div>
     </nav>
   </div>
+  <div id="c-modal" class="c-modal"></div>
 </header>

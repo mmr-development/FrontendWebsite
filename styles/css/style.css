@@ -91,6 +91,33 @@
 .header .navbar .navbar-right .login-button:hover {
   background-color: #1e8f5a;
 }
+.header .navbar .navbar-right .user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ebf8f1;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #1B5E20;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.header .navbar .navbar-right .user-info .user-icon {
+  font-size: 1.3rem;
+  color: #2cb673;
+}
+.header .navbar .navbar-right .user-info .user-name {
+  font-size: 1rem;
+}
+.header .navbar .navbar-right .user-info:hover, .header .navbar .navbar-right .user-info:focus {
+  background: #1e8f5a;
+  color: #ebf8f1;
+}
+.header .navbar .navbar-right .user-info:hover .user-icon, .header .navbar .navbar-right .user-info:focus .user-icon {
+  color: #ebf8f1;
+}
 @media (max-width: 768px) {
   .header .menu-toggle {
     display: block;
@@ -2455,6 +2482,8 @@
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
+  max-width: 100v !important;
+  max-height: 100vh !important;
 }
 #c-modal.active .c-modal__content, #c-modal.active .modal-content, #modal.active .c-modal__content, #modal.active .modal-content {
   display: flex;
@@ -2486,6 +2515,7 @@
   color: #1B5E20;
   cursor: pointer;
   scale: 2;
+  margin-left: 10px;
 }
 #c-modal.active .c-modal__content .c-modal__header .c-modal__close:hover, #c-modal.active .c-modal__content .c-modal__header .close-modal:hover, #c-modal.active .c-modal__content .modal-header .c-modal__close:hover, #c-modal.active .c-modal__content .modal-header .close-modal:hover, #c-modal.active .modal-content .c-modal__header .c-modal__close:hover, #c-modal.active .modal-content .c-modal__header .close-modal:hover, #c-modal.active .modal-content .modal-header .c-modal__close:hover, #c-modal.active .modal-content .modal-header .close-modal:hover, #modal.active .c-modal__content .c-modal__header .c-modal__close:hover, #modal.active .c-modal__content .c-modal__header .close-modal:hover, #modal.active .c-modal__content .modal-header .c-modal__close:hover, #modal.active .c-modal__content .modal-header .close-modal:hover, #modal.active .modal-content .c-modal__header .c-modal__close:hover, #modal.active .modal-content .c-modal__header .close-modal:hover, #modal.active .modal-content .modal-header .c-modal__close:hover, #modal.active .modal-content .modal-header .close-modal:hover {
   color: #2cb673;
@@ -2601,6 +2631,82 @@
   max-width: 100%;
   max-height: 100%;
   border-radius: 10px;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav, #c-modal.active .c-modal__content .modal-body .user-info-nav, #c-modal.active .modal-content .c-modal__body .user-info-nav, #c-modal.active .modal-content .modal-body .user-info-nav, #modal.active .c-modal__content .c-modal__body .user-info-nav, #modal.active .c-modal__content .modal-body .user-info-nav, #modal.active .modal-content .c-modal__body .user-info-nav, #modal.active .modal-content .modal-body .user-info-nav {
+  width: 100%;
+  background-color: #ebf8f1;
+  border-radius: 8px;
+  padding: 10px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav ul, #c-modal.active .c-modal__content .modal-body .user-info-nav ul, #c-modal.active .modal-content .c-modal__body .user-info-nav ul, #c-modal.active .modal-content .modal-body .user-info-nav ul, #modal.active .c-modal__content .c-modal__body .user-info-nav ul, #modal.active .c-modal__content .modal-body .user-info-nav ul, #modal.active .modal-content .c-modal__body .user-info-nav ul, #modal.active .modal-content .modal-body .user-info-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav ul li, #c-modal.active .c-modal__content .modal-body .user-info-nav ul li, #c-modal.active .modal-content .c-modal__body .user-info-nav ul li, #c-modal.active .modal-content .modal-body .user-info-nav ul li, #modal.active .c-modal__content .c-modal__body .user-info-nav ul li, #modal.active .c-modal__content .modal-body .user-info-nav ul li, #modal.active .modal-content .c-modal__body .user-info-nav ul li, #modal.active .modal-content .modal-body .user-info-nav ul li {
+  margin-bottom: 8px;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav ul li:last-child, #c-modal.active .c-modal__content .modal-body .user-info-nav ul li:last-child, #c-modal.active .modal-content .c-modal__body .user-info-nav ul li:last-child, #c-modal.active .modal-content .modal-body .user-info-nav ul li:last-child, #modal.active .c-modal__content .c-modal__body .user-info-nav ul li:last-child, #modal.active .c-modal__content .modal-body .user-info-nav ul li:last-child, #modal.active .modal-content .c-modal__body .user-info-nav ul li:last-child, #modal.active .modal-content .modal-body .user-info-nav ul li:last-child {
+  margin-bottom: 0;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link, #modal.active .modal-content .modal-body .user-info-nav .user-info-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  color: #1B5E20;
+  font-size: 16px;
+  padding: 12px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link i, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link i, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link i, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link i, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link i, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link i, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link i, #modal.active .modal-content .modal-body .user-info-nav .user-info-link i {
+  font-size: 1.2em;
+  color: #2cb673;
+  min-width: 20px;
+  text-align: center;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:hover, #c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:focus, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:hover, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:focus, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:hover, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:focus, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link:hover, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link:focus, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:hover, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:focus, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:hover, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:focus, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:hover, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:focus, #modal.active .modal-content .modal-body .user-info-nav .user-info-link:hover, #modal.active .modal-content .modal-body .user-info-nav .user-info-link:focus {
+  background-color: #1e8f5a;
+  color: #ebf8f1;
+  outline: none;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:hover i, #c-modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:focus i, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:hover i, #c-modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:focus i, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:hover i, #c-modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:focus i, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link:hover i, #c-modal.active .modal-content .modal-body .user-info-nav .user-info-link:focus i, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:hover i, #modal.active .c-modal__content .c-modal__body .user-info-nav .user-info-link:focus i, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:hover i, #modal.active .c-modal__content .modal-body .user-info-nav .user-info-link:focus i, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:hover i, #modal.active .modal-content .c-modal__body .user-info-nav .user-info-link:focus i, #modal.active .modal-content .modal-body .user-info-nav .user-info-link:hover i, #modal.active .modal-content .modal-body .user-info-nav .user-info-link:focus i {
+  color: #ebf8f1;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list, #modal.active .modal-content .modal-body .user-info-nav .orders-list {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item, #modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 10px;
+  transition: box-shadow 0.2s;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item h3, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item h3, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item h3, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item h3, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item h3, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item h3, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item h3, #modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.15rem;
+  color: #007bff;
+  font-weight: 600;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item p, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item p, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item p, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item p, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item p, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item p, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item p, #modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item p {
+  display: none;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item:hover, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item:hover, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item:hover, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item:hover, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item:hover, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item:hover, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item:hover, #modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-left-color: #0056b3;
+}
+#c-modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item.active p, #c-modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item.active p, #c-modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item.active p, #c-modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item.active p, #modal.active .c-modal__content .c-modal__body .user-info-nav .orders-list .order-item.active p, #modal.active .c-modal__content .modal-body .user-info-nav .orders-list .order-item.active p, #modal.active .modal-content .c-modal__body .user-info-nav .orders-list .order-item.active p, #modal.active .modal-content .modal-body .user-info-nav .orders-list .order-item.active p {
+  display: block;
 }
 #c-modal.active .c-modal__content .c-modal__footer, #c-modal.active .c-modal__content .modal-footer, #c-modal.active .modal-content .c-modal__footer, #c-modal.active .modal-content .modal-footer, #modal.active .c-modal__content .c-modal__footer, #modal.active .c-modal__content .modal-footer, #modal.active .modal-content .c-modal__footer, #modal.active .modal-content .modal-footer {
   display: flex;

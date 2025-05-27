@@ -1897,6 +1897,43 @@
 .dashboard-wrapper #dashboard-content .dashboard-page#catalog .catalog .catalog-container .categories .category .items li .delete-item.delete-item:hover {
   background-color: #c82333;
 }
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn {
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-primary {
+  background: #007bff;
+  color: #fff;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-primary:hover {
+  background: #0056b3;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-danger:hover {
+  background: #b52a37;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#users .action-buttons .btn.btn-secondary:hover {
+  background: #495057;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container {
   display: flex;
   flex-direction: row;
@@ -2201,6 +2238,47 @@
 .dashboard-wrapper #dashboard-content .dashboard-page#partner-details .partner-details form div:last-child .btn:hover {
   background: #0056b3;
 }
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .create-schedule-button {
+  display: flex;
+  margin-bottom: 18px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .create-schedule-button #create-schedule {
+  padding: 10px 28px;
+  font-size: 1.08rem;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .create-schedule-button #create-schedule:hover, .dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .create-schedule-button #create-schedule:focus {
+  background: #0056b3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #previous-week,
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #next-week {
+  padding: 8px 22px;
+  margin: 0 8px 18px 0;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #6c757d;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #previous-week:hover, .dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #previous-week:focus,
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #next-week:hover,
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #next-week:focus {
+  background: #495057;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#schema-planner #next-page {
+  margin-right: 0;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page#schema-planner .schedule-planner-table {
   display: flex;
   flex-direction: row;
@@ -2249,7 +2327,7 @@
   gap: 8px;
   padding: 12px;
   width: 100%;
-  height: 100px;
+  height: auto;
   background-color: #fff;
   border-left: 4px solid #007bff;
   border-radius: 6px;
@@ -2281,7 +2359,7 @@
     height: auto;
   }
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
@@ -2290,7 +2368,7 @@
   padding: 24px;
   background: #ebf8f1;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2305,17 +2383,17 @@
   transition: box-shadow 0.2s;
   border-left: 6px solid #2cb673;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border-left: 6px solid #b1e2c6;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   margin-top: 16px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions .btn {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions .btn {
   padding: 8px 18px;
   border-radius: 8px;
   font-size: 1rem;
@@ -2325,32 +2403,32 @@
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions .btn.btn-primary {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions .btn.btn-primary {
   background: #dc3545;
   color: #fff;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions .btn.btn-primary:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions .btn.btn-primary:hover {
   background: #b52a37;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions .btn.btn-secondary {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions .btn.btn-secondary {
   background: #007bff;
   color: #fff;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-actions .btn.btn-secondary:hover {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-actions .btn.btn-secondary:hover {
   background: #0056b3;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-header {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-header .order-id {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-header .order-id {
   font-weight: bold;
   color: #2cb673;
   font-size: 1.1rem;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-header .order-status {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-header .order-status {
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.95rem;
@@ -2361,24 +2439,24 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-details {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-details {
   margin-bottom: 12px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-details p {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-details p {
   margin: 0 0 4px 0;
   font-size: 0.98rem;
   color: #1B5E20;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-details p strong {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-details p strong {
   color: #2cb673;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-items {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-items {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-bottom: 8px;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-items .order-item {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-items .order-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2387,22 +2465,12 @@
   padding: 6px 10px;
   font-size: 0.97rem;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-items .order-item .item-name {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-items .order-item .item-name {
   font-weight: 500;
 }
-.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .order .order-items .order-item .item-quantity {
+.dashboard-wrapper #dashboard-content .dashboard-page#live-orders .live-order-list .orders .order .order-items .order-item .item-quantity {
   color: #b1e2c6;
   font-weight: 600;
-}
-@media (max-width: 900px) {
-  .dashboard-wrapper #dashboard-content .dashboard-page .live-orders-list {
-    gap: 16px;
-    padding: 12px;
-  }
-  .dashboard-wrapper #dashboard-content .dashboard-page .live-orders-list .order {
-    min-width: 90vw;
-    max-width: 100vw;
-  }
 }
 .dashboard-wrapper #dashboard-content .dashboard-page .table-container {
   width: calc(100% - 40px);

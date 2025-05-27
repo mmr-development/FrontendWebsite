@@ -77,7 +77,7 @@ export const renderDashboardContent = async () => {
         await Promise.all([
             renderCatalog('catalog', 0, partnerid, partners),
             renderOrders('orders', 0, partnerid, partners),
-            renderLiveOrders('live-orders', partnerid),
+            renderLiveOrders('live-orders', partnerid, partners),
             renderPartnerHours('partner-hours', partnerid, partners),
             renderParnterDetails('partner-details', partnerid, partners),
         ]);

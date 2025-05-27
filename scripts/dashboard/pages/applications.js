@@ -17,6 +17,8 @@ const renderPartnerApplications = async (container, offset = 0) => {
     ));
 
     columns.push('actions');
+    console.log('columns', columns);
+    console.log('apiData', apiData);
     const rows = apiData.applications.map(application => {
         return {
             id: application.id,
@@ -31,16 +33,31 @@ const renderPartnerApplications = async (container, offset = 0) => {
                 }
                 else if (column === 'delivery_methods') {
                     return application[column].map(method => method.name).join(', ') || 'N/A';
+                } else if (column === 'contact_person') {
+                    // If contact_person is an object, display its details
+                    const person = application[column];
+                    if (!person) return 'N/A';
+                    // Show name, email, and phone if available
+                    return [person.first_name, person.last_name, person.email, person.phone_number]
+                        .filter(Boolean)
+                        .join(', ') || 'N/A';
+                } else if (column === 'address' ) {
+                    // If address is an object, display its details
+                    const address = application[column];
+                    if (!address) return 'N/A';
+                    return [address.street, address.city, address.postal_code, address.country]
+                        .filter(Boolean)
+                        .join(', ') || 'N/A';
                 }
                 return application[column]?.name || application[column];
             })
         };
     });
-    const totalPages = Math.ceil(apiData.pagination.total / apiData.pagination.limit);
 
     const templateData = {
         totalItems: apiData.pagination.total,
         itemsPerPage: apiData.pagination.limit,
+        currentPage: Math.floor(offset / apiData.pagination.limit) + 1,
         paginationContainer: container + '-pagination',
         search: false,
         select: false,
@@ -86,7 +103,7 @@ const renderCourierApplications = async (container, offset = 0) => {
 
     if (!apiData.applications) {
         const templateData = {
-            currentPage: 1,
+            currentPage: Math.floor(offset / apiData.pagination.limit) + 1,
             totalPages: 1,
             paginationid: container + '-pagination',
             search: false,
@@ -142,6 +159,7 @@ const renderCourierApplications = async (container, offset = 0) => {
         },
         totalItems: apiData.pagination.total,
         itemsPerPage: apiData.pagination.limit,
+        currentPage: Math.floor(offset / apiData.pagination.limit) + 1,
         paginationContainer: container + '-pagination',
         search: false,
         select: false,

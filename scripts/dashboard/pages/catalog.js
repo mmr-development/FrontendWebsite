@@ -358,21 +358,21 @@ export const renderCatalog = async (container) => {
         };
     });
 
-data.catalogs.forEach(catalog => {
-    // Collapse by default if not already set
-    if (collapsedState.catalogs[catalog.id] === undefined) {
-        collapsedState.catalogs[catalog.id] = true;
-    }
-    catalog.collapsed = !!collapsedState.catalogs[catalog.id];
-    if (catalog.categories) {
-        catalog.categories.forEach(category => {
-            if (collapsedState.categories[category.id] === undefined) {
-                collapsedState.categories[category.id] = true;
-            }
-            category.collapsed = !!collapsedState.categories[category.id];
-        });
-    }
-});
+    data.catalogs.forEach(catalog => {
+        // Collapse by default if not already set
+        if (collapsedState.catalogs[catalog.id] === undefined) {
+            collapsedState.catalogs[catalog.id] = true;
+        }
+        catalog.collapsed = !!collapsedState.catalogs[catalog.id];
+        if (catalog.categories) {
+            catalog.categories.forEach(category => {
+                if (collapsedState.categories[category.id] === undefined) {
+                    collapsedState.categories[category.id] = true;
+                }
+                category.collapsed = !!collapsedState.categories[category.id];
+            });
+        }
+    });
 
     await renderTemplate(
         '../../templates/partials/dashboard/pages/catalog.mustache',

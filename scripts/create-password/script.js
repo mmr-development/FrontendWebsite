@@ -25,8 +25,9 @@ if (form) {
             alert('Passwords do not match');
             return;
         }
-        api.post('auth/create-password', { token: token, password: password }, api.includeCredentials).then((res) => {
+        api.post('auth/reset-password/'+token, {password: password,confirm_password: confirmPassword}, api.includeCredentials).then((res) => {
             if (res.status === 200) {
+                // remove token from local storage
                 localStorage.removeItem('token');
                 window.location.href = '/pages/login.html';
             } else {

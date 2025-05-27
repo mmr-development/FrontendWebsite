@@ -1,0 +1,33 @@
+
+{{#orders}}
+<div class="order" data-id="{{id}}">
+    <div class="order-header">
+        <span class="order-id">Order ID: {{id}}</span>
+        <span class="order-status" data-status="{{nextStatusKey}}">{{status}}</span>
+    </div>
+    <div class="order-details">
+        <p><strong>Note:</strong> {{note}}</p>
+        <p><strong>Requested At:</strong> {{requested_delivery_time}}</p>
+    </div>
+    <div class="order-items">
+        {{#items}}
+        <div class="order-item">
+            <span class="item-name">{{name}}</span>
+            <span class="item-quantity">Quantity: {{quantity}}</span>
+        </div>
+        {{#note}}<p><strong>Note:</strong>{{note}}</p>{{/note}}
+        {{/items}}
+    </div>
+    <div class="order-actions">
+        <button class="btn btn-primary" data-order-id="{{id}}" data-action="reject">Afvis</button>
+        {{#nextStatusKey}}
+        <button class="btn btn-secondary" data-order-id="{{id}}" data-action="accept">{{nextStatus}}</button>
+        {{/nextStatusKey}}
+    </div>
+</div>
+{{/orders}}
+{{^orders}}
+<div class="no-orders">
+    <p>No live orders available</p>
+</div>
+{{/orders}}

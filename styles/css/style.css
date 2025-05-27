@@ -1350,6 +1350,49 @@
 .await-confirmation #cancel-order-button:hover {
   background-color: #a71d2a;
 }
+.await-confirmation .order-confirmed-barber {
+  width: 100%;
+  max-width: 600px;
+  margin: 24px auto 0 auto;
+  padding: 32px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  left: -100vw;
+  opacity: 0;
+  background: repeating-linear-gradient(-45deg, #fff 0 21px, lime 21px 42px, #fff 42px 63px, lime 63px 84px);
+  background-size: 120px 120px;
+  animation: barber-bg-move 1.2s linear infinite;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  z-index: 10;
+  transition: left 0.7s cubic-bezier(0.77, 0, 0.18, 1), opacity 0.7s;
+}
+.await-confirmation .order-confirmed-barber span {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.5em 1.5em;
+  border-radius: 8px;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.await-confirmation .order-confirmed-barber.slide-in {
+  left: 0;
+  opacity: 1;
+}
+@keyframes barber-bg-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 120px 0;
+  }
+}
 
 .order-confirmation {
   padding: 20px;

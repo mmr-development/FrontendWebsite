@@ -2,7 +2,7 @@
 <div class="order" data-id="{{id}}">
     <div class="order-header">
         <span class="order-id">Order ID: {{id}}</span>
-        <span class="order-status">{{status}}</span>
+        <span class="order-status" data-status="{{nextStatusKey}}">{{status}}</span>
     </div>
     <div class="order-details">
         <p><strong>Note:</strong> {{note}}</p>
@@ -18,7 +18,7 @@
     </div>
     <div class="order-actions">
         <button class="btn btn-primary" data-order-id="{{id}}" data-action="reject">Reject</button>
-        <button class="btn btn-secondary" data-order-id="{{id}}" data-action="accpet">{{nextStatus}}</button>
+        <button class="btn btn-secondary" data-order-id="{{id}}" data-action="accept">{{nextStatus}}</button>
     </div>
 </div>
 {{/orders}}

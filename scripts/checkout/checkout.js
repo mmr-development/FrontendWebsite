@@ -415,7 +415,6 @@ let validateCheckout = (options) => {
                             localStorage.setItem('orderConfirm', JSON.stringify(res.data));	
                             localStorage.removeItem('restaurantCarts');
                             localStorage.removeItem('delivery');
-                            localStorage.removeItem('orderConfirm');
                             localStorage.removeItem('restaurantCarts');
                             localStorage.removeItem('userOrders');
                             window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;

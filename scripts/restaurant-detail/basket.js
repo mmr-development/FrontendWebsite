@@ -48,7 +48,7 @@ export const basketUpdate = async (delivery = true) => {
             note: item.note || '',
         }))
     };
-
+    if (!document.getElementById('basket')) return;
     await renderTemplate('../../templates/partials/restaurant-detail/basket.mustache', 'basket', data);
 
     let checkedinput = document.getElementById('toggle-checkbox');

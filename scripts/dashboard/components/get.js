@@ -10,7 +10,7 @@ export const renderGet = async (container,data) => {
     if (select) {
         select.addEventListener('change', (e) => {
             const selectedValue = e.target.value;
-            localStorage.setItem('selectedParntetId', selectedValue);
+            localStorage.setItem('selectedPartnerId', selectedValue);
             if (data.selectCallback) data.selectCallback(selectedValue);
         });
     }
@@ -21,7 +21,7 @@ export const renderGet = async (container,data) => {
     if (searchInput && searchButton) {
         searchButton.addEventListener('click', () => {
             const searchValue = searchInput.value;
-            localStorage.setItem('selectedParntetId', searchValue);
+            localStorage.setItem('selectedPartnerId', searchValue);
             if (data.searchCallback) {
                 data.searchCallback(searchValue);
             }

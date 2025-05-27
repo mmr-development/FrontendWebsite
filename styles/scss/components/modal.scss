@@ -16,6 +16,8 @@
     z-index: 9999;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+    max-width: 100v !important;
+    max-height: 100vh !important;
     
     .c-modal__content,  .modal-content{
         display: flex;
@@ -48,6 +50,7 @@
                 color: vars.$text-color;
                 cursor: pointer;
                 scale: 2;
+                margin-left: 10px;
     
                 &:hover {
                     color: vars.$primary-color;
@@ -182,6 +185,100 @@
                             max-width: 100%;
                             max-height: 100%;
                             border-radius: 10px;
+                        }
+                    }
+                }
+            }
+
+            // Remove ul and li defaults and style them nicely
+
+            .user-info-nav {
+                width: 100%;
+                background-color: vars.$background-light;
+                border-radius: 8px;
+                padding: 10px 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+
+                ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        margin-bottom: 8px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+
+                .user-info-link {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    background: none;
+                    border: none;
+                    color: vars.$text-color;
+                    font-size: vars.$font-size-medium;
+                    padding: 12px 18px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background 0.2s, color 0.2s;
+
+                    i {
+                        font-size: 1.2em;
+                        color: vars.$primary-color;
+                        min-width: 20px;
+                        text-align: center;
+                    }
+
+                    &:hover, &:focus {
+                        background-color: vars.$hover-color;
+                        color: vars.$background;
+                        outline: none;
+
+                        i {
+                            color: vars.$background;
+                        }
+                    }
+                
+                }
+                .orders-list {
+                    margin: 1.5rem 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                    padding: 0;
+
+                    .order-item {
+                        background: #fff;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+                        padding: 10px;
+                        transition: box-shadow 0.2s;
+
+                        h3 {
+                        margin: 0 0 0.5rem 0;
+                        font-size: 1.15rem;
+                        color: #007bff;
+                        font-weight: 600;
+                        }
+
+                        p {
+                            display: none;
+                        }
+
+                        &:hover {
+                        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+                        border-left-color: #0056b3;
+                        }
+
+                        &.active {
+                            p {
+                                display: block;
+                            }
                         }
                     }
                 }

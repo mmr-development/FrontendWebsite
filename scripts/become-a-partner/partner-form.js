@@ -2,19 +2,7 @@ import { renderTemplate } from "../utils/rendertemplate.js";
 import * as api from '../utils/api.js';
 
 export const renderPartnerForm = async () => {
-    let deliverymethods = await api.get('partners/delivery-methods/').then((response) => {
-        if (response.status === 200) {
-            return response.data.delivery_methods;
-        } 
-        return [];
-    })
-    let buisnessTypes = await api.get('partners/business-types/').then((response) => {
-        if (response.status === 200) {
-            return response.data.business_types;
-        }
-        return [];
-    })
-    let formdata = {
+     let formdata = {
         action: 'partner-form',
         method: 'POST',
         fields: [
@@ -83,15 +71,6 @@ export const renderPartnerForm = async () => {
                 placeholder: 'Vælg en leveringsmetode',
                 required: true,
                 name: 'delivery-method',
-                options:[
-                    ...deliverymethods.map(method => {
-                        return {
-                            value: method.id,
-                            text: method.name,
-                        }
-                    }),
-                ]
-                
             },
             {
                 id: 'business-type',
@@ -101,21 +80,41 @@ export const renderPartnerForm = async () => {
                 placeholder: 'Vælg en virksomhedstype',
                 required: true,
                 name: 'business-type',
-                options: [
-                    ...buisnessTypes.map(type => {
-                        return {
-                            value: type.id,
-                            text: type.name,
-                        }
-                    }),
-                ]
             },
         ],
         title: 'Bliv partner',
         description: 'Udfyld formularen nedenfor for at blive partner.',
         submitText: 'Send ansøgning',
     }
-
+    renderTemplate(
+        '../../templates/partials/form.mustache',
+        'become-a-partner-form',
+        formdata
+    );
+    let deliverymethods = await api.get('partners/delivery-methods/').then((response) => {
+        if (response.status === 200) {
+            return response.data.delivery_methods;
+        } 
+        return [];
+    })
+    formdata.fields.find((field) => field.id === 'delivery-method').options = deliverymethods.map(method => {
+        return {
+            value: method.id,
+            text: method.name,
+        };
+    });
+    let buisnessTypes = await api.get('partners/business-types/').then((response) => {
+        if (response.status === 200) {
+            return response.data.business_types;
+        }
+        return [];
+    })
+    formdata.fields.find((field) => field.id === 'business-type').options = buisnessTypes.map(type => {
+        return {
+            value: type.id,
+            text: type.name,
+        };
+    });
     await renderTemplate(
         '../../templates/partials/form.mustache',
         'become-a-partner-form',

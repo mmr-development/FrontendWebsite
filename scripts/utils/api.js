@@ -1,4 +1,5 @@
-const url = '9c87-77-241-136-45.ngrok-free.app/'
+// import BASE_URL from the environment variable
+const url = '546f-185-19-132-69.ngrok-free.app/';
 export const baseurl = 'https://' + url;
 export const wsurl = 'wss://' + url;
 const apiurl = baseurl + 'v1/';
@@ -14,7 +15,7 @@ const validateUrl = (url) => {
     return url;
 }
 
-const reauthenticate = async () => {
+export const reauthenticate = async () => {
     await fetch(getApiUrl('auth/refresh-token/'), {
         method: 'POST',
         credentials: 'include',
@@ -125,12 +126,16 @@ export const del = async (path, auth = false, tried = false) => {
     }
 }
 
-export const postImage = async (path, data) => {
+export const postImage = async (path, data, tried = false) => {
     const response = await fetch(getApiUrl(path), {
         method: 'POST',
         credentials: 'include',
         body: data,
     });
+    if(response.status === 401 && !tried) {
+        await reauthenticate();
+        return await postImage(path, data, true);
+    }
 
     return {
         status: response.status,

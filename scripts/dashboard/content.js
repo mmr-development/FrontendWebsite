@@ -9,6 +9,7 @@ import * as api from '../utils/api.js';
 import * as auth from "../utils/auth.js";
 import { renderChatTemplate } from "./pages/chat.js";
 import { renderSchemaPlanner } from "./pages/schema-planner.js";
+import { renderLiveOrders } from "./pages/live-orders.js";
 
 // get role from session storage
 const role = sessionStorage.getItem('role');
@@ -35,7 +36,8 @@ export const renderDashboardContent = async () => {
             { id: 'catalog', url: '#catalog' },
             { id: 'partner-hours', url: '#partner-hours' },
             { id: 'partner-details', url: '#partner-details' },
-            { id: 'schema-planner', url: '#schema-planner' }
+            { id: 'schema-planner', url: '#schema-planner' },
+            { id: 'live-orders', url: '#live-orders' }
         );
     } else if (auth.isSupport()) {
         pages.push(
@@ -60,7 +62,6 @@ export const renderDashboardContent = async () => {
             if (res.status === 200) {
                 partners = res.data;
                 if (partners.length > 0) {
-                    // Check if current partnerid is valid
                     const validPartner = partners.find(p => p.id === parseInt(partnerid));
                     if (!validPartner) {
                         partnerid = partners[0].id;
@@ -76,7 +77,7 @@ export const renderDashboardContent = async () => {
         await Promise.all([
             renderCatalog('catalog', 0, partnerid, partners),
             renderOrders('orders', 0, partnerid, partners),
-            // // renderLiveOrders('live-orders', partnerid), // Uncomment if needed
+            renderLiveOrders('live-orders', partnerid),
             renderPartnerHours('partner-hours', partnerid, partners),
             renderParnterDetails('partner-details', partnerid, partners),
         ]);

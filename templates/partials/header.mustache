@@ -6,9 +6,6 @@
           <img src="{{logoSrc}}" alt="{{logoAlt}}" />
         </a>
       </div>
-      <button class="menu-toggle" aria-label="Toggle navigation">
-        <span class="menu-icon"></span>
-      </button>
       <ul class="nav-list">
         {{#links}}
           <li class="nav-item">
@@ -23,7 +20,42 @@
           {{/languages}}
         </select>
         <a href="{{authUrl}}" class="login-button">{{authText}}</a>
+        {{#userInfo}}
+        <button class="user-info"  aria-label="User Info">
+          <i class="fa fa-user user-icon"></i>
+        </button>
+        <div id="user-info-modal"></div>
+        {{/userInfo}}
       </div>
+      <button class="menu-toggle" aria-label="Toggle Menu">
+        <i class="fa fa-bars"></i>
+      </button>
     </nav>
+  </div>
+  <div id="c-modal" class="c-modal"></div>
+  <div class="menu-overlay" id="menu-overlay">
+    <div class="menu-overlay-content">
+      <ul class="nav-list">
+        {{#links}}
+          <li class="nav-item">
+            <a href="{{url}}" class="nav-link">{{label}}</a>
+          </li>
+        {{/links}}
+      </ul>
+      <div class="navbar-right">
+        <select class="language-selector">
+          {{#languages}}
+            <option value="{{code}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+          {{/languages}}
+        </select>
+        <button class="login-button">{{authText}}</button>
+        {{#userInfo}}
+        <button class="user-info" aria-label="User Info">
+          <i class="fa fa-user user-icon"></i>
+        </button>
+        <div id="user-info-modal"></div>
+        {{/userInfo}}
+      </div>
+    </div>
   </div>
 </header>

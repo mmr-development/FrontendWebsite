@@ -44,11 +44,14 @@ export const renderOrders = async (container, offset = 0, partnerid = 0, partner
         if (showPartnerId) cells.unshift(order.partner_id || 'N/A');
         return { id: order.id, cells };
     });
+
+    let currentPage = Math.floor(offset / apiData.pagination.limit) + 1;
     
 
     const templateData = {
         totalItems: apiData.pagination.total,
         itemsPerPage: apiData.pagination.limit,
+        currentPage: currentPage,
         paginationContainer: container + '-pagination',
         select: partners && partners.length > 0,
         options: partners.map(partner => ({

@@ -1,7 +1,26 @@
 import { renderGet } from "../components/get.js";
+import { renderTemplate } from "../../utils/rendertemplate.js";
 import * as api from '../../utils/api.js';
 
 let roles = [];
+
+const resetPassword = async (email) => {
+    api.post('auth/forgot-password/', { email: email }).then((res) => {
+        if (res.status === 200) {
+            alert('Password reset link sent to ' + email);
+        }
+        else {
+            console.error('Error sending password reset link');
+        }
+    }
+    ).catch((error) => {
+        console.error('Error:', error);
+    }
+    );
+}
+
+window.resetPassword = resetPassword;
+
 export const renderUsers = async (container, offset = 0) => {
     const apiData = await api.get('users/?limit=5&offset=' + offset).then((res) => {
         if (res.status === 200) {
@@ -10,6 +29,12 @@ export const renderUsers = async (container, offset = 0) => {
         return [];
     });
 
+    const roles = await api.get('roles/').then((res) => {
+        if (res.status === 200) {
+            return res.data.roles || [];
+        }
+        return [];
+    });
     if (apiData.length === 0) {
         return;
     }
@@ -36,6 +61,7 @@ export const renderUsers = async (container, offset = 0) => {
                     <div class="action-buttons">
                         <button class="btn btn-primary" onclick="editUser('${user.id}')">Edit</button>
                         <button class="btn btn-danger" onclick="deleteUser('${user.id}')">Delete</button>
+                        <button class="btn btn-secondary" onclick="resetPassword('${user.email}')">Reset Password</button>
                     </div>
                     `;
                 }
@@ -52,18 +78,19 @@ export const renderUsers = async (container, offset = 0) => {
         },
         totalItems: apiData.pagination.total,
         itemsPerPage: apiData.pagination.limit,
+        currentPage: Math.floor(offset / apiData.pagination.limit) + 1,
         paginationContainer: container + '-pagination',
         search: true,
         select: false,
         pagination: true,
         pageCallback: (selectedValue) => {
             const selectedOffset = (selectedValue - 1) * apiData.pagination.limit;
-            renderUsers(container, selectedOffset);
+            renderUserContent(container, selectedOffset);
         }
     };
 
     // Render the template
-    await renderGet(container, templateData).then(() => {
+    renderGet(container, templateData).then(() => {
         // id edit user
         window.editUser = (id) => {
             // Check if the edit-user div already exists
@@ -81,8 +108,18 @@ export const renderUsers = async (container, offset = 0) => {
             let user = apiData.users.find(user => user.id === id);
         
             // Create the edit-user div
+            console.log("Editing user:", user.roles);
+            console.log("Roles:", roles);
             const editUserDiv = document.createElement('div');
             editUserDiv.id = 'edit-user';
+            let selectedRoles = roles.map(role => {
+                return {
+                    id: role.id,
+                    name: role.name,
+                    selected: user.roles.some(userRole => userRole.id === role.id)
+                };
+            }   )
+            console.log("Selected roles:", selectedRoles);
             editUserDiv.innerHTML = `
                 <form class="edit-content-form">
                     <input type="hidden" name="id" value="${id}">
@@ -94,7 +131,9 @@ export const renderUsers = async (container, offset = 0) => {
                     <input type="text" name="phone_number" value="${user.phone_number}" required>
                     <label for="roles">Roles:</label>
                     <select name="roles" multiple>
-                        ${roles.map(role => `<option value="${role.id}" ${user.roles.some(userRole => userRole.id === role.id) ? 'selected' : ''}>${role.name}</option>`).join('')}
+                        ${selectedRoles.map(role => `
+                            <option value="${role.id}" ${role.selected ? 'selected' : ''}>${role.name}</option>
+                        `).join('')}
                     </select>
                     <button type="submit">Save</button>
                 </form>
@@ -112,9 +151,15 @@ export const renderUsers = async (container, offset = 0) => {
                 e.preventDefault();
                 const formData = new FormData(editUserForm);
                 const data = Object.fromEntries(formData.entries());
-                await api.put('users/' + id, data).then((res) => {
+                await api.patch('users/profile' + id, data);
+                let roleIds = Array.from(formData.getAll('roles')).map(roleName => roleName);
+                let roleNames = roles.filter(role => roleIds.includes(role.id.toString())).map(role => role.name);
+                console.log("Role names to submit:", roleNames);
+                await api.patch('users/' + user.id + '/roles', {
+                    roles: roleNames
+                }).then((res) => {
                     if (res.status === 200) {
-                        renderUsers(container);
+                        renderUserContent(container);
                     } else {
                         console.error('Error updating user');
                     }
@@ -128,7 +173,7 @@ export const renderUsers = async (container, offset = 0) => {
             if (confirm('Are you sure you want to delete this user?')) {
                 api.del('users/' + id).then((res) => {
                     if (res.status === 200) {
-                        renderUsers(container);
+                        renderUserContent(container);
                     } else {
                         console.error('Error deleting user');
                     }
@@ -138,4 +183,82 @@ export const renderUsers = async (container, offset = 0) => {
             }
         };
     });
+
+    loadUserForms(container);
 };
+
+const renderUserContent = async (container, offset = 0) => {
+    await renderUsers(container, offset).then(() => 
+        loadUserForms(container)
+    );
+};
+
+
+const loadUserForms = async (container) => {
+    
+    let formdata = {
+        action: '',
+        method: '',
+        fields: [
+            {
+                id: 'first_name',
+                type: 'text',
+                label: 'Fornavn',
+                placeholder: 'Indtast dit fornavn',
+                required: true,
+                name: 'first_name',
+            },
+            {
+                id: 'last_name',
+                type: 'text',
+                label: 'Efternavn',
+                placeholder: 'Indtast dit efternavn',
+                required: true,
+                name: 'last_name',
+            },
+            {
+                id: 'email',
+                type: 'email',
+                label: 'E-mail',
+                placeholder: 'Indtast din e-mail',
+                required: true,
+                name: 'email',
+            },
+            {
+                id: 'phone_number',
+                type: 'tel',
+                label: 'Telefonnummer',
+                placeholder: 'Indtast dit telefonnummer',
+                required: true,
+                name: 'phone_number',
+            },
+        ],
+        title: 'Create User',
+        description: 'Create a new user by filling out the form below.',
+        submitText: 'Create User',
+    };
+    renderTemplate(
+        '../../templates/partials/form.mustache',
+        container,
+        formdata,
+        true
+    ).then(() => {
+        const form = document.querySelector(`#${container} form`);
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            console.log("Form data to submit:", data);
+    
+            await api.post('users/', data).then((res) => {
+                if (res.status === 201) {
+                    renderUsers(container);
+                } else {
+                    console.error('Error creating user');
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    });
+}

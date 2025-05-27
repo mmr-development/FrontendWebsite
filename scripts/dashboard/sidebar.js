@@ -45,7 +45,6 @@ export const renderSidebar = async () => {
             toggleSidebar();
         });
 
-        // logout button
         let logoutButton = document.getElementById('logout-button');
         if (logoutButton) {
             logoutButton.addEventListener('click', () => {

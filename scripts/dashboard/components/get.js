@@ -39,18 +39,75 @@ export const renderGet = async (container,data) => {
     const pagination = document.querySelector('#' + container + ' #' + container + '-pagination');
     if (pagination) {
         let totalPages = Math.ceil(data.totalItems / data.itemsPerPage);
+        let currentPage = data.currentPage || 1;
+        const maxVisible = 5;
         pagination.innerHTML = '';
-        for (let i = 1; i <= totalPages; i++) {
-            const pageLink = document.createElement('a');
-            pageLink.href = `#${container}-${i}`;
-            pageLink.textContent = i;
-            pageLink.classList.add('page-link');
-            pageLink.addEventListener('click', async (e) => {
-                e.preventDefault();
-                if (data.pageCallback) data.pageCallback(i);
-            });
-            pageLink.classList.add('page-link');
-            pagination.appendChild(pageLink);
+
+        const createPageLink = (text, page, isActive = false, isDisabled = false) => {
+            const link = document.createElement('a');
+            link.textContent = text;
+            link.classList.add('page-link');
+            if (isActive) link.classList.add('active');
+            if (isDisabled) link.classList.add('disabled');
+            if (!isDisabled) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (data.pageCallback) data.pageCallback(page);
+                });
+            }
+            return link;
+        };
+
+        pagination.appendChild(
+            createPageLink('First', 1, false, currentPage === 1)
+        );
+
+        pagination.appendChild(
+            createPageLink('Prev', Math.max(1, currentPage - 1), false, currentPage === 1)
+        );
+
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        let endPage = startPage + maxVisible - 1;
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = Math.max(1, endPage - maxVisible + 1);
         }
+
+        // Show first page and ellipsis if needed
+        if (startPage > 1) {
+            pagination.appendChild(createPageLink('1', 1, false));
+            if (startPage > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.classList.add('ellipsis');
+                pagination.appendChild(ellipsis);
+            }
+        }
+
+        // Page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            pagination.appendChild(createPageLink(i, i, i === currentPage));
+        }
+
+        // Show last page and ellipsis if needed
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.classList.add('ellipsis');
+                pagination.appendChild(ellipsis);
+            }
+            pagination.appendChild(createPageLink(totalPages, totalPages, false));
+        }
+
+        // Next button
+        pagination.appendChild(
+            createPageLink('Next', Math.min(totalPages, currentPage + 1), false, currentPage === totalPages)
+        );
+
+        // Last button
+        pagination.appendChild(
+            createPageLink('Last', totalPages, false, currentPage === totalPages)
+        );
     }
 }

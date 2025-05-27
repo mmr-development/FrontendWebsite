@@ -12,31 +12,31 @@
     <form id="partner-form" class="partner-form">
         <div>
             <label for="partner-name"><strong>Name:</strong></label>
-            <input id="partner-name" type="text" value="{{name}}" readonly>
+            <input id="partner-name" type="text" name="name" value="{{name}}" readonly>
         </div>
         <div>
             <label for="partner-phone"><strong>Phone Number:</strong></label>
-            <input id="partner-phone" type="text" value="{{phone_number}}" readonly>
+            <input id="partner-phone" type="text" name="phone_number" value="{{phone_number}}" readonly>
         </div>
         <div>
             <label for="partner-fee"><strong>Delivery Fee:</strong></label>
-            <input id="partner-fee" type="text" value="{{delivery_fee}}" readonly>
+            <input id="partner-fee" type="text" name="delivery_fee" value="{{delivery_fee}}" readonly>
         </div>
         <div>
             <label for="partner-distance"><strong>Max Delivery Distance:</strong></label>
-            <input id="partner-distance" type="text" value="{{max_deliver_distance}}" readonly>
+            <input id="partner-distance" type="text" name="max_delivery_distance_km" value="{{max_deliver_distance}}" readonly>
         </div>
         <div>
             <label for="partner-min-order"><strong>Min Order Value:</strong></label>
-            <input id="partner-min-order" type="text" value="{{min_order_value}}" readonly>
+            <input id="partner-min-order" type="text" name="min_order_value" value="{{min_order_value}}" readonly>
         </div>
         <div>
             <label for="partner-min-delivery-time"><strong>Min Preparation Time:</strong></label>
-            <input id="partner-min-delivery-time" type="text" value="{{min_delivery_time}}" readonly>
+            <input id="partner-min-delivery-time" type="text" name="min_preparation_time_minutes" value="{{min_delivery_time}}" readonly>
         </div>
         <div>
             <label for="partner-max-delivery-time"><strong>Max Preparation Time:</strong></label>
-            <input id="partner-max-delivery-time" type="text" value="{{max_delivery_time}}" readonly>
+            <input id="partner-max-delivery-time" type="text" name="max_preparation_time_minutes" value="{{max_delivery_time}}" readonly>
         </div>
         <div>
             <label for="partner-status"><strong>Status:</strong> {{status}}</label>

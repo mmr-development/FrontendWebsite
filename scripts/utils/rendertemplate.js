@@ -24,10 +24,15 @@ export async function renderTemplate(path, templateId, data = {}, append = false
     try {
         const template = await loadTemplate(rootpath + path);
         const renderedTemplate = Mustache.render(template, data);
-        if(append) {
-            document.getElementById(templateId).insertAdjacentHTML('beforeend', renderedTemplate);
-        }else {
-            document.getElementById(templateId).innerHTML = renderedTemplate;
+        const targetElement = document.getElementById(templateId);
+        if (targetElement) {
+            if (append) {
+                targetElement.insertAdjacentHTML('beforeend', renderedTemplate);
+            } else {
+                targetElement.innerHTML = renderedTemplate;
+            }
+        } else {
+            console.error(`Element with ID "${templateId}" not found.`);
         }
     } catch (error) {
         console.error(path, error);

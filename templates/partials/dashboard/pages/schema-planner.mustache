@@ -14,7 +14,12 @@
     </select>
 </div>
 {{/select}}
+<div class="create-schedule-button">
+    <button id="create-schedule" class="btn btn-primary">Create New Schedule</button>
+</div>
 {{#data}}
+<button id="previous-week" class="btn btn-secondary">Previous</button>
+<button id="next-week" class="btn btn-secondary">Next</button>
 <div class="schedule-planner-table">
     {{#days}}
         <div class="content">
@@ -26,7 +31,7 @@
             <div class="planner-event">
                 <span class="planner-note">{{note}}</span>
                 <span class="planner-status {{status}}">{{status}}</span>
-                <span class="planner-time">{{start_datetime}} - {{end_datetime}}</span>
+                <span class="planner-time">{{start_human}} - {{end_human}}</span>
             </div>
             {{/schedules}}
             {{^schedules}}
@@ -45,3 +50,4 @@
 <div class="pagination" id="{{paginationContainer}}">
 </div>
 {{/pagination}}
+<div id="c-modal" class="c-modal"><div>

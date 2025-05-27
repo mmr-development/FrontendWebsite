@@ -1,7 +1,7 @@
 import {renderTemplate} from '../../utils/rendertemplate.js';
 import * as api from '../../utils/api.js';
 
-export const renderLiveOrders = async (container, partner_id) => {
+export const renderLiveOrders = async (container, partner_id, partners = []) => {
     const ws = new WebSocket(api.wsurl + 'ws/partners/' + partner_id + "/orders/");
     ws.onopen = () => {
         console.log("WebSocket connection established");
@@ -19,21 +19,36 @@ export const renderLiveOrders = async (container, partner_id) => {
     let orders;
     ws.onmessage = async (event) => {
         const data = JSON.parse(event.data);
-        // define case for different message types
         if (data.type === 'orders') {
-            // sort orders by requested_delivery_time
             console.log("single order", data.data[0]);
             orders = data.data;
             data.data.sort((a, b) => new Date(a.requested_delivery_time) - new Date(b.requested_delivery_time));
             data.data.forEach(order => {
                 order.requested_delivery_time = new Date(order.requested_delivery_time).toLocaleString();
-                // get the next status in the preattyStatus array
                 order.nextStatusKey = possibleStatus[possibleStatus.indexOf(order.status) + 1] || null;
                 order.nextStatus = order.nextStatusKey ? preattyStatus[order.nextStatusKey] : null;
             });
-            renderTemplate('templates/partials/dashboard/content/live-order-list.mustache', container, { orders: data.data }).then(() => {
-                orderActions(container, partner_id);
-            })
+            let templateData = {
+                orders: data.data,
+                select: partners.length > 0,
+                options: partners.length > 0 ? partners.map((partner) => ({
+                    value: partner.id,
+                    name: partner.name + " (id:" + partner.id + ")",
+                    selected: partner.id == partner_id ? true : false,
+                })) : [],
+            };
+            renderTemplate('templates/partials/dashboard/content/live-order-list.mustache', container, templateData).then(() => {
+                orderActions();
+            }).then(() => {
+                const select = document.querySelector('#' + container + ' #custom-select');
+                if (select) {
+                    select.addEventListener('change', (e) => {
+                        const selectedValue = e.target.value;
+                        localStorage.setItem('selectedPartnerId', selectedValue);
+                        renderLiveOrders(container, selectedValue, partners);
+                    });
+                }
+            });
         } else if (data.type === 'order_created') {
             let newOrders = data.data.order.filter(order => {
                 return !orders.some(existingOrder => existingOrder.id === order.id);
@@ -43,9 +58,8 @@ export const renderLiveOrders = async (container, partner_id) => {
                 order.nextStatusKey = possibleStatus[possibleStatus.indexOf(order.status) + 1] || null;
                 order.nextStatus = order.nextStatusKey ? preattyStatus[order.nextStatusKey] : null;
             });
-
-            renderTemplate('templates/partials/dashboard/content/live-order-list.mustache', container, { orders: data.data.order }, true).then(() => {
-                orderActions(container, partner_id);
+            renderTemplate('templates/partials/dashboard/content/live-order-list-append.mustache', 'live-order-list', { orders: data.data.order }, true).then(() => {
+                orderActions();
             });
         } else if (data.type === 'order_status_updated') {
             let order = document.querySelector(`.order[data-id="${data.data.order.id}"]`);
@@ -59,11 +73,15 @@ export const renderLiveOrders = async (container, partner_id) => {
                     orderStatusElem.textContent = data.data.order.status;
                     orderStatusElem.setAttribute('data-status', nextStatusKey);
                 }
-                // update the next status
                 let nextStatus = nextStatusKey ? preattyStatus[nextStatusKey] : null;
                 const acceptButton = order.querySelector('.order-actions button[data-action="accept"]');
                 if (acceptButton) {
-                    acceptButton.textContent = nextStatus;
+                    if (nextStatus) {
+                        acceptButton.textContent = nextStatus;
+                        acceptButton.setAttribute('data-next-status', nextStatusKey);
+                    } else {
+                        acceptButton.remove();
+                    }
                 }
             }
         } else {
@@ -72,7 +90,7 @@ export const renderLiveOrders = async (container, partner_id) => {
     }
 }
 
-const orderActions = (container, partner_id) => {
+const orderActions = () => {
     const buttonContainer = document.querySelectorAll('.order-actions');
     if (!buttonContainer) return;
     let rejectButtons = Array.from(document.querySelectorAll('button[data-action="reject"]'));
@@ -120,7 +138,6 @@ const orderActions = (container, partner_id) => {
                     status: orderStatus
                 }, api.includeCredentials);
                 if (response.status === 200) {
-                //renderLiveOrders(container, partner_id);
                 } else {
                     console.error("Failed to accept order:", response);
                 }

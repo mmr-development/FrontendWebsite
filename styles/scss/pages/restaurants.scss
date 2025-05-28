@@ -77,6 +77,7 @@
 #restaurants-container {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
     max-width: 1200px;
     width: 100%;
 
@@ -100,6 +101,56 @@
 
             &:hover {
                 background-color: vars.$background-light;
+            }
+        }
+        .input-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+
+            label {
+                font-size: 2rem;
+                font-weight: 700;
+                color: vars.$text-color;
+                margin-bottom: 0.25rem;
+            }
+
+            .restaurant-form {
+                display: flex;
+                gap: 0.5rem;
+
+                input[type="text"] {
+                    flex: 1;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid vars.$border-color;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    color: vars.$text-color;
+                    background-color: vars.$background-light;
+                    transition: border-color 0.2s;
+
+                    &:focus {
+                        outline: none;
+                        border-color: vars.$primary-color;
+                    }
+                }
+
+                button {
+                    padding: 0.5rem 1.2rem;
+                    background-color: vars.$primary-color;
+                    color: #fff;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+
+                    &:hover {
+                        background-color: darken(vars.$primary-color, 7%);
+                    }
+                }
             }
         }
     }

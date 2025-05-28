@@ -714,6 +714,7 @@
 #restaurants-container {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   max-width: 1200px;
   width: 100%;
 }
@@ -737,6 +738,50 @@
 }
 #restaurants-container .restaurants-sidebar .option:hover {
   background-color: #ebf8f1;
+}
+#restaurants-container .restaurants-sidebar .input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+#restaurants-container .restaurants-sidebar .input-form label {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1B5E20;
+  margin-bottom: 0.25rem;
+}
+#restaurants-container .restaurants-sidebar .input-form .restaurant-form {
+  display: flex;
+  gap: 0.5rem;
+}
+#restaurants-container .restaurants-sidebar .input-form .restaurant-form input[type=text] {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #b1e2c6;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1B5E20;
+  background-color: #ebf8f1;
+  transition: border-color 0.2s;
+}
+#restaurants-container .restaurants-sidebar .input-form .restaurant-form input[type=text]:focus {
+  outline: none;
+  border-color: #2cb673;
+}
+#restaurants-container .restaurants-sidebar .input-form .restaurant-form button {
+  padding: 0.5rem 1.2rem;
+  background-color: #2cb673;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+#restaurants-container .restaurants-sidebar .input-form .restaurant-form button:hover {
+  background-color: rgb(37.0495575221, 153.2504424779, 96.8340707965);
 }
 #restaurants-container .restaurants-list {
   flex: 1;

@@ -12,16 +12,23 @@
         <div id="categoryscrollbar"></div>
         <div class="container" id="restaurants-container">
             <div class="restaurants-sidebar">
+                <div class="input-form">
+                    <label for="adresse">Find a Restaurant</label>
+                    <form id="restaurant-form" class="restaurant-form">
+                        <input type="text" id="restaurants-search-input" name="location" placeholder="Enter restaurant name">
+                        <button id="submit-button">Find</button>
+                    </form>
+                </div>
                 <div class="option">
                     <h1>Open now</h1>
-                    <label class="toggle">
+                    <label class="toggle" id="open-now-toggle">
                         <input type="checkbox">
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="option">
-                    <h1>New</h1>
-                    <label class="toggle">
+                    <h1>Newest</h1>
+                    <label class="toggle" id="newest-toggle">
                         <input type="checkbox">
                         <span class="slider"></span>
                     </label>

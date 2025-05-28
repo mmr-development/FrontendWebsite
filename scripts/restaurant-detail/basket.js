@@ -193,10 +193,7 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
     let cValid = checkoutData.valid;
 
     if (cValid === true) {
-        console.log('Checkout button is valid');
-
         const checkoutButton = document.querySelector('.checkout-button1');
-        console.log('Checkout button:', checkoutButton);
         if (checkoutButton) {
             checkoutButton.style.display = 'block';
         }else {
@@ -208,8 +205,7 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
             checkoutButton.textContent = 'Checkout';
             checkoutButtonContainer.appendChild(checkoutButton);
             const basketContainer = document.querySelector('.basket-footer');
-            if (basketContainer) {
-                console.log('Basket container found, appending checkout button');
+            if (basketContainer) {;
                 basketContainer.appendChild(checkoutButtonContainer);
             } else {
                 console.error('Basket container not found');

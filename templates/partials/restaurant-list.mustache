@@ -2,13 +2,13 @@
     {{#restaurant_lists}}
      <h2>{{restaurant_list_name}}</h2>
        {{#restaurants}}
-        <div class="restaurants-item" data-id="{{id}}">
+        <div class="restaurants-item" data-id="{{id}}" data-is-open="{{is_open}}" data-created-at="{{created_at}}">
             <div class="restaurants-image" style="position: relative;">
                 <img src="{{banner}}" alt="{{name}}" class="restaurant-banner"/>
                 <img src="{{logo}}" alt="{{name}} logo" class="restaurant-logo"/>
             </div>
             <div class="restaurants-details">
-                <h3>{{name}}</h3>
+                <h3 class="restaurant-name">{{name}}</h3>
                 <div>
                     <p>Top picks: {{top_picks}}</p>
                 </div>

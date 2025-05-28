@@ -1,10 +1,10 @@
 @use '../_variables' as vars;
 
-#c-modal, #modal {
+#c-modal, #modal, [id^="c-modal__"] {
     display: none;
 }
 
-#c-modal.active, #modal.active {
+#c-modal.active, #modal.active, .c-modal.active, [id^="c-modal__"].active {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,12 +1,12 @@
 import { renderTemplate } from "./rendertemplate.js";
 
-export const renderModal = async (data) => {
+export const renderModal = async (data, containerid = 'c-modal') => {
     await renderTemplate(
         '../../templates/partials/c-modal.mustache',
-        'c-modal',
+        containerid,
         data
     );
-    const modal = document.getElementById('c-modal');
+    const modal = document.getElementById(containerid);
     modal.classList.add('active');
     document.querySelectorAll('.c-modal__close').forEach((close) => {
         close.addEventListener('click', () => {

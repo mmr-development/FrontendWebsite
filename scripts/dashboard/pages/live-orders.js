@@ -4,7 +4,6 @@ import * as api from '../../utils/api.js';
 export const renderLiveOrders = async (container, partner_id, partners = []) => {
     const ws = new WebSocket(api.wsurl + 'ws/partners/' + partner_id + "/orders/");
     ws.onopen = () => {
-        console.log("WebSocket connection established");
     };
 
     let possibleStatus = [
@@ -20,7 +19,6 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
     ws.onmessage = async (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'orders') {
-            console.log("single order", data.data[0]);
             orders = data.data;
             data.data.sort((a, b) => new Date(a.requested_delivery_time) - new Date(b.requested_delivery_time));
             data.data.forEach(order => {
@@ -63,9 +61,6 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
             });
         } else if (data.type === 'order_status_updated') {
             let order = document.querySelector(`.order[data-id="${data.data.order.id}"]`);
-            console.log(order);
-            console.log("Order status updated:", data.data);
-
             if (order) {
                 const orderStatusElem = order.querySelector('.order-status');
                 let nextStatusKey = possibleStatus[possibleStatus.indexOf(data.data.order.status) + 1] || null;
@@ -84,6 +79,9 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
                     }
                 }
             }
+        } else if (data.type == 'order_picked_up') {
+            let order = document.querySelector(`.order[data-id="${data.data.orderId}"]`);
+            if (order){order.remove()}
         } else {
             console.warn("Unknown message type:", data.type);
         }
@@ -97,7 +95,6 @@ const orderActions = () => {
     let acceptButtons = Array.from(document.querySelectorAll('button[data-action="accept"]'));
     rejectButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
-            console.log("Reject button clicked");
             e.preventDefault();
             const orderId = button.getAttribute('data-order-id');
             const orderItem = button.closest('.order');
@@ -111,7 +108,6 @@ const orderActions = () => {
                     status: 'cancelled'
                 }, api.includeCredentials);
                 if (response.status === 200) {
-                    console.log("Order rejected successfully");
                 } else {
                     console.error("Failed to reject order:", response);
                     if (orderItem) {
@@ -126,13 +122,11 @@ const orderActions = () => {
 
     acceptButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
-            console.log("Accept button clicked");
             e.preventDefault();
             const orderId = button.getAttribute('data-order-id');
             const orderItem = button.closest('.order');
             let orderStatusSpan = orderItem.querySelector('.order-status');
             let orderStatus = orderStatusSpan ? orderStatusSpan.getAttribute('data-status') : null;
-            console.log("Order status:", orderStatus);
             try {
                 const response = await api.patch(`orders/` + orderId, {
                     status: orderStatus

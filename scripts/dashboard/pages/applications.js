@@ -17,8 +17,6 @@ const renderPartnerApplications = async (container, offset = 0) => {
     ));
 
     columns.push('actions');
-    console.log('columns', columns);
-    console.log('apiData', apiData);
     const rows = apiData.applications.map(application => {
         return {
             id: application.id,

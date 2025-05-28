@@ -1,5 +1,6 @@
 import { renderTemplate } from '../../utils/rendertemplate.js';
 import * as api from '../../utils/api.js';
+import {renderModal} from '../../utils/modal.js';
 
 const chatMessageCache = {};
 const chatSocketCache = {};
@@ -19,16 +20,24 @@ export const renderMessages = async (container, chat_id) => {
     socket.onopen = () => {
         socket.send(JSON.stringify({ type: 'history' }));
     };
-
+    let myId;
     socket.onmessage = async (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'history') {
+            data.messages.forEach(element => {
+                if (element.isSender === true) {
+                    myId = element.sender_id;
+                    return;
+                }
+            });
             chatMessageCache[chat_id] = data.messages || [];
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: chatMessageCache[chat_id] });
             const chatContainer = document.getElementById('chat');
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         if (data.type === 'message') {
+            if (myId) 
+                data.message.isSender = data.message.sender_id === myId;
             chatMessageCache[chat_id] = chatMessageCache[chat_id] || [];
             chatMessageCache[chat_id].push(data.message);
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] }, true);
@@ -50,6 +59,7 @@ export const renderChat = async (container, chat_id) => {
     const messageInput = form?.querySelector('input[name="message"]');
 
     if (sendButton && messageInput) {
+        // Send on button click
         sendButton.onclick = (e) => {
             e.preventDefault();
             const message = messageInput.value.trim();
@@ -63,9 +73,21 @@ export const renderChat = async (container, chat_id) => {
                 };
             } else {
                 socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
-            }
+            }wut
             messageInput.value = '';
         };
+
+        // Send on Enter, new line on Shift+Enter
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (e.shiftKey) {
+                    // Allow new line
+                    return;
+                }
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
     }
 };
 
@@ -88,6 +110,42 @@ export const renderChats = async (container, chatContainer) => {
             await renderChat(chatContainer, chat_id);
         });
     });
+    let createChatButton = document.getElementById('create-chat');
+    if (createChatButton) {
+        createChatButton.onclick = async () => {
+            let participants = await api.get('couriers/').then((res) => res.status === 200 ? res.data : []);
+            let couriers = participants.couriers;
+            let options = couriers.map(courier => `<option value="${courier.id}">${courier.email}</option>`).join('');
+            renderModal({
+                minWidth: '600px',
+                title: 'Create New Chat',
+                content: `
+                <label for="new-chat-participants">Participants:</label>
+                <select id="new-chat-participants" multiple required style="width:100%;min-height:100px;">
+                    ${options}
+                </select>`,
+                close: "Close",
+                submit: "Submit",
+                submitCallback: async () => {
+                    let selectedOptions = document.getElementById('new-chat-participants').selectedOptions;
+                    let participants = Array.from(selectedOptions).map(option => option.value);
+                    if (participants.length === 0) {
+                        alert('Please select at least one participant.');
+                        return;
+                    }
+                    let newChat = await api.post('chats', { participants: participants }).then(res => res.status === 201 ? res.data : null);
+                    if (newChat) {
+                        await renderChat(chatContainer, newChat.id);
+                        await renderChats(container, chatContainer);
+                    } else {
+                        alert('Failed to create chat. Please try again.');
+                    }
+                },
+                closeCallback: () => {}
+            }, 'c-modal__chat').then(async () => {
+            });
+        };
+    }
 };
 
 export const renderChatTemplate = async (container) => {

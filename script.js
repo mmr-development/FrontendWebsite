@@ -70,7 +70,6 @@ async function baseRenderTemplates() {
       if (!orders) {
         orders = await api.get('orders').then((response) => {
           if (response.status === 200) {
-            console.log('Orders fetched:', response.data);
             return response.data;
           }
           return [];
@@ -82,19 +81,16 @@ async function baseRenderTemplates() {
       if (!userInfo) {
         userInfo = await api.get('users/profile/').then((response) => {
           if (response.status === 200) {
-            console.log('User Info fetched:', response.data);
             return response.data;
           }
           return {};
         });
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
       }
-      console.log('User Info:', userInfo);
 
       if (userInfoButtons) {
         userInfoButtons.forEach(userInfoButton => {
           userInfoButton.addEventListener('click', async () => {
-          console.log('User info button clicked');
           await renderTemplate('templates/partials/user-info-modal.mustache', 'c-modal', {});
           const modal = document.getElementById('c-modal');
           if (!modal) return;
@@ -171,7 +167,6 @@ async function baseRenderTemplates() {
                     } else if (typeof userInfo.address === 'string') {
                       // Already a string, do nothing
                     }
-                    console.log('User Info:', userInfo);
                     div.innerHTML =
                       `<form class="user-info-edit-form">
                         <div>
@@ -202,7 +197,6 @@ async function baseRenderTemplates() {
                     let addressInput = form.querySelector('#address');
                     let customerAddress;
                     let selectedAddress;
-                    console.log(window.dawaAutocomplete);
                     if (window.dawaAutocomplete) {
                         window.dawaAutocomplete.dawaAutocomplete(addressInput, {
                           container: form.querySelector('#dawa-autocomplete-container'),

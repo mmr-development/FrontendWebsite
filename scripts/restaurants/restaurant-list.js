@@ -1,6 +1,11 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
 import * as api from '../utils/api.js'
 
+let tempCatalogs = localStorage.getItem('catalogs');
+if (tempCatalogs) {
+    renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', JSON.parse(tempCatalogs));
+}
+
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 let city = params.get('city');
@@ -25,6 +30,7 @@ params.delete('city');
 const newUrl = url.origin + url.pathname + '?' + params.toString();
 window.history.replaceState({}, document.title, newUrl);
 
+console.log("Restaurants data:", restaurants);
 const formattedData = {
     restaurant_lists: [
         {
@@ -34,46 +40,17 @@ const formattedData = {
                 name: partner.name,
                 banner: partner.banner_url ? api.baseurl + 'public' + partner.banner_url : "../../files/images/restaurants/placeholder.png",
                 logo: partner.logo_url ? api.baseurl + 'public' + partner.logo_url : "../../files/images/restaurants/placeholder.png",
-                rating: "4.0", // Default rating (can be updated dynamically)
                 top_picks: "N/A", // Placeholder for top picks
-                estimated_delivery_time: 'N/A', // Placeholder for estimated delivery time
+                estimated_delivery_time: partner.delivery.min_preparation_time_minutes + '-' + partner.delivery.max_preparation_time_minutes + ' mins', 
                 delivery_fee: partner.delivery.fee ? partner.delivery.fee + 'dkk' : "N/A",
-                minimum_order: partner.delivery.minimum_order_value ? partner.delivery.minimum_order_value + 'dkk' : "N/A",
+                minimum_order: partner.delivery.min_order_value ? partner.delivery.min_order_value + 'dkk' : "N/A",
                 address: `${partner.address.street}, ${partner.address.city}, ${partner.address.postal_code}, ${partner.address.country}`
             }))
         }
     ]
 };
 
-const data = {
-    "restaurnat-lists": [
-        {
-            "restaunrat-list-name": "Popular Restaurants",
-            "restaurants": [
-                {
-                    "id": "1",
-                    "name": "Pizza Palace",
-                    "image": "../../files/images/restaurants/placeholder.png",
-                    "rating": "4.5",
-                    "top-picks": "Pepperoni Pizza, Margherita",
-                    "estimated-delivery-time": "30-40 mins",
-                    "delivery-fee": "$3.99",
-                    "minimum-order": "$15.00"
-                },
-                {
-                    "id": "2",
-                    "name": "Sushi World",
-                    "image": "../../files/images/restaurants/placeholder.png",
-                    "rating": "4.8",
-                    "top-picks": "California Roll, Dragon Roll",
-                    "estimated-delivery-time": "20-30 mins",
-                    "delivery-fee": "$2.99",
-                    "minimum-order": "$20.00"
-                }
-            ]
-        },
-    ]
-};
+localStorage.setItem('catalogs', JSON.stringify(formattedData));
 
 await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaurants-list', formattedData);
 

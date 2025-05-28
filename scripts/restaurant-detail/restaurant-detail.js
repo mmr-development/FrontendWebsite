@@ -1,9 +1,13 @@
 import * as api from '../utils/api.js';
 
-export const getRestaurantDetail = async () => {
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    let id = params.get('id');
+export const getRestaurantDetail = async (id) => {
+    let restaurantsDetail = localStorage.getItem('restaurantsDetail');
+    if (restaurantsDetail) {
+        restaurantsDetail = JSON.parse(restaurantsDetail);
+        if (restaurantsDetail[id]) {
+            return restaurantsDetail[id];
+        }
+    }
 
     let restaurantDetail = await api.get('partners/' + id).then((res) => {
         if (res.status === 200) {
@@ -51,5 +55,14 @@ export const getRestaurantDetail = async () => {
             smiley_img: restaurantDetail.smiley_image_url,
         } : null,
     };
+    restaurantsDetail = localStorage.getItem('restaurantsDetail');
+    if (restaurantsDetail) {
+        restaurantsDetail = JSON.parse(restaurantsDetail);
+        restaurantsDetail[restaurantDetail.id] = templateData;
+    } else {
+        restaurantsDetail = {};
+        restaurantsDetail[restaurantDetail.id] = templateData;
+    }
+    localStorage.setItem('restaurantsDetail', JSON.stringify(restaurantsDetail));
     return templateData;
 }

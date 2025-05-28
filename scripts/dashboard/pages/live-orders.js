@@ -4,7 +4,6 @@ import * as api from '../../utils/api.js';
 export const renderLiveOrders = async (container, partner_id, partners = []) => {
     const ws = new WebSocket(api.wsurl + 'ws/partners/' + partner_id + "/orders/");
     ws.onopen = () => {
-        console.log("WebSocket connection established");
     };
 
     let possibleStatus = [
@@ -20,7 +19,6 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
     ws.onmessage = async (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'orders') {
-            console.log("single order", data.data[0]);
             orders = data.data;
             data.data.sort((a, b) => new Date(a.requested_delivery_time) - new Date(b.requested_delivery_time));
             data.data.forEach(order => {
@@ -81,8 +79,8 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
                     }
                 }
             }
-        } else if (data.type == 'picked_up') {
-            let order = document.querySelector(`.order[data-id="${data.data.order.id}"]`);
+        } else if (data.type == 'order_picked_up') {
+            let order = document.querySelector(`.order[data-id="${data.data.orderId}"]`);
             if (order){order.remove()}
         } else {
             console.warn("Unknown message type:", data.type);

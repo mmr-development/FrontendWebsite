@@ -86,10 +86,8 @@ if (token) {
     ws.onmessage = async (event) => {
         const data = JSON.parse(event.data); 
         if (data.type === 'location_update') {
-            console.log("Location update received:", data.payload);
             loadMap(data.payload.latitude, data.payload.longitude);
         } else if (data.type === 'connection_confirmed') {
-            console.log("Connection confirmed for order tracking", data.payload);
             partnerDetails = data.payload.partner;
             partnerDetails.logo = api.baseurl + 'public/' + partnerDetails.logo;
             loadMap(data.payload.partner.latitude, data.payload.partner.longitude);

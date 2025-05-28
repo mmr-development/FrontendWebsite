@@ -108,8 +108,6 @@ export const renderUsers = async (container, offset = 0) => {
             let user = apiData.users.find(user => user.id === id);
         
             // Create the edit-user div
-            console.log("Editing user:", user.roles);
-            console.log("Roles:", roles);
             const editUserDiv = document.createElement('div');
             editUserDiv.id = 'edit-user';
             let selectedRoles = roles.map(role => {
@@ -119,7 +117,6 @@ export const renderUsers = async (container, offset = 0) => {
                     selected: user.roles.some(userRole => userRole.id === role.id)
                 };
             }   )
-            console.log("Selected roles:", selectedRoles);
             editUserDiv.innerHTML = `
                 <form class="edit-content-form">
                     <input type="hidden" name="id" value="${id}">
@@ -154,7 +151,6 @@ export const renderUsers = async (container, offset = 0) => {
                 await api.patch('users/profile' + id, data);
                 let roleIds = Array.from(formData.getAll('roles')).map(roleName => roleName);
                 let roleNames = roles.filter(role => roleIds.includes(role.id.toString())).map(role => role.name);
-                console.log("Role names to submit:", roleNames);
                 await api.patch('users/' + user.id + '/roles', {
                     roles: roleNames
                 }).then((res) => {
@@ -248,7 +244,6 @@ const loadUserForms = async (container) => {
             e.preventDefault();
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            console.log("Form data to submit:", data);
     
             await api.post('users/', data).then((res) => {
                 if (res.status === 201) {

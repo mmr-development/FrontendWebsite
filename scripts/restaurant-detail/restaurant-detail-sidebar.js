@@ -5,7 +5,7 @@ const data = {
     pickupTime: '15-25 mins',
 }
 
-await renderTemplate('../../templates/partials/restaurant-detail/restaurant-detail-sidebar.mustache', 'restaurant-detail-sidebar', data).then(() => {
+await renderTemplate('../../templates/partials/restaurant-detail/restaurant-detail-sidebar.mustache', 'restaurant-detail-sidebar', {}).then(() => {
     let toggleDeliveryOption = document.getElementById('toggle-checkbox');
 
     const urlParams = new URLSearchParams(window.location.search);

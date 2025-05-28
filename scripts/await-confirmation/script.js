@@ -3,7 +3,6 @@ import * as api from '../utils/api.js';
 // websocket.
 
 const orderConfirm = JSON.parse(localStorage.getItem('orderConfirm')) || {};
-console.log("Order confirmation data:", orderConfirm);
 
 const wsUrl = api.wsurl + 'ws/orders/' + orderConfirm.order_id + "/status"; // Replace with your backend WebSocket URL
 const socket = new WebSocket(wsUrl);
@@ -35,5 +34,4 @@ socket.onmessage = (event) => {
 };
 
 socket.onclose = () => {
-    console.log("WebSocket connection closed");
 };

@@ -489,6 +489,31 @@
                 box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
                 overflow: hidden;
 
+                .create-chat-button {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    background: transparent;
+
+                    #create-chat {
+                        padding: 10px 24px;
+                        font-size: 1rem;
+                        border-radius: 6px;
+                        background: #007bff;
+                        color: #fff;
+                        border: none;
+                        font-weight: 600;
+                        cursor: pointer;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+                        transition: background 0.18s, box-shadow 0.18s;
+
+                        &:hover, &:focus {
+                            background: #0056b3;
+                            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+                        }
+                    }
+                }
+
                     #chat {
                         display: flex;
                         flex-direction: column;

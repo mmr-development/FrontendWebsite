@@ -3,7 +3,11 @@ import { updateToggleButton } from './restaurant-detail-sidebar-toggle.js';
 import {renderModal} from '../utils/modal.js'
 import * as api from '../utils/api.js';
 
-export const basketUpdate = async (delivery = true) => {
+let checkoutData = {};
+
+export const basketUpdate = async (delivery = true, cData = checkoutData) => {
+    checkoutData = cData;
+    // Log where the basketUpdate function is called
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('id');
 
@@ -31,15 +35,21 @@ export const basketUpdate = async (delivery = true) => {
 
     const totalItems = basket.reduce((total, item) => total + item.quantity, 0);
     const subtotal = basket.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0).toFixed(2);
-    let deliveryFee = 39.00
-    let totalPrice = delivery ? (parseFloat(subtotal) + deliveryFee).toFixed(2) : subtotal;
+    let catalogs = JSON.parse(localStorage.getItem('catalogs'));
+    let deliveryFeeWithValuta = catalogs.restaurant_lists[0].restaurants[restaurantId].delivery_fee;
+    let deliveryFee = parseFloat(deliveryFeeWithValuta.replace(/[^0-9.-]+/g, ''));
+    let totalPrice = delivery ?subtotal: (parseFloat(subtotal) + deliveryFee).toFixed(2);
+    if (cData.tip) {
+        totalPrice = (parseFloat(totalPrice) + parseFloat(cData.tip)).toFixed(2);
+    }
 
     const data = {
         totalItems: totalItems,
         subtotal: subtotal,
-        delivery: delivery,
+        delivery: !delivery,
         deliveryFee: deliveryFee.toFixed(2),
         totalPrice: totalPrice,
+        tip: cData.tip ? parseFloat(cData.tip).toFixed(2) : false,
         items: basket.map(item => ({
             id: item.id,
             name: item.name,
@@ -48,23 +58,32 @@ export const basketUpdate = async (delivery = true) => {
             note: item.note || '',
         }))
     };
-    if (!document.getElementById('basket')) return;
+    if (!document.getElementById('basket')){
+        await renderTemplate('../../templates/partials/restaurant-detail/restaurant-detail-sidebar.mustache', 'restaurant-detail-sidebar', {});
+        if(document.getElementById('toggle-checkbox')) document.getElementById('toggle-checkbox').checked = delivery;
+    }
     await renderTemplate('../../templates/partials/restaurant-detail/basket.mustache', 'basket', data);
-
     let checkedinput = document.getElementById('toggle-checkbox');
 
     if (checkedinput) {
-        checkedinput.addEventListener('change', () => {
-            // update localstorage
-            if (!deliveryStorage.restaurant[restaurantId]) {
-                deliveryStorage.restaurant[restaurantId] = { delivery: checkedinput.checked };
-            } else {
-                deliveryStorage.restaurant[restaurantId].delivery = checkedinput.checked;
-            }
-            localStorage.setItem('delivery', JSON.stringify(deliveryStorage));
-
-            basketUpdate(!checkedinput.checked);
-        });
+        // check if the checkedinput allready has an event listener
+        const hasListener = checkedinput.hasAttribute('data-listener');
+        if (!hasListener) {
+            checkedinput.addEventListener('change', () => {
+                // Only update if the value actually changed
+                const previousValue = deliveryStorage.restaurant[restaurantId]
+                    ? deliveryStorage.restaurant[restaurantId].delivery
+                    : undefined;
+                const newValue = !checkedinput.checked; // true if delivery, false if pickup
+                if (previousValue !== newValue) {
+                    deliveryStorage.restaurant[restaurantId] = { delivery: newValue };
+                    localStorage.setItem('delivery', JSON.stringify(deliveryStorage));
+                    // Only update if the value actually changed, and pass the correct delivery value
+                    setTimeout(() => basketUpdate(newValue), 0);
+                }
+            });
+            checkedinput.setAttribute('data-listener', 'true');
+        }
     }
 
     updateToggleButton(totalItems, totalPrice);
@@ -78,7 +97,7 @@ export const basketUpdate = async (delivery = true) => {
                 basket.splice(itemIndex, 1); // Remove the item from the basket
                 restaurantCarts[restaurantId] = basket; // Update the restaurant-specific cart
                 localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
-                basketUpdate(); // Re-render the basket
+                basketUpdate(delivery); // Re-render the basket
             }
         });
     });
@@ -103,7 +122,7 @@ export const basketUpdate = async (delivery = true) => {
                     basket[itemIndex].quantity -= 1; // Update the quantity in the basket
                 }
                 localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
-                basketUpdate();
+                basketUpdate(delivery);
             });
         });
 
@@ -119,7 +138,7 @@ export const basketUpdate = async (delivery = true) => {
                 basket[itemIndex].quantity = currentValue; // Update the quantity in the basket
             }
             localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
-            basketUpdate();
+            basketUpdate(delivery);
         });
     });
 
@@ -153,21 +172,52 @@ export const basketUpdate = async (delivery = true) => {
                             }
                         }
                     }
-                    basketUpdate();
+                    basketUpdate(delivery);
                 },
             });
         });
     });
 
-
     // Add event listener for the checkout button
+
     const checkoutButton = document.querySelector('.checkout-button');
     if (checkoutButton) {
         checkoutButton.addEventListener('click', () => {
             window.location.href = `checkout.html?id=${restaurantId}`;
         });
     }
+
+    let cValid = checkoutData.valid;
+
+    if (cValid === true) {
+        console.log('Checkout button is valid');
+
+        const checkoutButton = document.querySelector('.checkout-button1');
+        console.log('Checkout button:', checkoutButton);
+        if (checkoutButton) {
+            checkoutButton.style.display = 'block';
+        }else {
+            //create a checkout button if it does not exist
+            const checkoutButtonContainer = document.createElement('div');
+            checkoutButtonContainer.className = 'checkout-button-container';
+            const checkoutButton = document.createElement('button');
+            checkoutButton.className = 'checkout-button1';
+            checkoutButton.textContent = 'Checkout';
+            checkoutButtonContainer.appendChild(checkoutButton);
+            const basketContainer = document.querySelector('.basket-footer');
+            if (basketContainer) {
+                console.log('Basket container found, appending checkout button');
+                basketContainer.appendChild(checkoutButtonContainer);
+            } else {
+                console.error('Basket container not found');
+            }
+        }
+    } else {
+        const checkoutButton = document.querySelector('.checkout-button1');
+        if (checkoutButton) {
+            checkoutButton.style.display = 'none';
+        }
+    }
 };
 
-await basketUpdate();
-
+basketUpdate();

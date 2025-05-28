@@ -4,9 +4,9 @@
         <ul>
             <li><strong>Restaurant ID:</strong> {{order.partner_id}}</li>
             <li><strong>Delivery Type:</strong> {{order.delivery_type}}</li>
-            {{#deliveryTime}}
-            <li><strong>Delivery Time:</strong> {{deliveryTime}}</li>
-            {{/deliveryTime}}
+            {{#requested_delivery_time}}
+            <li><strong>Delivery Time:</strong> {{requested_delivery_time}}</li>
+            {{/requested_delivery_time}}
             {{#deliveryNote}}
             <li><strong>Delivery Note:</strong> {{deliveryNote}}</li>
             {{/deliveryNote}}

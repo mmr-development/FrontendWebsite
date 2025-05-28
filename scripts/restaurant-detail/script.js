@@ -1,17 +1,30 @@
 import {getRestaurantDetail} from './restaurant-detail.js';
-import {menu_data, searchbar_data} from './restaurant-menu.js';
-import './searchbar.js';
+import {renderMenu, renderMenuFast} from './restaurant-menu.js';
 import { renderTemplate } from '../utils/rendertemplate.js';
 import './restaurant-detail-sidebar.js';
 import { basketUpdate } from './basket.js';
 
-let renderPage = async () => {
-    await renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail', await getRestaurantDetail()),
-    await renderTemplate('../../templates/partials/restaurant-detail/searchbar.mustache', 'restaurant-searchbar', searchbar_data),
-    await renderTemplate('../../templates/partials/restaurant-detail/restaurant-menu.mustache', 'restaurant-menu', menu_data)
+let renderPage = async (id) => {
+    // get localstorage restaurantsCatalogs
+    let restaurantsCatalogs = JSON.parse(localStorage.getItem('restaurantsCatalogs')) || {};
+    let restaurantDetail = restaurantsCatalogs[id];
+    await renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail',restaurantDetail);
+    await renderMenuFast(id);
+
+    let newDetails = await getRestaurantDetail(id)
+
+    // compare newDetails with restaurantDetail
+    if (!restaurantDetail || JSON.stringify(newDetails) !== JSON.stringify(restaurantDetail)) {
+        restaurantDetail = newDetails;
+        localStorage.setItem('restaurantsCatalogs', JSON.stringify(restaurantsCatalogs));
+        await renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail',restaurantDetail);
+        await renderMenu(id);
+    }
 }
 
-renderPage().then(() => {
+let id = new URLSearchParams(window.location.search).get('id');
+
+await renderPage(id).then(() => {
     let searchcategories = document.querySelectorAll('.search-category');
     searchcategories.forEach((category) => {
         category.addEventListener('click', () => {

@@ -36,8 +36,11 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
     const totalItems = basket.reduce((total, item) => total + item.quantity, 0);
     const subtotal = basket.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0).toFixed(2);
     let catalogs = JSON.parse(localStorage.getItem('catalogs'));
-    let deliveryFeeWithValuta = catalogs.restaurant_lists[0].restaurants[restaurantId].delivery_fee;
-    let deliveryFee = parseFloat(deliveryFeeWithValuta.replace(/[^0-9.-]+/g, ''));
+    let thisRestaurantCatalog = catalogs.restaurant_lists[0].restaurants.find(
+        restaurant => restaurant.id === restaurantId
+    );
+    let deliveryFeeWithValuta = thisRestaurantCatalog.delivery_fee || '0';
+    let deliveryFee = parseFloat(deliveryFeeWithValuta.replace(/[^0-9.-]+/g, ''))
     let totalPrice = delivery ?subtotal: (parseFloat(subtotal) + deliveryFee).toFixed(2);
     if (cData.tip) {
         totalPrice = (parseFloat(totalPrice) + parseFloat(cData.tip)).toFixed(2);

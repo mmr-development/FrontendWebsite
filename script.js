@@ -263,15 +263,17 @@ async function baseRenderTemplates() {
       }
     }
 
-    const loginButton = document.querySelector('.login-button');
+    const loginButton = document.querySelectorAll('.login-button');
     if (loginButton) {
-      loginButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (role === null) {
-          window.location.href = '/pages/login.html';
-        } else {
-          auth.Logout();
-        }
+      loginButton.forEach(button => {
+        button.addEventListener('click', async () => {
+          if (role === null) {
+            window.location.href = '/pages/login.html';
+          } else {
+            await auth.logout();
+            window.location.reload();
+          }
+        });
       });
     }
 

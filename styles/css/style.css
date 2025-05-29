@@ -2028,6 +2028,21 @@
   position: sticky;
   bottom: 10px;
 }
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form input[type=file] {
+  display: none;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form label {
+  background: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form label:hover {
+  background: #0056b3;
+}
 .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form input[type=text] {
   flex: 1;
   padding: 10px;

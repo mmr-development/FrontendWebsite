@@ -415,7 +415,6 @@ let validateCheckout = async (options) => {
     let deliveryOptions = JSON.parse(localStorage.getItem('delivery')) || {};
     let delivery = deliveryOptions.restaurant[partnerID] || {};
 
-    console.log
     let basketData = {
         tip: parseInt(options.deliveryTip) || 0,
         valid: isValid,

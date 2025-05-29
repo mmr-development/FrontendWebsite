@@ -8,7 +8,14 @@
         <span class="chat-list-timestamp">{{timestamp}}</span>
     </div>
     <div class="chat-list-last-message">
-        {{last_message}}
+        {{#lastMessage}}
+            {{#content}}
+            <span class="chat-list-message">{{text}}</span>
+            {{/content}}
+        {{/lastMessage}}
+        {{^lastMessage}}
+            <span class="chat-list-message">No messages yet</span>
+        {{/lastMessage}}
     </div>
 </div>
 {{/chats}}

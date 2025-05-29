@@ -533,6 +533,24 @@
                             position: sticky;
                             bottom: 10px;
 
+                            input[type="file"] {
+                                display: none;
+                            }
+
+                            label {
+                                background: #007bff;
+                                color: white;
+                                padding: 10px 15px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 14px;
+                                transition: background 0.2s;
+
+                                &:hover {
+                                    background: #0056b3;
+                                }
+                            }
+
                             input[type="text"] {
                                 flex: 1;
                                 padding: 10px;

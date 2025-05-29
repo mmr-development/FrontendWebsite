@@ -69,11 +69,24 @@ export const renderChat = async (container, chat_id) => {
                 socket = new WebSocket(api.wsurl + 'ws/chat/' + chat_id);
                 chatSocketCache[chat_id] = socket;
                 socket.onopen = () => {
-                    socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
+                    // get image upload if exists
+                    const imageInput = form.querySelector('input[type="file"]');
+                    if (imageInput && imageInput.files.length > 0) {
+                        const file = imageInput.files[0];
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const imageData = e.target.result;
+                            console.log('Sending message with image:', imageData);
+                            socket.send(JSON.stringify({ action: 'message', content: { text: message, images: [imageData] } }));
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
+                    }
                 };
             } else {
                 socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
-            }wut
+            }
             messageInput.value = '';
         };
 
@@ -92,14 +105,21 @@ export const renderChat = async (container, chat_id) => {
 };
 
 export const renderChats = async (container, chatContainer) => {
-    let chats = await api.get(`chats`).then((res) => res.status === 200 ? res.data : []);
+    let chats = await api.get(`chats/support/`).then((res) => res.status === 200 ? res.data : []);
+    console.log('Chats:', chats);
     let templatedata = {
-        chats: chats.map((chat) => ({
-            id: chat.id,
-            name: chat.name ?? 'Chat Name',
-            last_message: chat.last_message ?? 'No messages yet',
-            timestamp: chat.timestamp ?? new Date().toISOString(),
-        }))
+        chats: chats.chats.map((chat) => {
+            let lastMessage = chat.last_message || { content: { text: 'No messages yet' } };
+            if(lastMessage.content.images) {
+                lastMessage.content.text = 'Picture sent';
+            }
+            return {
+                id: chat.id,
+                name: chat.name ?? 'Chat Name 123',
+                lastMessage: lastMessage,
+                timestamp: chat.timestamp ?? new Date().toISOString(),
+            };
+        })
     };
 
     await renderTemplate('../../templates/partials/dashboard/pages/chats.mustache', container, templatedata);
@@ -114,12 +134,15 @@ export const renderChats = async (container, chatContainer) => {
     if (createChatButton) {
         createChatButton.onclick = async () => {
             let participants = await api.get('couriers/').then((res) => res.status === 200 ? res.data : []);
+            console.log(participants);
             let couriers = participants.couriers;
-            let options = couriers.map(courier => `<option value="${courier.id}">${courier.email}</option>`).join('');
+            let options = couriers.map(courier => `<option value="${courier.user_id}" data-role="courier">${courier.email}</option>`).join('');
             renderModal({
                 minWidth: '600px',
                 title: 'Create New Chat',
                 content: `
+                <label for="new-chat-name">Chat Name:</label>
+                <input type="text" id="new-chat-name" name="chat_name" placeholder="Enter chat name" required style="width:100%;margin-bottom:10px;">
                 <label for="new-chat-participants">Participants:</label>
                 <select id="new-chat-participants" multiple required style="width:100%;min-height:100px;">
                     ${options}
@@ -128,12 +151,21 @@ export const renderChats = async (container, chatContainer) => {
                 submit: "Submit",
                 submitCallback: async () => {
                     let selectedOptions = document.getElementById('new-chat-participants').selectedOptions;
-                    let participants = Array.from(selectedOptions).map(option => option.value);
+                    // get value and data-role from selected options
+                    let participants = Array.from(selectedOptions).map(option => {
+                        return {
+                            user_id: option.value,
+                            user_role: option.getAttribute('data-role') || 'courier'
+                        };
+                    });
+
+                    let chatName = document.getElementById('new-chat-name').value.trim();
                     if (participants.length === 0) {
                         alert('Please select at least one participant.');
                         return;
                     }
-                    let newChat = await api.post('chats', { participants: participants }).then(res => res.status === 201 ? res.data : null);
+                    console.log('Creating chat with participants:', participants);
+                    let newChat = await api.post('chats', { participants: participants, name: chatName }).then(res => res.status === 201 ? res.data : null);
                     if (newChat) {
                         await renderChat(chatContainer, newChat.id);
                         await renderChats(container, chatContainer);

@@ -30,9 +30,16 @@ export const renderMessages = async (container, chat_id) => {
                     return;
                 }
             });
-            chatMessageCache[chat_id] = data.messages || [];
-            // check for every image and if image url starts with /uploads/ then prepend api.baseurl + 'public'
-            chatMessageCache[chat_id].forEach(message => {
+            data.messages.forEach(message => {
+                if (message && message.first_name && message.last_name) {
+                    message.full_name = `${message.first_name} ${message.last_name}`;
+                } else if (message && message.first_name) {
+                    message.full_name = message.first_name;
+                } else if (message && message.last_name) {
+                    message.full_name = message.last_name;
+                } else {
+                    message.full_name = 'Unknown';
+                }
                 if (message.content && message.content.images) {
                     message.content.images.forEach(image => {
                         if (image.url && image.url.startsWith('/uploads/')) {
@@ -40,7 +47,11 @@ export const renderMessages = async (container, chat_id) => {
                         }
                     });
                 }
+                if(message && message.created_at) {
+                    message.created_at_human = new Date(message.created_at).toLocaleString();
+                }
             });
+            chatMessageCache[chat_id] = data.messages || [];
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: chatMessageCache[chat_id] });
             const chatContainer = document.getElementById('chat');
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -49,8 +60,6 @@ export const renderMessages = async (container, chat_id) => {
             if (myId) 
                 data.message.isSender = data.message.sender_id === myId;
             chatMessageCache[chat_id] = chatMessageCache[chat_id] || [];
-            chatMessageCache[chat_id].push(data.message);
-            // check for every image and if image url starts with /uploads/ then prepend api.baseurl + 'public'
             if (data.message.content && data.message.content.images) {
                 data.message.content.images.forEach(image => {
                     if (image.url && image.url.startsWith('/uploads/')) {
@@ -58,7 +67,25 @@ export const renderMessages = async (container, chat_id) => {
                     }
                 });
             }
-            await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] }, true);
+            if (data.message && data.message.first_name && data.message.last_name) {
+                data.message.full_name = `${data.message.first_name} ${data.message.last_name}`;
+            } else if (data.message && data.message.first_name) {
+                data.message.full_name = data.message.first_name;
+            } else if (data.message && data.message.last_name) {
+                data.message.full_name = data.message.last_name;
+            } else {
+                data.message.full_name = 'Unknown';
+            }
+            if(data.message && data.message.created_at) {
+                data.message.created_at_human = new Date(data.message.created_at).toLocaleString();
+            }
+            let wasEmpty = chatMessageCache[chat_id].length === 0;
+            if (wasEmpty) {
+                await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] });
+            } else {
+                await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] }, true);
+            }
+            chatMessageCache[chat_id].push(data.message);
             const chatContainer = document.getElementById('chat');
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -145,7 +172,9 @@ export const renderChats = async (container, chatContainer) => {
                 id: chat.id,
                 name: chat.name ?? 'Chat Name 123',
                 lastMessage: lastMessage,
-                timestamp: chat.timestamp ?? new Date().toISOString(),
+                timestamp: chat.timestamp
+                    ? new Date(chat.timestamp).toLocaleString()
+                    : new Date().toLocaleString(),
             };
         })
     };

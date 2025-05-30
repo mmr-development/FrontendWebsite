@@ -18,7 +18,8 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                 key !== "created_at" &&
                 key !== "updated_at" &&
                 key !== "partner_id"
-        );
+        )
+        .map((key) => key.replace(/_/g, " "));
     columns.push("actions"); // Add actions column
 
     const rows = partnerHours.hours.map((hour) => {
@@ -26,7 +27,9 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
             id: hour.id,
             cells: [
                 ...columns.slice(0, -1).map((column) => {
-                    if (column === "day_of_week") {
+                    // Convert column name back to original key
+                    const key = column.replace(/ /g, "_");
+                    if (key === "day_of_week") {
                         // day from 0 to 6
                         const days = [
                             "Monday",
@@ -37,15 +40,19 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                             "Saturday",
                             "Sunday",
                         ];
-                        return days[hour[column]] || "N/A";
+                        return days[hour[key]] || "N/A";
                     }
-                    return hour[column] || "N/A";
+                    return hour[key] || "N/A";
                 }),
                 // Actions cell (edit button)
                 `<button class="edit-hour-btn" data-hour-id="${hour.id}">Edit</button>`,
             ],
         };
     });
+    // sort rows by id descending
+    rows.sort((a, b) => a.id - b.id);
+    
+
     const data = {
         data: {
             columns: columns,

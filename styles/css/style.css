@@ -1513,6 +1513,7 @@
   width: 100%;
   position: relative;
   height: auto;
+  margin-bottom: 50px;
 }
 .become-a-partner-container #become-a-partner-form {
   width: 600px;
@@ -1527,6 +1528,7 @@
   width: 100%;
   position: relative;
   height: auto;
+  margin-bottom: 50px;
 }
 .become-a-courier-container #become-a-courier-form {
   width: 600px;
@@ -2060,6 +2062,30 @@
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat #send-message-form button:hover {
   background-color: #0056b3;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 320px;
+  width: 100%;
+  text-align: center;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages-empty .chat-messages-empty-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages-empty .chat-messages-empty-icon i {
+  font-size: 48px;
+  color: #bbb;
+}
+.dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages-empty .chat-messages-empty-icon span {
+  font-size: 1.6rem;
+  color: #888;
+  font-weight: 600;
+  margin-top: 8px;
 }
 .dashboard-wrapper #dashboard-content .dashboard-page#chat-window .chat-container #chat .chat-messages {
   display: flex;

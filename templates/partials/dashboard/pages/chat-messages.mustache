@@ -1,8 +1,8 @@
  {{#messages}}
     <div class="chat-message {{#isSender}}sender{{/isSender}}" id="message-{{id}}">
         <div class="chat-message-meta">
-            <span class="chat-message-sender">{{sender_id}}</span>
-            <span class="chat-message-time">{{created_at}}</span>
+            <span class="chat-message-sender">{{full_name}}</span>
+            <span class="chat-message-time">{{created_at_human}}</span>
         </div>
         <div class="chat-message-content">
             {{#content.text}}
@@ -18,5 +18,10 @@
     </div>
 {{/messages}}
 {{^messages}}
-    <div class="chat-messages-empty">No messages yet.</div>
+<div class="chat-messages-empty">
+    <span class="chat-messages-empty-icon">
+        <i class="fas fa-comments" style="font-size:32px;color:#bbb;"></i>
+        <span>No messages yet</span>
+    </span>
+</div>
 {{/messages}}

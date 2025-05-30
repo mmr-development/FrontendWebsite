@@ -341,8 +341,8 @@ function editItem(e, container) {
 }
 
 const collapsedState = {
-    catalogs: {},    // { [catalogId]: true/false }
-    categories: {},  // { [categoryId]: true/false }
+    catalogs: {},
+    categories: {}, 
 };
 
 export const renderCatalog = async (container) => {
@@ -359,7 +359,6 @@ export const renderCatalog = async (container) => {
     });
 
     data.catalogs.forEach(catalog => {
-        // Collapse by default if not already set
         if (collapsedState.catalogs[catalog.id] === undefined) {
             collapsedState.catalogs[catalog.id] = true;
         }
@@ -469,8 +468,6 @@ export const renderCatalog = async (container) => {
             });
         });
 
-        // implement drag and drop to order the items in the category, and categories in the catalog
-        // Drag and drop for items in categories
         let catalogs = document.querySelectorAll('.catalog');
         catalogs.forEach((catalog) => {
             let categories = catalog.querySelectorAll('.category');
@@ -494,7 +491,6 @@ export const renderCatalog = async (container) => {
                     let draggedItem = document.querySelector(`[data-id="${id}"]`);
                     if (draggedItem && draggedItem !== item) {
                         itemsContainer.insertBefore(draggedItem, item.nextSibling);
-                        // Optionally update order in the database here
                         await api.patch(`categories/items/${draggedItem.dataset.id}`, {
                             index: Array.from(itemsContainer.children).indexOf(draggedItem)
                         }, true);
@@ -502,8 +498,6 @@ export const renderCatalog = async (container) => {
                     });
                 });
             });
-
-            // Drag and drop for categories in catalog
             let categoriesContainer = catalog.querySelector('.categories');
             if (!categoriesContainer) return;
             let categoryElems = categoriesContainer.querySelectorAll('.category');
@@ -527,7 +521,6 @@ export const renderCatalog = async (container) => {
                         await api.patch(`catalog/categories/${draggedCategory.dataset.id}`, {
                             index: Array.from(categoriesContainer.children).indexOf(draggedCategory)
                         }, true);
-                        // Optionally update order in the database here
                     }
                 });
             });

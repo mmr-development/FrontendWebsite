@@ -781,7 +781,7 @@
   transition: background-color 0.2s;
 }
 #restaurants-container .restaurants-sidebar .input-form .restaurant-form button:hover {
-  background-color: rgb(37.0495575221, 153.2504424779, 96.8340707965);
+  background-color: rgba(44, 182, 115, 0.85);
 }
 #restaurants-container .restaurants-list {
   flex: 1;
@@ -2978,6 +2978,48 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat, #c-modal.active .c-modal__content .modal-body .c-modal__chat, #c-modal.active .modal-content .c-modal__body .c-modal__chat, #c-modal.active .modal-content .modal-body .c-modal__chat, #modal.active .c-modal__content .c-modal__body .c-modal__chat, #modal.active .c-modal__content .modal-body .c-modal__chat, #modal.active .modal-content .c-modal__body .c-modal__chat, #modal.active .modal-content .modal-body .c-modal__chat, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat, .c-modal.active .c-modal__content .modal-body .c-modal__chat, .c-modal.active .modal-content .c-modal__body .c-modal__chat, .c-modal.active .modal-content .modal-body .c-modal__chat, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 16px;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat label, #c-modal.active .c-modal__content .modal-body .c-modal__chat label, #c-modal.active .modal-content .c-modal__body .c-modal__chat label, #c-modal.active .modal-content .modal-body .c-modal__chat label, #modal.active .c-modal__content .c-modal__body .c-modal__chat label, #modal.active .c-modal__content .modal-body .c-modal__chat label, #modal.active .modal-content .c-modal__body .c-modal__chat label, #modal.active .modal-content .modal-body .c-modal__chat label, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat label, .c-modal.active .c-modal__content .modal-body .c-modal__chat label, .c-modal.active .modal-content .c-modal__body .c-modal__chat label, .c-modal.active .modal-content .modal-body .c-modal__chat label, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat label, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat label, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat label, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #222;
+  font-size: 1rem;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text], #c-modal.active .c-modal__content .modal-body .c-modal__chat input[type=text], #c-modal.active .modal-content .c-modal__body .c-modal__chat input[type=text], #c-modal.active .modal-content .modal-body .c-modal__chat input[type=text], #modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text], #modal.active .c-modal__content .modal-body .c-modal__chat input[type=text], #modal.active .modal-content .c-modal__body .c-modal__chat input[type=text], #modal.active .modal-content .modal-body .c-modal__chat input[type=text], .c-modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text], .c-modal.active .c-modal__content .modal-body .c-modal__chat input[type=text], .c-modal.active .modal-content .c-modal__body .c-modal__chat input[type=text], .c-modal.active .modal-content .modal-body .c-modal__chat input[type=text], [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat input[type=text], [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat input[type=text], [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat input[type=text], [id^=c-modal__].active .modal-content .modal-body .c-modal__chat input[type=text] {
+  width: calc(100% - 25px) !important;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text]:focus, #c-modal.active .c-modal__content .modal-body .c-modal__chat input[type=text]:focus, #c-modal.active .modal-content .c-modal__body .c-modal__chat input[type=text]:focus, #c-modal.active .modal-content .modal-body .c-modal__chat input[type=text]:focus, #modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text]:focus, #modal.active .c-modal__content .modal-body .c-modal__chat input[type=text]:focus, #modal.active .modal-content .c-modal__body .c-modal__chat input[type=text]:focus, #modal.active .modal-content .modal-body .c-modal__chat input[type=text]:focus, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat input[type=text]:focus, .c-modal.active .c-modal__content .modal-body .c-modal__chat input[type=text]:focus, .c-modal.active .modal-content .c-modal__body .c-modal__chat input[type=text]:focus, .c-modal.active .modal-content .modal-body .c-modal__chat input[type=text]:focus, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat input[type=text]:focus, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat input[type=text]:focus, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat input[type=text]:focus, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat input[type=text]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat select, #c-modal.active .c-modal__content .modal-body .c-modal__chat select, #c-modal.active .modal-content .c-modal__body .c-modal__chat select, #c-modal.active .modal-content .modal-body .c-modal__chat select, #modal.active .c-modal__content .c-modal__body .c-modal__chat select, #modal.active .c-modal__content .modal-body .c-modal__chat select, #modal.active .modal-content .c-modal__body .c-modal__chat select, #modal.active .modal-content .modal-body .c-modal__chat select, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat select, .c-modal.active .c-modal__content .modal-body .c-modal__chat select, .c-modal.active .modal-content .c-modal__body .c-modal__chat select, .c-modal.active .modal-content .modal-body .c-modal__chat select, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat select, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat select, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat select, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat select {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border-color 0.2s;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat select:focus, #c-modal.active .c-modal__content .modal-body .c-modal__chat select:focus, #c-modal.active .modal-content .c-modal__body .c-modal__chat select:focus, #c-modal.active .modal-content .modal-body .c-modal__chat select:focus, #modal.active .c-modal__content .c-modal__body .c-modal__chat select:focus, #modal.active .c-modal__content .modal-body .c-modal__chat select:focus, #modal.active .modal-content .c-modal__body .c-modal__chat select:focus, #modal.active .modal-content .modal-body .c-modal__chat select:focus, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat select:focus, .c-modal.active .c-modal__content .modal-body .c-modal__chat select:focus, .c-modal.active .modal-content .c-modal__body .c-modal__chat select:focus, .c-modal.active .modal-content .modal-body .c-modal__chat select:focus, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat select:focus, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat select:focus, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat select:focus, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+#c-modal.active .c-modal__content .c-modal__body .c-modal__chat select option, #c-modal.active .c-modal__content .modal-body .c-modal__chat select option, #c-modal.active .modal-content .c-modal__body .c-modal__chat select option, #c-modal.active .modal-content .modal-body .c-modal__chat select option, #modal.active .c-modal__content .c-modal__body .c-modal__chat select option, #modal.active .c-modal__content .modal-body .c-modal__chat select option, #modal.active .modal-content .c-modal__body .c-modal__chat select option, #modal.active .modal-content .modal-body .c-modal__chat select option, .c-modal.active .c-modal__content .c-modal__body .c-modal__chat select option, .c-modal.active .c-modal__content .modal-body .c-modal__chat select option, .c-modal.active .modal-content .c-modal__body .c-modal__chat select option, .c-modal.active .modal-content .modal-body .c-modal__chat select option, [id^=c-modal__].active .c-modal__content .c-modal__body .c-modal__chat select option, [id^=c-modal__].active .c-modal__content .modal-body .c-modal__chat select option, [id^=c-modal__].active .modal-content .c-modal__body .c-modal__chat select option, [id^=c-modal__].active .modal-content .modal-body .c-modal__chat select option {
+  padding: 6px 10px;
 }
 #c-modal.active .c-modal__content .c-modal__body .menu-item-content h4, #c-modal.active .c-modal__content .modal-body .menu-item-content h4, #c-modal.active .modal-content .c-modal__body .menu-item-content h4, #c-modal.active .modal-content .modal-body .menu-item-content h4, #modal.active .c-modal__content .c-modal__body .menu-item-content h4, #modal.active .c-modal__content .modal-body .menu-item-content h4, #modal.active .modal-content .c-modal__body .menu-item-content h4, #modal.active .modal-content .modal-body .menu-item-content h4, .c-modal.active .c-modal__content .c-modal__body .menu-item-content h4, .c-modal.active .c-modal__content .modal-body .menu-item-content h4, .c-modal.active .modal-content .c-modal__body .menu-item-content h4, .c-modal.active .modal-content .modal-body .menu-item-content h4, [id^=c-modal__].active .c-modal__content .c-modal__body .menu-item-content h4, [id^=c-modal__].active .c-modal__content .modal-body .menu-item-content h4, [id^=c-modal__].active .modal-content .c-modal__body .menu-item-content h4, [id^=c-modal__].active .modal-content .modal-body .menu-item-content h4 {
   font-size: 18px;

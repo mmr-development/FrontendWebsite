@@ -64,6 +64,52 @@
             justify-content: space-between;
             align-items: center;
             gap: 20px;
+
+            .c-modal__chat {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                padding: 24px 16px;
+
+                label {
+                    font-weight: 600;
+                    margin-bottom: 4px;
+                    color: #222;
+                    font-size: 1rem;
+                }
+
+                input[type="text"] {
+                    width: calc(100% - 25px) !important;
+                    padding: 10px 12px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    font-size: 1rem;
+                    margin-bottom: 10px;
+                    transition: border-color 0.2s;
+                    &:focus {
+                    border-color: #007bff;
+                    outline: none;
+                    }
+                }
+
+                select {
+                    width: 100%;
+                    min-height: 100px;
+                    padding: 10px 12px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    font-size: 1rem;
+                    background: #fafbfc;
+                    transition: border-color 0.2s;
+                    &:focus {
+                    border-color: #007bff;
+                    outline: none;
+                    }
+                    option {
+                    padding: 6px 10px;
+                    }
+                }
+                }
     
             .menu-item-content {
                 h4 {

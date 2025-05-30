@@ -31,6 +31,16 @@ export const renderMessages = async (container, chat_id) => {
                 }
             });
             chatMessageCache[chat_id] = data.messages || [];
+            // check for every image and if image url starts with /uploads/ then prepend api.baseurl + 'public'
+            chatMessageCache[chat_id].forEach(message => {
+                if (message.content && message.content.images) {
+                    message.content.images.forEach(image => {
+                        if (image.url && image.url.startsWith('/uploads/')) {
+                            image.url = api.baseurl + 'public' + image.url;
+                        }
+                    });
+                }
+            });
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: chatMessageCache[chat_id] });
             const chatContainer = document.getElementById('chat');
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -40,6 +50,14 @@ export const renderMessages = async (container, chat_id) => {
                 data.message.isSender = data.message.sender_id === myId;
             chatMessageCache[chat_id] = chatMessageCache[chat_id] || [];
             chatMessageCache[chat_id].push(data.message);
+            // check for every image and if image url starts with /uploads/ then prepend api.baseurl + 'public'
+            if (data.message.content && data.message.content.images) {
+                data.message.content.images.forEach(image => {
+                    if (image.url && image.url.startsWith('/uploads/')) {
+                        image.url = api.baseurl + 'public' + image.url;
+                    }
+                });
+            }
             await renderTemplate('../../templates/partials/dashboard/pages/chat-messages.mustache', container, { messages: [data.message] }, true);
             const chatContainer = document.getElementById('chat');
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -60,37 +78,48 @@ export const renderChat = async (container, chat_id) => {
 
     if (sendButton && messageInput) {
         // Send on button click
-        sendButton.onclick = (e) => {
+        sendButton.onclick = async (e) => {
             e.preventDefault();
             const message = messageInput.value.trim();
             if (!message) return;
             let socket = chatSocketCache[chat_id];
+            const imageInput = form.querySelector('input[type="file"]');
+            let content = { text: message };
+
+            if (imageInput && imageInput.files.length > 0) {
+                const files = imageInput.files;
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
+                let response = await api.postImage('chats/upload-images', formData);
+                let result = await response.data.json();
+
+                if (result.images && result.images.length > 0) {
+                    content.images = result.images.map(image => ({
+                        url: image.url,
+                    }));
+                }
+            }
+
             if (!socket || socket.readyState !== 1) {
                 socket = new WebSocket(api.wsurl + 'ws/chat/' + chat_id);
                 chatSocketCache[chat_id] = socket;
                 socket.onopen = () => {
-                    // get image upload if exists
-                    const imageInput = form.querySelector('input[type="file"]');
-                    if (imageInput && imageInput.files.length > 0) {
-                        const file = imageInput.files[0];
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const imageData = e.target.result;
-                            console.log('Sending message with image:', imageData);
-                            socket.send(JSON.stringify({ action: 'message', content: { text: message, images: [imageData] } }));
-                        };
-                        reader.readAsDataURL(file);
-                    } else {
-                        socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
-                    }
+                    socket.send(JSON.stringify({
+                        action: 'message',
+                        content: content
+                    }));
                 };
             } else {
-                socket.send(JSON.stringify({ action: 'message', content: { text: message } }));
+                socket.send(JSON.stringify({
+                    action: 'message',
+                    content: content
+                }));
             }
             messageInput.value = '';
+            if (imageInput) imageInput.value = '';
         };
-
-        // Send on Enter, new line on Shift+Enter
         messageInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (e.shiftKey) {
@@ -106,7 +135,6 @@ export const renderChat = async (container, chat_id) => {
 
 export const renderChats = async (container, chatContainer) => {
     let chats = await api.get(`chats/support/`).then((res) => res.status === 200 ? res.data : []);
-    console.log('Chats:', chats);
     let templatedata = {
         chats: chats.chats.map((chat) => {
             let lastMessage = chat.last_message || { content: { text: 'No messages yet' } };
@@ -134,19 +162,20 @@ export const renderChats = async (container, chatContainer) => {
     if (createChatButton) {
         createChatButton.onclick = async () => {
             let participants = await api.get('couriers/').then((res) => res.status === 200 ? res.data : []);
-            console.log(participants);
             let couriers = participants.couriers;
             let options = couriers.map(courier => `<option value="${courier.user_id}" data-role="courier">${courier.email}</option>`).join('');
             renderModal({
                 minWidth: '600px',
                 title: 'Create New Chat',
                 content: `
-                <label for="new-chat-name">Chat Name:</label>
+                <div class="c-modal__chat">
+                                <label for="new-chat-name">Chat Name:</label>
                 <input type="text" id="new-chat-name" name="chat_name" placeholder="Enter chat name" required style="width:100%;margin-bottom:10px;">
                 <label for="new-chat-participants">Participants:</label>
                 <select id="new-chat-participants" multiple required style="width:100%;min-height:100px;">
                     ${options}
-                </select>`,
+                </select>
+                </div>`,
                 close: "Close",
                 submit: "Submit",
                 submitCallback: async () => {
@@ -164,7 +193,6 @@ export const renderChats = async (container, chatContainer) => {
                         alert('Please select at least one participant.');
                         return;
                     }
-                    console.log('Creating chat with participants:', participants);
                     let newChat = await api.post('chats', { participants: participants, name: chatName }).then(res => res.status === 201 ? res.data : null);
                     if (newChat) {
                         await renderChat(chatContainer, newChat.id);

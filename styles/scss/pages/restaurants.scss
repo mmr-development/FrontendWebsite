@@ -148,7 +148,7 @@
                     transition: background-color 0.2s;
 
                     &:hover {
-                        background-color: darken(vars.$primary-color, 7%);
+                        background-color: rgba(vars.$primary-color, 0.85);
                     }
                 }
             }

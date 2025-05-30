@@ -14,11 +14,11 @@
         {{/links}}
       </ul>
       <div class="navbar-right">
-        <select class="language-selector">
-          {{#languages}}
-            <option value="{{code}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-          {{/languages}}
-        </select>
+{{! <select class="language-selector"> }}
+{{!   {{#languages}} {{!}}
+{{!     <option value="{{code}}{{!" {{! {{#selected}} {{!selected{{/selected}}{{!>{{name}}{{!</option> }}
+{{!   {{/languages}} {{!}}
+{{! </select> }}
         <a href="{{authUrl}}" class="login-button">{{authText}}</a>
         {{#userInfo}}
         <button class="user-info"  aria-label="User Info">
@@ -43,11 +43,11 @@
         {{/links}}
       </ul>
       <div class="navbar-right">
-        <select class="language-selector">
-          {{#languages}}
-            <option value="{{code}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-          {{/languages}}
-        </select>
+{{! <select class="language-selector"> }}
+{{!   {{#languages}} {{!}}
+{{!     <option value="{{code}}{{!" {{! {{#selected}} {{!selected{{/selected}}{{!>{{name}}{{!</option> }}
+{{!   {{/languages}} {{!}}
+{{! </select> }}
         <button id="login-button-small" class="login-button">{{authText}}</button>
         {{#userInfo}}
         <button class="user-info" aria-label="User Info">

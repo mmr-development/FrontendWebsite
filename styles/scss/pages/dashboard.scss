@@ -573,6 +573,34 @@
                             }
                         }
 
+                        .chat-messages-empty {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 320px;
+                            width: 100%;
+                            text-align: center;
+
+                            .chat-messages-empty-icon {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 18px;
+
+                                i {
+                                    font-size: 48px;
+                                    color: #bbb;
+                                }
+
+                                span {
+                                    font-size: 1.6rem;
+                                    color: #888;
+                                    font-weight: 600;
+                                    margin-top: 8px;
+                                }
+                            }
+                        }
+
                         .chat-messages {
                             display: flex;
                             flex-direction: column;

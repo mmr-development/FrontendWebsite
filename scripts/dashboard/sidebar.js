@@ -10,29 +10,29 @@ const data = {
     sidebarTitle: 'Dashboard',
     logoutText: 'Logout',
     sidebarLinks: [
-        { label: 'Dashboard', url: '#', icon: 'fas fa-tachometer-alt' }, // Dashboard icon
+        { label: 'Dashboard', url: '', icon: 'fas fa-tachometer-alt' }, // Dashboard icon
     ],
-}
+};
 
-if(auth.isAdmin()) {
-    data.sidebarLinks = [
+if (auth.isAdmin()) {
+    data.sidebarLinks.push(
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
         { url: '#users', label: 'Users', icon: 'fas fa-users' },
-        { url: '#applications', label: 'Applications' , icon: 'fas fa-cogs' },
-    ];
-} else if(auth.isPartner()) {
-    data.sidebarLinks = [
+        { url: '#applications', label: 'Applications', icon: 'fas fa-cogs' },
+    );
+} else if (auth.isPartner()) {
+    data.sidebarLinks.push(
         { url: '#orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
-        { url: '#live-orders', label: 'Live Orders', icon: 'fas fa-bolt' }, // Changed icon to 'bolt'
+        { url: '#live-orders', label: 'Live Orders', icon: 'fas fa-bolt' },
         { url: "#catalog", label: "Catalog", icon: "fas fa-utensils" },
         { url: '#partner-hours', label: 'Partner Hours', icon: 'fas fa-clock' },
         { url: '#partner-details', label: 'Partner Details', icon: 'fas fa-user' },
-    ]
+    );
 } else if (auth.isSupport()) {
-    data.sidebarLinks =  [
+    data.sidebarLinks = [
         { url: '#schema-planner', label: 'Schema Planner', icon: 'fas fa-calendar-alt' },
         { url: '#chat-window', label: 'Chat', icon: 'fas fa-comments' },
-    ]
+    ];
 }
 
 export const renderSidebar = async () => {

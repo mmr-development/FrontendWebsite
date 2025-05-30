@@ -54,6 +54,7 @@ export const getRestaurantDetail = async (id) => {
             smiley_url: restaurantDetail.smiley_report_link,
             smiley_img: restaurantDetail.smiley_image_url,
         } : null,
+        info: '<i class="fa fa-info-circle" aria-hidden="true"></i>'
     };
     restaurantsDetail = localStorage.getItem('restaurantsDetail');
     if (restaurantsDetail) {

@@ -38,7 +38,7 @@ submitButton.addEventListener('click', async (event) => {
         if (res.status === 201) {
             window.location.href = '../index.html';
         } else {
-            errorMessage.innerHTML = 'Forkert brugernavn eller adgangskode.';
+            errorMessage.innerHTML = 'Der opstod en fejl under registreringen. Tjek venligst dine oplysninger og prøv igen.';
         }
     }).catch((error) => {
         console.error(error);

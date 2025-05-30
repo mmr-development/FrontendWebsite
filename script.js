@@ -25,7 +25,7 @@ const headerData = {
 
 const footerData = {
     year: new Date().getFullYear(),
-    companyName: "Your Company",
+    companyName: "MMR Delivery",
     socials: [
         { platform: "Facebook", url: "https://facebook.com" },
         { platform: "Twitter", url: "https://twitter.com" },

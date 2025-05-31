@@ -430,30 +430,22 @@ export const renderCatalog = async (container) => {
                         const file = fileInput.files[0];
                         const formData = new FormData();
                         formData.append('file', file, file.name);
+                        // add a loading spinner
+                        const loadingSpinner = document.createElement('div');
+                        loadingSpinner.className = 'loading-spinner';
+                        document.querySelector('.c-modal__content').appendChild(loadingSpinner);
+                        document.querySelector('.c-modal__body').classList.add('opace');
                         try {
-                            // add a loading spinner
-                            const loadingSpinner = document.createElement('div');
-                            loadingSpinner.className = 'loading-spinner';
-                            document.querySelector('.c-modal__content').appendChild(loadingSpinner);
-                            document.querySelector('.c-modal__body').classList.add('opace');
                             const response = await api.postImage('partners/' + partnerid + '/catalogs/ai', formData, true);
-                            
-                            if (response.status === 201) {
-                                // remove the loading spinner
-                                loadingSpinner.remove();
-                                document.querySelector('.c-modal__body').classList.remove('opace');
-                                //await renderCatalog(container);
-                            } else {
-                                console.error("Error adding catalog with AI:", response.data);
-                                loadingSpinner.remove();
-                                document.querySelector('.c-modal__body').classList.remove('opace');
-                            }
-
-                            document.querySelector('.c-modal__content').appendChild(loadingSpinner);
-                            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate AI processing time
-
+                            console.log(response)
+                            data = null;
+                            await renderCatalog(container);
                         } catch (error) {
                             console.error("Error uploading catalog with AI:", error);
+                            loadingSpinner.remove();
+                        } finally {
+                            if( document.querySelector('.c-modal__body'))
+                                document.querySelector('.c-modal__body').classList.remove('opace');
                         }
                     }
                 });

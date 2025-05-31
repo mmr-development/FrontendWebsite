@@ -65,6 +65,10 @@
             align-items: center;
             gap: 20px;
 
+            &.opace {
+                opacity: 0.2;
+            }
+
             .c-modal__chat {
                 display: flex;
                 flex-direction: column;

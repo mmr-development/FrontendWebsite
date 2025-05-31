@@ -404,6 +404,55 @@ export const renderCatalog = async (container) => {
             addCatalogButton.addEventListener('click', () => addCatalog(container));
         }
 
+        let addCatalogWithAiButton = document.querySelector('.add-catalog-ai');
+        if (addCatalogWithAiButton) {
+            addCatalogWithAiButton.addEventListener('click', async () => {
+                // show a form to input a file (pdf og png)
+                const form = `
+                    <form id="add-catalog-ai-form">
+                        <label for="catalog-file">Upload Catalog File (PDF or PNG)</label>
+                        <input type="file" id="catalog-file" name="catalog-file" accept=".pdf,.png,.jpg,.jpeg" required>
+                        <p>Note: The file should contain the catalog information in a readable format.</p>
+                    </form>
+                `;
+                renderModal({
+                    title: "Add Catalog with AI",
+                    content: form,
+                    submit: "Upload",
+                    submitClose: false,
+                    submitCallback: async () => {
+                        const formElement = document.getElementById('add-catalog-ai-form');
+                        const fileInput = formElement.querySelector('#catalog-file');
+                        if (fileInput.files.length === 0) {
+                            alert("Please select a file to upload.");
+                            return;
+                        }
+                        const file = fileInput.files[0];
+                        const formData = new FormData();
+                        formData.append('file', file, file.name);
+                        // add a loading spinner
+                        const loadingSpinner = document.createElement('div');
+                        loadingSpinner.className = 'loading-spinner';
+                        document.querySelector('.c-modal__content').appendChild(loadingSpinner);
+                        document.querySelector('.c-modal__body').classList.add('opace');
+                        try {
+                            const response = await api.postImage('partners/' + partnerid + '/catalogs/ai', formData, true);
+                            console.log(response)
+                            data = null;
+                            await renderCatalog(container);
+                        } catch (error) {
+                            console.error("Error uploading catalog with AI:", error);
+                            loadingSpinner.remove();
+                        } finally {
+                            if( document.querySelector('.c-modal__body'))
+                                document.querySelector('.c-modal__body').classList.remove('opace');
+                        }
+                    }
+                });
+            });
+        }
+                    
+
         let addCategoryButtons = document.querySelectorAll('.add-category');
         addCategoryButtons.forEach((button) => {
             button.addEventListener('click', (e) => {

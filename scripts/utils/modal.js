@@ -19,9 +19,12 @@ export const renderModal = async (data, containerid = 'c-modal') => {
 
     document.querySelectorAll('.c-modal__submit').forEach((submit) => {
         submit.addEventListener('click', () => {
-            modal.classList.remove('active');
-            if(data.submitCallback) {
+            if (data.submitCallback) {
                 data.submitCallback();
+            }
+            // By default, close modal unless submitClose is explicitly false
+            if (data.submitClose !== false) {
+                modal.classList.remove('active');
             }
         });
     });

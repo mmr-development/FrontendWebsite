@@ -281,7 +281,7 @@
                         color: #444;
                     }
     
-                    .add-catalog {
+                    .add-catalog, .add-catalog-ai {
                         background-color: #28a745;
                         color: white;
                         padding: 0.75rem 1.5rem;
@@ -292,6 +292,10 @@
     
                         &:hover {
                         background-color: #218838;
+                        }
+
+                        strong {
+                            font-weight: 600;
                         }
                     }
     

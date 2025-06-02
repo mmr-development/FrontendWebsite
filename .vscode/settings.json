@@ -3,8 +3,8 @@
     "liveServer.settings.root": "/",
     "liveServer.settings.https": {
         "enable": true,
-        "cert" : "C:/Users/Mindaugas/OneDrive/Desktop/svendeprøve/FrontendWebsite/selfsigned.crt",
-        "key" : "C:/Users/Mindaugas/OneDrive/Desktop/svendeprøve/FrontendWebsite/selfsigned.key",
+        "cert" : "C:/Users/Mindaugas/Desktop/Svendeprøve/FrontendWebsite/selfsigned.crt",
+        "key" : "C:/Users/Mindaugas/Desktop/Svendeprøve/FrontendWebsite/selfsigned.key",
         "passphrase": ""
     }   
 }

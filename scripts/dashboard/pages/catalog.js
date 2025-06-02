@@ -428,15 +428,19 @@ export const renderCatalog = async (container) => {
                             return;
                         }
                         const file = fileInput.files[0];
+                        console.log(file);
                         const formData = new FormData();
                         formData.append('file', file, file.name);
+                        console.log('file', file, file.name, file.size)
+                        // Check if the uploaded file is an image and is empty (0 bytes)
+                        console.log(formData);
                         // add a loading spinner
                         const loadingSpinner = document.createElement('div');
                         loadingSpinner.className = 'loading-spinner';
                         document.querySelector('.c-modal__content').appendChild(loadingSpinner);
                         document.querySelector('.c-modal__body').classList.add('opace');
                         try {
-                            const response = await api.postImage('partners/' + partnerid + '/catalogs/ai', formData, true);
+                            const response = await api.postImage('partners/' + partnerid + '/catalogs/ai', formData);
                             console.log(response)
                             data = null;
                             await renderCatalog(container);

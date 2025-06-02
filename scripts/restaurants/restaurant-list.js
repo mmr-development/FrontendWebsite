@@ -117,6 +117,50 @@ await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaura
         });
     }
 
+    let scrollbatContainer = document.querySelector('.scrollbar-container');
+    // foreach scrollbar-item inside add change event listener to each item to add/remove selected class
+    if (scrollbatContainer) {
+        const scrollbarItems = scrollbatContainer.querySelectorAll('.scrollbar-item');
+        scrollbarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('selected')) {
+                    const partnersIds = item.getAttribute('data-partners-ids').split(',');
+                    // find the partners that have data-id matching to one of the partnersIds
+                    const restaurantItems = document.querySelectorAll('.restaurants-item');
+                    restaurantItems.forEach(restaurantItem => {
+                        const restaurantId = restaurantItem.getAttribute('data-id');
+                        if (partnersIds.includes(restaurantId)) {
+                            restaurantItem.style.display = 'flex';
+                        } else {
+                            restaurantItem.style.display = 'none';
+                        }
+                    });
+                } else {
+                    const selectedItems = scrollbatContainer.querySelectorAll('.scrollbar-item.selected');
+                    if (selectedItems.length === 0) {
+                        const restaurantItems = document.querySelectorAll('.restaurants-item');
+                        restaurantItems.forEach(restaurantItem => {
+                            restaurantItem.style.display = 'flex';
+                        });
+                    } else {
+                        // if there are selected items, hide all restaurants and show only the selected ones
+                        const partnersIds = Array.from(selectedItems).map(item => item.getAttribute('data-partners-ids')).join(',').split(',');
+                        const restaurantItems = document.querySelectorAll('.restaurants-item');
+                        restaurantItems.forEach(restaurantItem => {
+                            const restaurantId = restaurantItem.getAttribute('data-id');
+                            if (partnersIds.includes(restaurantId)) {
+                                restaurantItem.style.display = 'flex';
+                            } else {
+                                restaurantItem.style.display = 'none';
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+
     if (openNowTotoggle) {
         newestToggle.checked = false;
         newestToggle.dispatchEvent(new Event('change'));

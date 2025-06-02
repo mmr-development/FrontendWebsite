@@ -1,42 +1,58 @@
 import { renderTemplate } from '../utils/rendertemplate.js';
+import * as api from '../utils/api.js';
+
+let categories = await api.get('catalog/categories/all', api.includeCredentials).then((res) => {
+    if (res.status === 200) {
+        console.log(res.data)
+        return res.data.categories.map(category => ({
+            image: category.image || "../../files/images/restaurants/placeholder.png",
+            title: category.name,
+            selected: false,
+            count: category.count || 0,
+            partner_ids: category.partner_ids || [],
+        }));
+    } else {
+        console.error('Failed to load categories:', res.status);
+        return [];
+    }
+}).catch((error) => {
+    console.error('Error fetching categories:', error);
+    return [];
+});
+
+console.log(categories);
 
 let scrollbarData = {
-    categories: [
-        { image: "../../files/images/restaurants/placeholder.png" , title: "All", selected: true },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Pizza", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Sushi", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Burgers", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Salads", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Desserts", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Drinks", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Snacks", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Breakfast", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Brunch", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Lunch", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Dinner", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Vegan", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Vegetarian", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Gluten-Free", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Halal", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Kosher", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Organic", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Local", selected: false },
-        { image: "../../files/images/restaurants/placeholder.png" , title: "Seasonal", selected: false },
-    ],
+    categories: categories.map(category => ({
+        image: category.image || "../../files/images/restaurants/placeholder.png",
+        title: category.title,
+        selected: category.selected || false,
+        count: category.count || 0,
+        partnerIds: Array.isArray(category.partner_ids) ? category.partner_ids.join(',') : ''
+    }))
 };
 
 await renderTemplate('templates/partials/categoryscrollbar.mustache', 'categoryscrollbar', scrollbarData).then(() => {
-    const scrollbarContainer = document.querySelector('.scrollbar-container'); // Replace with the correct class or ID
+    const scrollbarContainer = document.querySelector('.scrollbar-container'); 
 
     if (scrollbarContainer) {
         scrollbarContainer.addEventListener('wheel', (event) => {
-            event.preventDefault(); // Prevent vertical scrolling
-
-            // Adjust scrolling for both mouse wheels and touchpads
-            const scrollAmount = event.deltaY * 5 || event.deltaX * 100; // Use deltaX for horizontal touchpad gestures
+            event.preventDefault(); 
+            const scrollAmount = event.deltaY * 5 || event.deltaX * 100; 
             scrollbarContainer.scrollBy({
-                left: scrollAmount, // Scroll horizontally
-                behavior: 'smooth', // Add smooth scrolling behavior
+                left: scrollAmount, 
+                behavior: 'smooth', 
+            });
+        });
+        const items = scrollbarContainer.querySelectorAll('.scrollbar-item');
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+            if (item.classList.contains('selected')) {
+                item.classList.remove('selected');
+            } else {
+                items.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+            }
             });
         });
     }

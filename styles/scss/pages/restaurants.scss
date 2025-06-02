@@ -11,9 +11,9 @@
     padding: 1rem 0;
 
     .scrollbar-container {
+        padding-top: 5px;
         display: flex;
         flex-direction: row;
-        align-items: center;
         width: calc(100%);
         max-width: vars.$window-size-large;
         overflow-x: scroll;
@@ -24,6 +24,7 @@
         }
 
         .scrollbar-item {
+            margin-top: 5px;
             height: 100%;
             width: 100px;
             margin: 0 10px;
@@ -38,6 +39,16 @@
             &:hover {
                 cursor: pointer;
                 transform: scale(1.05);
+            }
+            &.selected {
+
+                .scrollbar-item-image {
+                    scale: 1.1;
+                    
+                    img{
+                        border: 5px solid vars.$primary-color;
+                    }
+                }
             }
 
             .scrollbar-item-image {

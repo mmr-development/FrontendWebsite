@@ -656,9 +656,9 @@
   padding: 1rem 0;
 }
 #categoryscrollbar .scrollbar-container {
+  padding-top: 5px;
   display: flex;
   flex-direction: row;
-  align-items: center;
   width: 100%;
   max-width: 1200px;
   overflow-x: scroll;
@@ -668,6 +668,7 @@
   display: none;
 }
 #categoryscrollbar .scrollbar-container .scrollbar-item {
+  margin-top: 5px;
   height: 100%;
   width: 100px;
   margin: 0 10px;
@@ -682,6 +683,12 @@
 #categoryscrollbar .scrollbar-container .scrollbar-item:hover {
   cursor: pointer;
   transform: scale(1.05);
+}
+#categoryscrollbar .scrollbar-container .scrollbar-item.selected .scrollbar-item-image {
+  scale: 1.1;
+}
+#categoryscrollbar .scrollbar-container .scrollbar-item.selected .scrollbar-item-image img {
+  border: 5px solid #2cb673;
 }
 #categoryscrollbar .scrollbar-container .scrollbar-item .scrollbar-item-image {
   width: 100px;

@@ -1,0 +1,48 @@
+<div class="dashboard dashboard--off" id="dashboard-main">
+  {{#partners.length}}
+  <div class="dashboard-partner-select">
+    <label for="partner-select">Partner:</label>
+    <select id="partner-select">
+      <option value="0">All</option>
+      {{#partners}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+      {{/partners}}
+    </select>
+  </div>
+  {{/partners.length}}
+
+  {{#loading}}
+    <div class="dashboard-loading">Loading dashboard...</div>
+  {{/loading}}
+
+  {{^loading}}
+    {{#empty}}
+      <div class="dashboard-empty">No statistics available.</div>
+    {{/empty}}
+    {{^empty}}
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Orders</div>
+          <div class="stat-value">{{totalOrders}}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value">{{totalRevenue}} kr</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Tips</div>
+          <div class="stat-value">{{totalTips}} kr</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Revenue (excl. tips)</div>
+          <div class="stat-value">{{totalWithoutTips}} kr</div>
+        </div>
+      </div>
+      <div class="dashboard-tables">
+        {{> dashboard/table ordersPerDay "Orders" "orders" }}
+        {{> dashboard/table revenuePerDay "Revenue" "revenue" }}
+        {{> dashboard/table tipsPerDay "Tips" "tips" }}
+      </div>
+    {{/empty}}
+  {{/loading}}
+</div>

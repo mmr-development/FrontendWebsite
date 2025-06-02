@@ -10,7 +10,7 @@ import * as auth from "../utils/auth.js";
 import { renderChatTemplate } from "./pages/chat.js";
 import { renderSchemaPlanner } from "./pages/schema-planner.js";
 import { renderLiveOrders } from "./pages/live-orders.js";
-
+import { renderDashboard } from "./pages/dashbord.js";
 const role = sessionStorage.getItem('role');
 
 if (role === null) {
@@ -18,7 +18,7 @@ if (role === null) {
 }
 
 let pages = [
-    { id: 'dashboard', url: '#dashboard', active: true },
+    { id: 'dashboard', url: '#', active: true },
 ];
 export const renderDashboardContent = async () => {
     if (auth.isAdmin()) {
@@ -47,6 +47,7 @@ export const renderDashboardContent = async () => {
 
     if (auth.isAdmin()) {
         await Promise.all([
+            renderDashboard('dashboard'),
             renderOrders('orders'),
             renderUsers('users'),
             renderApplications('applications'),
@@ -72,6 +73,7 @@ export const renderDashboardContent = async () => {
             console.error("Error fetching partner id:", err);
         }
         await Promise.all([
+            renderDashboard('dashboard', partnerid, partners),
             renderCatalog('catalog', 0, partnerid, partners),
             renderOrders('orders', 0, partnerid, partners),
             renderLiveOrders('live-orders', partnerid, partners),

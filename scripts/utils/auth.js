@@ -21,7 +21,6 @@ export const isSupport = () => {
 }
 
 export const Logout = () => {
-    // remove all session storage items
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('partner_id');
     sessionStorage.removeItem('userInfo');
@@ -29,7 +28,6 @@ export const Logout = () => {
     sessionStorage.removeItem('restaurantCarts');
     sessionStorage.removeItem('delivery');
     sessionStorage.removeItem('order');
-    // remove all local storage items
     localStorage.removeItem('role');
     localStorage.removeItem('partner_id');
     localStorage.removeItem('userInfo');
@@ -39,7 +37,6 @@ export const Logout = () => {
     localStorage.removeItem('order');
 
     console.log('User logged out successfully.');
-    // call the API to sign out
     return api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
         if (res.status === 200) {
             window.location.href = '/index.html';

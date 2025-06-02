@@ -1,4 +1,3 @@
-// on form submit redirect to restaurants page
 import * as api from '../utils/api.js';
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -7,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const submitButton = document.getElementById("submit-button");
     let addressdata = {};
 
-    submitButton.style.display = "none"; // Hide the submit button initially
+    submitButton.style.display = "none";
 
     if (form) {
         form.addEventListener("submit", function (event) {

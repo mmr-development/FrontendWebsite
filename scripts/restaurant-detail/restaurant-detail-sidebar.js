@@ -17,15 +17,11 @@ await renderTemplate('../../templates/partials/restaurant-detail/restaurant-deta
     toggleDeliveryOption.checked = delivery && delivery.delivery === true;
     
     toggleDeliveryOption.addEventListener('change', () => {
-        // If the delivery object for the restaurant doesn't exist, create it
         if (!delivery) {
             deliveryOption.restaurant[id] = { delivery: toggleDeliveryOption.checked };
         } else {
-            // If it exists, update the delivery tag
             deliveryOption.restaurant[id].delivery = toggleDeliveryOption.checked;
         }
-    
-        // Save the updated deliveryOption back to localStorage
         localStorage.setItem('delivery', JSON.stringify(deliveryOption));
     });
 });

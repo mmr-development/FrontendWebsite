@@ -73,7 +73,6 @@ export const renderGet = async (container,data) => {
             startPage = Math.max(1, endPage - maxVisible + 1);
         }
 
-        // Show first page and ellipsis if needed
         if (startPage > 1) {
             pagination.appendChild(createPageLink('1', 1, false));
             if (startPage > 2) {
@@ -83,13 +82,10 @@ export const renderGet = async (container,data) => {
                 pagination.appendChild(ellipsis);
             }
         }
-
-        // Page numbers
         for (let i = startPage; i <= endPage; i++) {
             pagination.appendChild(createPageLink(i, i, i === currentPage));
         }
 
-        // Show last page and ellipsis if needed
         if (endPage < totalPages) {
             if (endPage < totalPages - 1) {
                 const ellipsis = document.createElement('span');
@@ -100,12 +96,10 @@ export const renderGet = async (container,data) => {
             pagination.appendChild(createPageLink(totalPages, totalPages, false));
         }
 
-        // Next button
         pagination.appendChild(
             createPageLink('Next', Math.min(totalPages, currentPage + 1), false, currentPage === totalPages)
         );
 
-        // Last button
         pagination.appendChild(
             createPageLink('Last', totalPages, false, currentPage === totalPages)
         );

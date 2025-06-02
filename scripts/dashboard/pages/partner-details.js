@@ -41,15 +41,11 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
         if (editButton) {
             editButton.onclick = async (e) => {
                 e.preventDefault();
-                // unlock the form
                 const form = document.querySelector('#' + container + ' #partner-form');
                 form.querySelectorAll('input, select').forEach(input => {
-                    // remove readonly
                     input.removeAttribute('readonly');
                 });
-                // change the button to save
                 editButton.innerHTML = 'Save';
-                // then on click of save, save the data
                 editButton.onclick = async (e) => {
                     e.preventDefault();
                     const formData = new FormData();
@@ -69,7 +65,6 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
 
         const partner_banner_form = document.querySelector('#' + container + ' #partner-banner-form');
         if (partner_banner_form) {
-            // on input change show preview
             const fileInput = partner_banner_form.querySelector('input[type="file"]');
             const preview = partner_banner_form.querySelector('.preview');
             if (fileInput) {
@@ -87,7 +82,6 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
             partner_banner_form.onsubmit = async (e) => {
                 e.preventDefault();
                 const formData = new FormData()
-                //append the file to the form data
                 const file = partner_banner_form.querySelector('input[type="file"]').files[0];
                 if (file) {
                     formData.append('banner', file);
@@ -106,7 +100,6 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
 
         const partner_logo_form = document.querySelector('#' + container + ' #partner-logo-form');
         if (partner_logo_form) {
-            // on input change show preview
             const fileInput = partner_logo_form.querySelector('input[type="file"]');
             const preview = partner_logo_form.querySelector('.preview');
             if (fileInput) {
@@ -124,7 +117,6 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
             partner_logo_form.onsubmit = async (e) => {
                 e.preventDefault();
                 const formData = new FormData();
-                //append the file to the form data
                 const file = partner_logo_form.querySelector('input[type="file"]').files[0];
                 if (file) {
                     formData.append('logo', file);

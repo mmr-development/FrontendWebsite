@@ -7,7 +7,6 @@ let checkoutData = {};
 
 export const basketUpdate = async (delivery = true, cData = checkoutData) => {
     checkoutData = cData;
-    // Log where the basketUpdate function is called
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('id');
 
@@ -69,19 +68,16 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
     let checkedinput = document.getElementById('toggle-checkbox');
 
     if (checkedinput) {
-        // check if the checkedinput allready has an event listener
         const hasListener = checkedinput.hasAttribute('data-listener');
         if (!hasListener) {
             checkedinput.addEventListener('change', () => {
-                // Only update if the value actually changed
                 const previousValue = deliveryStorage.restaurant[restaurantId]
                     ? deliveryStorage.restaurant[restaurantId].delivery
                     : undefined;
-                const newValue = !checkedinput.checked; // true if delivery, false if pickup
+                const newValue = !checkedinput.checked;
                 if (previousValue !== newValue) {
                     deliveryStorage.restaurant[restaurantId] = { delivery: newValue };
                     localStorage.setItem('delivery', JSON.stringify(deliveryStorage));
-                    // Only update if the value actually changed, and pass the correct delivery value
                     setTimeout(() => basketUpdate(newValue), 0);
                 }
             });
@@ -97,10 +93,10 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
             const itemId = button.getAttribute('data-id');
             const itemIndex = basket.findIndex(item => item.id === itemId);
             if (itemIndex > -1) {
-                basket.splice(itemIndex, 1); // Remove the item from the basket
-                restaurantCarts[restaurantId] = basket; // Update the restaurant-specific cart
-                localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
-                basketUpdate(delivery); // Re-render the basket
+                basket.splice(itemIndex, 1); 
+                restaurantCarts[restaurantId] = basket; 
+                localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts));
+                basketUpdate(delivery);
             }
         });
     });
@@ -119,12 +115,12 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
                 let currentValue = parseInt(quantityInput.value);
                 if (button.dataset.action === 'increase' && currentValue < max) {
                     quantityInput.value = currentValue + 1;
-                    basket[itemIndex].quantity += 1; // Update the quantity in the basket
+                    basket[itemIndex].quantity += 1; 
                 } else if (button.dataset.action === 'decrease' && currentValue > min) {
                     quantityInput.value = currentValue - 1;
-                    basket[itemIndex].quantity -= 1; // Update the quantity in the basket
+                    basket[itemIndex].quantity -= 1;
                 }
-                localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
+                localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); 
                 basketUpdate(delivery);
             });
         });
@@ -133,14 +129,14 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
             let currentValue = parseInt(quantityInput.value);
             if (currentValue > max) {
                 quantityInput.value = max;
-                basket[itemIndex].quantity = max; // Update the quantity in the basket
+                basket[itemIndex].quantity = max;
             } else if (currentValue < min) {
                 quantityInput.value = min;
-                basket[itemIndex].quantity = min; // Update the quantity in the basket
+                basket[itemIndex].quantity = min;
             } else {
-                basket[itemIndex].quantity = currentValue; // Update the quantity in the basket
+                basket[itemIndex].quantity = currentValue; 
             }
-            localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
+            localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts));
             basketUpdate(delivery);
         });
     });
@@ -165,13 +161,13 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
                     if (noteTextarea) {
                         noteTextarea.value ? basket[itemIndex].note = noteTextarea.value :  
                         basket[itemIndex].note = '';
-                        localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts)); // Save to localStorage
+                        localStorage.setItem('restaurantCarts', JSON.stringify(restaurantCarts));
                         const noteDiv = document.querySelector(`.basket-item[data-id="${itemId}"] .note`);
                         if (noteDiv) {
                            if (noteTextarea.value) {
-                                 noteDiv.innerHTML = "<p><strong>Note:</strong> " + noteTextarea.value + "</p>"; // Update the note in the basket
+                                 noteDiv.innerHTML = "<p><strong>Note:</strong> " + noteTextarea.value + "</p>";
                             }else {
-                                noteDiv.innerHTML = ""; // Update the note in the basket
+                                noteDiv.innerHTML = "";
                             }
                         }
                     }
@@ -180,8 +176,6 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
             });
         });
     });
-
-    // Add event listener for the checkout button
 
     const checkoutButton = document.querySelector('.checkout-button');
     if (checkoutButton) {
@@ -197,7 +191,6 @@ export const basketUpdate = async (delivery = true, cData = checkoutData) => {
         if (checkoutButton) {
             checkoutButton.style.display = 'block';
         }else {
-            //create a checkout button if it does not exist
             const checkoutButtonContainer = document.createElement('div');
             checkoutButtonContainer.className = 'checkout-button-container';
             const checkoutButton = document.createElement('button');

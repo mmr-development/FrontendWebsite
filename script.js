@@ -36,18 +36,15 @@ const footerData = {
 let renderDivBelow = (elementid) => {
     const targetElement = document.getElementById(elementid);
     if (targetElement) {
-        // Check if a .new-div is already directly after the targetElement
         const nextElem = targetElement.nextElementSibling;
         if (nextElem && nextElem.classList.contains('new-div')) {
-            nextElem.remove(); // Close if already open
+            nextElem.remove();
             return null;
         }
-        // Remove any other open .new-div
         const existingDiv = document.querySelector('.new-div');
         if (existingDiv) {
             existingDiv.remove();
         }
-        // Create and insert new
         const newDiv = document.createElement('div');
         newDiv.className = 'new-div';
         newDiv.innerHTML = '<p>This is a new div below the target element.</p>';
@@ -156,8 +153,6 @@ async function baseRenderTemplates() {
                 case 'user-info': {
                   if (typeof userInfo === 'string') userInfo = JSON.parse(userInfo);
                   let div = renderDivBelow(button.id);
-                    // Disable the user info form by adding the 'disabled' attribute to all inputs and disabling the submit button
-                    
                     if (Array.isArray(userInfo.address)) {
                       userInfo.address = userInfo.address
                         .map(address => `${address.street} ${address.address_detail}, ${address.postal_code} ${address.city}`)
@@ -165,7 +160,6 @@ async function baseRenderTemplates() {
                     } else if (userInfo.address && typeof userInfo.address === 'object') {
                       userInfo.address = `${userInfo.address.street || ''} ${userInfo.address.address_detail || ''}, ${userInfo.address.postal_code || ''} ${userInfo.address.city || ''}`;
                     } else if (typeof userInfo.address === 'string') {
-                      // Already a string, do nothing
                     }
                     div.innerHTML =
                       `<form class="user-info-edit-form">
@@ -193,7 +187,6 @@ async function baseRenderTemplates() {
 
                   let form = div.querySelector('.user-info-edit-form');
                   if (form) {
-                    // add dawa autocomplete to the address input
                     let addressInput = form.querySelector('#address');
                     let customerAddress;
                     let selectedAddress;
@@ -210,8 +203,8 @@ async function baseRenderTemplates() {
                               longitude: selected.data.y || null
                             };
                             customerAddress = {
-                              country: "Denmark", // Default country
-                              country_iso: "DK", // Default ISO code
+                              country: "Denmark",
+                              country_iso: "DK",
                               city: addressData.postnrnavn || "",
                               street: addressData.vejnavn || "",
                               postal_code: addressData.postnr || "",
@@ -267,7 +260,7 @@ async function baseRenderTemplates() {
     if (loginButton) {
       loginButton.forEach(button => {
       button.addEventListener('click', async (e) => {
-        e.preventDefault(); // Prevent default action
+        e.preventDefault();
         if (role === null) {
         window.location.href = '/pages/login.html';
         } else {

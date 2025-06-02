@@ -32,15 +32,12 @@ const renderPartnerApplications = async (container, offset = 0) => {
                 else if (column === 'delivery_methods') {
                     return application[column].map(method => method.name).join(', ') || 'N/A';
                 } else if (column === 'contact_person') {
-                    // If contact_person is an object, display its details
                     const person = application[column];
                     if (!person) return 'N/A';
-                    // Show name, email, and phone if available
                     return [person.first_name, person.last_name, person.email, person.phone_number]
                         .filter(Boolean)
                         .join(', ') || 'N/A';
                 } else if (column === 'address' ) {
-                    // If address is an object, display its details
                     const address = application[column];
                     if (!address) return 'N/A';
                     return [address.street, address.city, address.postal_code, address.country]
@@ -132,12 +129,10 @@ const renderCourierApplications = async (container, offset = 0) => {
                 else if (column === 'delivery_methods') {
                     return application[column].map(method => method.name).join(', ') || 'N/A';
                 } else if (column === 'documentation' ) {
-                    // if no documentation, return N/A
                     if (application[column].length === 0) {
                         return 'N/A';
                     }
                 } else if (column == 'user' || column == 'address') {
-                    // object object, return string and ignore id
                     return Object.keys(application[column]).map(key => {
                         if (key === 'id') {
                             return '';
@@ -189,7 +184,6 @@ const renderCourierApplications = async (container, offset = 0) => {
 
 
 export const renderApplications = async (container) => {
-    // add partner application and courier application containers
     const partnerApplicationsContainer = document.createElement('div');
     partnerApplicationsContainer.id = 'partner-applications';
     partnerApplicationsContainer.classList.add('applications-container');
@@ -206,9 +200,7 @@ export const renderApplications = async (container) => {
         return;
     }
 
-    // Render partner applications
     await renderPartnerApplications(partnerApplicationsContainer.id);
-    // Render courier applications
     await renderCourierApplications(courierApplicationsContainer.id);
 }
 

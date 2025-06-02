@@ -104,7 +104,6 @@ export const renderChat = async (container, chat_id) => {
     const messageInput = form?.querySelector('input[name="message"]');
 
     if (sendButton && messageInput) {
-        // Send on button click
         sendButton.onclick = async (e) => {
             e.preventDefault();
             const message = messageInput.value.trim();
@@ -150,7 +149,6 @@ export const renderChat = async (container, chat_id) => {
         messageInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (e.shiftKey) {
-                    // Allow new line
                     return;
                 }
                 e.preventDefault();
@@ -209,7 +207,6 @@ export const renderChats = async (container, chatContainer) => {
                 submit: "Submit",
                 submitCallback: async () => {
                     let selectedOptions = document.getElementById('new-chat-participants').selectedOptions;
-                    // get value and data-role from selected options
                     let participants = Array.from(selectedOptions).map(option => {
                         return {
                             user_id: option.value,

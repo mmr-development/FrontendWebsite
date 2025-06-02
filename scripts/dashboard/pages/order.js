@@ -114,7 +114,6 @@ export const renderOrders = async (container, offset = 0, partnerid = 0, partner
                 const row = document.querySelector(`#${CSS.escape(String(orderId))}`);
                 if (row) row.insertAdjacentElement('afterend', detailsDiv);
             }
-            // Add delete logic here if needed
         };
     })
 };

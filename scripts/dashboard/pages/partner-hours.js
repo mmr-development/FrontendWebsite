@@ -20,17 +20,15 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                 key !== "partner_id"
         )
         .map((key) => key.replace(/_/g, " "));
-    columns.push("actions"); // Add actions column
+    columns.push("actions");
 
     const rows = partnerHours.hours.map((hour) => {
         return {
             id: hour.id,
             cells: [
                 ...columns.slice(0, -1).map((column) => {
-                    // Convert column name back to original key
                     const key = column.replace(/ /g, "_");
                     if (key === "day_of_week") {
-                        // day from 0 to 6
                         const days = [
                             "Monday",
                             "Tuesday",
@@ -44,12 +42,10 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                     }
                     return hour[key] || "N/A";
                 }),
-                // Actions cell (edit button)
                 `<button class="edit-hour-btn" data-hour-id="${hour.id}">Edit</button>`,
             ],
         };
     });
-    // sort rows by id descending
     rows.sort((a, b) => a.id - b.id);
     
 
@@ -74,7 +70,6 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
         container,
         data
     ).then(() => {
-        // Add event listeners to edit buttons
         const editButtons = document.querySelectorAll(".edit-hour-btn");
         editButtons.forEach((button) => {
             button.addEventListener("click", async (event) => {
@@ -101,7 +96,6 @@ export const renderPartnerHours = async (container, partner_id, partners = []) =
                     <button type="submit">Save</button>
                 </form>
                 `;
-                // Find the row for this hour
                 const row = button.closest('.custom-table-row');
                 if (row) {
                 row.insertAdjacentElement('afterend', editDiv);

@@ -44,19 +44,15 @@ export const renderUsers = async (container, offset = 0) => {
         key !== 'updated_at' &&
         key !== 'id'
     ));
-    // add actions to columns
     columns.push('actions');
 
-    // Format rows
     const rows = apiData.users.map(user => {
         return {
-            id: user.id, // Include the user's ID
+            id: user.id,
             cells: columns.map(column => {
                 if (column === 'roles') {
-                    // Map roles to a comma-separated string of role names
                     return user.roles.map(role => role.name).join(', ') || 'N/A';
                 } else if (column === 'actions') {
-                    // Add action buttons
                     return `
                     <div class="action-buttons">
                         <button class="btn btn-primary" onclick="editUser('${user.id}')">Edit</button>
@@ -65,15 +61,14 @@ export const renderUsers = async (container, offset = 0) => {
                     </div>
                     `;
                 }
-                return user[column] || 'N/A'; // Map each column to its value or 'N/A' if missing
+                return user[column] || 'N/A'; 
             })
         };
     });
 
-    // Create templateData
     const templateData = {
         data: {
-            columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), // Format column names
+            columns: columns.map(column => column.replace(/_/g, ' ').toUpperCase()), 
             rows: rows,
         },
         totalItems: apiData.pagination.total,
@@ -89,25 +84,19 @@ export const renderUsers = async (container, offset = 0) => {
         }
     };
 
-    // Render the template
     renderGet(container, templateData).then(() => {
-        // id edit user
         window.editUser = (id) => {
-            // Check if the edit-user div already exists
             const existingEditUserDiv = document.querySelector('#edit-user');
             if (existingEditUserDiv) {
-                // If the existing edit-user div is for the same user, remove it and return
                 if (existingEditUserDiv.previousElementSibling?.id === id) {
                     existingEditUserDiv.remove();
                     return;
                 }
-                // Otherwise, remove the existing edit-user div
                 existingEditUserDiv.remove();
             }
         
             let user = apiData.users.find(user => user.id === id);
         
-            // Create the edit-user div
             const editUserDiv = document.createElement('div');
             editUserDiv.id = 'edit-user';
             let selectedRoles = roles.map(role => {
@@ -136,13 +125,11 @@ export const renderUsers = async (container, offset = 0) => {
                 </form>
             `;
         
-            // Find the user row with the given ID and insert the edit-user div right after it
             const userRow = document.querySelector(`#${CSS.escape(id)}`);
             if (userRow) {
                 userRow.insertAdjacentElement('afterend', editUserDiv);
             }
         
-            // Add event listener for the form submission
             const editUserForm = document.querySelector('.edit-content-form');
             editUserForm.addEventListener('submit', async (e) => {
                 e.preventDefault();

@@ -1,6 +1,5 @@
 import { renderConfetti } from "../utils/confetti.js";
 
-// get type from url
 const urlParams = new URLSearchParams(window.location.search);
 const type = urlParams.get('type');
 

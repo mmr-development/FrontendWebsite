@@ -10,7 +10,7 @@ const data = {
     sidebarTitle: 'Dashboard',
     logoutText: 'Logout',
     sidebarLinks: [
-        { label: 'Dashboard', url: '', icon: 'fas fa-tachometer-alt' }, // Dashboard icon
+        { label: 'Dashboard', url: '', icon: 'fas fa-tachometer-alt' },
     ],
 };
 
@@ -48,7 +48,6 @@ export const renderSidebar = async () => {
         let logoutButton = document.getElementById('logout-button');
         if (logoutButton) {
             logoutButton.addEventListener('click', () => {
-                // remove session storage
                 sessionStorage.removeItem('role');
                 api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
                     if (res.status === 200) {

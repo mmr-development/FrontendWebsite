@@ -11,12 +11,10 @@ import { renderChatTemplate } from "./pages/chat.js";
 import { renderSchemaPlanner } from "./pages/schema-planner.js";
 import { renderLiveOrders } from "./pages/live-orders.js";
 
-// get role from session storage
 const role = sessionStorage.getItem('role');
 
 if (role === null) {
     console.error("User is not logged in");
-    //window.location.href = '/';
 }
 
 let pages = [
@@ -54,7 +52,6 @@ export const renderDashboardContent = async () => {
             renderApplications('applications'),
         ]);
     } else if (auth.isPartner()) {
-        // Get partner id first
         let partnerid = localStorage.getItem('selectedPartnerId') || null;
         let partners = [];
         try {
@@ -87,7 +84,6 @@ export const renderDashboardContent = async () => {
             renderChatTemplate('chat-window')
         ]);
     }
-    // Handle active page highlighting
     const pagesEls = document.querySelectorAll('.dashboard-page');
     const updateActivePage = () => {
         let pageId = window.location.hash.substring(1) || 'dashboard';

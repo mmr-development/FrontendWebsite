@@ -8,10 +8,8 @@ if (token === null) {
     if (token === null) window.location.href = '/';
 }
 
-// let temp local storage
 localStorage.setItem('token', token);
 
-// remove token from url
 let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 window.history.replaceState({}, document.title, newUrl);
 
@@ -27,7 +25,6 @@ if (form) {
         }
         api.post('auth/reset-password/'+token, {password: password,confirm_password: confirmPassword}, api.includeCredentials).then((res) => {
             if (res.status === 200) {
-                // remove token from local storage
                 localStorage.removeItem('token');
                 window.location.href = '/pages/login.html';
             } else {

@@ -146,10 +146,8 @@ export const renderCourierForm = async () => {
     ).then(() => {
         const form = document.getElementById('become-a-courier-form').children[0];
         const addressInput = document.getElementById('courier-address');
-        // get the age checkbox and add an event listener to it
         const ageCheckbox = document.querySelectorAll('input[name="age"]');
 
-        // get the selects
         const availabilitySelect = document.getElementById('availability');
         const workHoursSelect = document.getElementById('work-hours');
         const vehicleSelect = document.getElementById('vehicle');
@@ -201,9 +199,6 @@ export const renderCourierForm = async () => {
                         alert("Der opstod en fejl. Prøv igen senere.");
                     }
                 });
-
-
-                //window.location.href = `thank-you.html?type=courier`;
             });
         }
 

@@ -54,7 +54,7 @@ const formattedData = {
                 name: partner.name,
                 banner: partner.banner_url ? api.baseurl + 'public' + partner.banner_url : "../../files/images/restaurants/placeholder.png",
                 logo: partner.logo_url ? api.baseurl + 'public' + partner.logo_url : "../../files/images/restaurants/placeholder.png",
-                top_picks: "N/A", // Placeholder for top picks
+                top_picks: "N/A", 
                 estimated_delivery_time: partner.delivery.min_preparation_time_minutes + '-' + partner.delivery.max_preparation_time_minutes + ' mins',
                 delivery_fee: partner.delivery.fee ? partner.delivery.fee + 'dkk' : "N/A",
                 minimum_order: partner.delivery.min_order_value ? partner.delivery.min_order_value + 'dkk' : "N/A",
@@ -118,14 +118,12 @@ await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaura
     }
 
     let scrollbatContainer = document.querySelector('.scrollbar-container');
-    // foreach scrollbar-item inside add change event listener to each item to add/remove selected class
     if (scrollbatContainer) {
         const scrollbarItems = scrollbatContainer.querySelectorAll('.scrollbar-item');
         scrollbarItems.forEach(item => {
             item.addEventListener('click', () => {
                 if (item.classList.contains('selected')) {
                     const partnersIds = item.getAttribute('data-partners-ids').split(',');
-                    // find the partners that have data-id matching to one of the partnersIds
                     const restaurantItems = document.querySelectorAll('.restaurants-item');
                     restaurantItems.forEach(restaurantItem => {
                         const restaurantId = restaurantItem.getAttribute('data-id');
@@ -143,7 +141,6 @@ await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaura
                             restaurantItem.style.display = 'flex';
                         });
                     } else {
-                        // if there are selected items, hide all restaurants and show only the selected ones
                         const partnersIds = Array.from(selectedItems).map(item => item.getAttribute('data-partners-ids')).join(',').split(',');
                         const restaurantItems = document.querySelectorAll('.restaurants-item');
                         restaurantItems.forEach(restaurantItem => {
@@ -178,9 +175,9 @@ await renderTemplate('../templates/partials/restaurant-list.mustache', 'restaura
             return toggle.checked ? dateB - dateA : dateA - dateB;
         });
         const restaurantsList = document.getElementById('restaurants-list');
-        restaurantsList.querySelectorAll('.restaurants-item').forEach(item => item.remove()); // Clear existing items
+        restaurantsList.querySelectorAll('.restaurants-item').forEach(item => item.remove());
         sortedItems.forEach((item) => {
-            restaurantsList.querySelector('.restaurants-list').appendChild(item); // Append sorted items
+            restaurantsList.querySelector('.restaurants-list').appendChild(item);
         });
     }
     

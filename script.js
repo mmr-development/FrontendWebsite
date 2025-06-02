@@ -266,14 +266,15 @@ async function baseRenderTemplates() {
     const loginButton = document.querySelectorAll('.login-button');
     if (loginButton) {
       loginButton.forEach(button => {
-        button.addEventListener('click', async () => {
-          if (role === null) {
-            window.location.href = '/pages/login.html';
-          } else {
-            await auth.logout();
-            window.location.reload();
-          }
-        });
+      button.addEventListener('click', async (e) => {
+        e.preventDefault(); // Prevent default action
+        if (role === null) {
+        window.location.href = '/pages/login.html';
+        } else {
+        await auth.Logout();
+        window.location.reload();
+        }
+      });
       });
     }
 

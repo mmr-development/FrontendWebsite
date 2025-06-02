@@ -8,13 +8,12 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
         }
         return [];
     });
-
     let templatedata = {
         id: partner.id,
         name: partner.name,
         phone_number: partner.phone_number,
         delivery_fee: partner.delivery_fee,
-        max_deliver_distance: partner.max_delivery_distance_km,
+        max_deliver_distance: partner.max_delivery_distance,
         min_order_value: partner.min_order_value,
         min_delivery_time: partner.min_preparation_time_minutes,
         max_delivery_time: partner.max_preparation_time_minutes,
@@ -53,8 +52,7 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
                 // then on click of save, save the data
                 editButton.onclick = async (e) => {
                     e.preventDefault();
-                    const form = document.querySelector('#' + container + ' #partner-form');
-                    const formData = new FormData(form);
+                    const formData = new FormData();
                     const data = Object.fromEntries(formData.entries());
                     await api.patch('partners/' + partnerid, data).then((res) => {
                         if (res.status === 200) {

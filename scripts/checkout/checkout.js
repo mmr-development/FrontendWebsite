@@ -271,12 +271,16 @@ let renderDeliveryTip = async (container) => {
             submitCallback: () => {
                 const input = document.getElementById('custom-tip-input');
                 let tip = input.value;
-                if (tip.length > 0) {
-                    userinfo.deliveryTip = tip;
+                let tipValue = parseInt(tip, 10);
+
+                if (!isNaN(tipValue) && tipValue >= 0 && tipValue <= 10000) {
+                    userinfo.deliveryTip = tipValue;
+                    document.getElementById('deliverytipform-final').textContent = `: ${tipValue},00 kr.`;
                 } else {
                     delete userinfo.deliveryTip;
+                    document.getElementById('deliverytipform-final').textContent = '';
+                    alert('Tip must be between 0 and 10,000.');
                 }
-                document.getElementById('deliverytipform-final').textContent = tip.length > 0 ? `: ${tip},00 kr.` : '';
                 validateCheckout(userinfo);
             }
         });
@@ -320,10 +324,11 @@ let renderPaymentMethod = async (container) => {
 }
 
 let checkoutLogic = () => {
-    let checkoutButton = document.querySelector('.checkout-button1');
-    if (!checkoutButton) {return;}
-    // checkoutButton.classList.add('checkout-button', 'active');
-    checkoutButton.addEventListener('click', async (e) => {
+    // Attach event listener to all current and future .checkout-button1 buttons
+    document.body.addEventListener('click', async function (e) {
+        const btn = e.target.closest('.checkout-button1');
+        if (!btn) return;
+
         e.preventDefault();
 
         // Gather cart and delivery info
@@ -348,23 +353,23 @@ let checkoutLogic = () => {
         };
         let order = {
             customer: {
-            first_name: userinfo['customer-firstname'],
-            last_name: userinfo['customer-lastname'],
-            email: userinfo['customer-email'],
-            phone_number: userinfo['customer-phone'],
-            address: customerAddress
+                first_name: userinfo['customer-firstname'],
+                last_name: userinfo['customer-lastname'],
+                email: userinfo['customer-email'],
+                phone_number: userinfo['customer-phone'],
+                address: customerAddress
             },
             order: {
-            partner_id: parseInt(restaurantId),
-            delivery_type: restaurantDelivery ? 'pickup' : 'delivery',
-            requested_delivery_time: userinfo.deliveryTime ? new Date(userinfo.deliveryTime).toISOString() : null,
-            ...(userinfo.deliveryTip ? { tip_amount: parseInt(userinfo.deliveryTip) } : {}),
-            ...(userinfo.deliveryNote ? { note: userinfo.deliveryNote } : {}),
-            items: restaurantCart.map(item => ({
-                catalog_item_id: item.id,
-                quantity: item.quantity,
-                ...(item.note ? { note: item.customizations } : {}),
-            }))
+                partner_id: parseInt(restaurantId),
+                delivery_type: restaurantDelivery ? 'pickup' : 'delivery',
+                requested_delivery_time: userinfo.deliveryTime ? new Date(userinfo.deliveryTime).toISOString() : null,
+                ...(userinfo.deliveryTip ? { tip_amount: parseInt(userinfo.deliveryTip) } : {}),
+                ...(userinfo.deliveryNote ? { note: userinfo.deliveryNote } : {}),
+                items: restaurantCart.map(item => ({
+                    catalog_item_id: item.id,
+                    quantity: item.quantity,
+                    ...(item.note ? { note: item.customizations } : {}),
+                }))
             },
             paymentMethod: userinfo.paymentMethod || 'credit_card',
             deliveryTip: userinfo.deliveryTip ? parseInt(userinfo.deliveryTip) : 0,
@@ -402,7 +407,7 @@ let checkoutLogic = () => {
                 });
             });
         });
-    });
+    }, false);
 }
 
 let validateCheckout = async (options) => {

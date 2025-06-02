@@ -13,7 +13,7 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
         name: partner.name,
         phone_number: partner.phone_number,
         delivery_fee: partner.delivery_fee,
-        max_deliver_distance: partner.max_delivery_distance,
+        max_deliver_distance: partner.max_delivery_distance_km,
         min_order_value: partner.min_order_value,
         min_delivery_time: partner.min_preparation_time_minutes,
         max_delivery_time: partner.max_preparation_time_minutes,
@@ -49,7 +49,29 @@ export const renderParnterDetails = async (container, partnerid, partners) => {
                 editButton.onclick = async (e) => {
                     e.preventDefault();
                     const formData = new FormData();
-                    const data = Object.fromEntries(formData.entries());
+                    let data = Object.fromEntries(formData.entries());
+                    console.log(data);
+                    // DATA IS FUCKING EMPTY
+                    form.querySelectorAll('input, select').forEach(input => {
+                        if (input.type === 'checkbox') {
+                            data[input.name] = input.checked;
+                        } else {
+                            data[input.name] = input.value;
+                        }
+                    }
+                    );
+                    data['id'] = partnerid;
+                    data['logo_url'] = partner.logo_url;
+                    data['banner_url'] = partner.banner_url;
+                    data['status'] = data['status'] === 'true' ? true : false;
+                    data['delivery_fee'] = parseFloat(data['delivery_fee']);
+                    data['max_delivery_distance_km'] = parseFloat(data['max_delivery_distance_km']);
+                    data['min_order_value'] = parseFloat(data['min_order_value']);
+                    data['min_preparation_time_minutes'] = parseInt(data['min_preparation_time_minutes']);
+                    data['max_preparation_time_minutes'] = parseInt(data['max_preparation_time_minutes']);
+                    data['phone_number'] = data['phone_number'].replace(/\D/g, ''); // Remove non-numeric characters
+                    data['name'] = data['name'].trim();
+                    console.log(data);
                     await api.patch('partners/' + partnerid, data).then((res) => {
                         if (res.status === 200) {
                             renderParnterDetails(container, partnerid, partners);

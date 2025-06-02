@@ -323,87 +323,91 @@ let renderPaymentMethod = async (container) => {
 }
 
 let checkoutLogic = () => {
-    document.body.addEventListener('click', async function (e) {
-        const btn = e.target.closest('.checkout-button1');
-        if (!btn) return;
+    // Prevent adding more than one event listener
+    if (!document.body.hasAttribute('data-checkout-listener')) {
+        document.body.setAttribute('data-checkout-listener', 'true');
+        document.body.addEventListener('click', async function (e) {
+            const btn = e.target.closest('.checkout-button1');
+            if (!btn) return;
 
-        e.preventDefault();
-        let cart = JSON.parse(localStorage.getItem('restaurantCarts')) || {};
-        let urlParams = new URLSearchParams(window.location.search);
-        let restaurantId = urlParams.get('id');
-        let restaurantCart = cart[restaurantId] || [];
+            e.preventDefault();
+            let cart = JSON.parse(localStorage.getItem('restaurantCarts')) || {};
+            let urlParams = new URLSearchParams(window.location.search);
+            let restaurantId = urlParams.get('id');
+            let restaurantCart = cart[restaurantId] || [];
 
-        let delivery = JSON.parse(localStorage.getItem('delivery')) || {};
-        let restaurantDelivery = delivery.restaurant?.[restaurantId]?.delivery === false;
+            let delivery = JSON.parse(localStorage.getItem('delivery')) || {};
+            let restaurantDelivery = delivery.restaurant?.[restaurantId]?.delivery === false;
 
-        let addressData = JSON.parse(sessionStorage.getItem('address'))?.data || {};
-        let customerAddress = {
-            country: "Denmark",
-            country_iso: "DK",
-            city: addressData.postnrnavn || "",
-            street: addressData.vejnavn || "",
-            postal_code: addressData.postnr || "",
-            address_detail: `${addressData.husnr || ""} ${addressData.etage || ""} ${addressData.dør || ""}`.trim(),
-            latitude: addressData.latitude || null,
-            longitude: addressData.longitude || null
-        };
-        let order = {
-            customer: {
-                first_name: userinfo['customer-firstname'],
-                last_name: userinfo['customer-lastname'],
-                email: userinfo['customer-email'],
-                phone_number: userinfo['customer-phone'],
-                address: customerAddress
-            },
-            order: {
-                partner_id: parseInt(restaurantId),
-                delivery_type: restaurantDelivery ? 'pickup' : 'delivery',
+            let addressData = JSON.parse(sessionStorage.getItem('address'))?.data || {};
+            let customerAddress = {
+                country: "Denmark",
+                country_iso: "DK",
+                city: addressData.postnrnavn || "",
+                street: addressData.vejnavn || "",
+                postal_code: addressData.postnr || "",
+                address_detail: `${addressData.husnr || ""} ${addressData.etage || ""} ${addressData.dør || ""}`.trim(),
+                latitude: addressData.latitude || null,
+                longitude: addressData.longitude || null
+            };
+            let order = {
+                customer: {
+                    first_name: userinfo['customer-firstname'],
+                    last_name: userinfo['customer-lastname'],
+                    email: userinfo['customer-email'],
+                    phone_number: userinfo['customer-phone'],
+                    address: customerAddress
+                },
+                order: {
+                    partner_id: parseInt(restaurantId),
+                    delivery_type: restaurantDelivery ? 'pickup' : 'delivery',
+                    requested_delivery_time: userinfo.deliveryTime ? new Date(userinfo.deliveryTime).toISOString() : null,
+                    ...(userinfo.deliveryTip ? { tip_amount: parseInt(userinfo.deliveryTip) } : {}),
+                    ...(userinfo.deliveryNote ? { note: userinfo.deliveryNote } : {}),
+                    items: restaurantCart.map(item => ({
+                        catalog_item_id: item.id,
+                        quantity: item.quantity,
+                        ...(item.note ? { note: item.customizations } : {}),
+                    }))
+                },
+                paymentMethod: userinfo.paymentMethod || 'credit_card',
+                deliveryTip: userinfo.deliveryTip ? parseInt(userinfo.deliveryTip) : 0,
                 requested_delivery_time: userinfo.deliveryTime ? new Date(userinfo.deliveryTime).toISOString() : null,
-                ...(userinfo.deliveryTip ? { tip_amount: parseInt(userinfo.deliveryTip) } : {}),
-                ...(userinfo.deliveryNote ? { note: userinfo.deliveryNote } : {}),
-                items: restaurantCart.map(item => ({
-                    catalog_item_id: item.id,
-                    quantity: item.quantity,
-                    ...(item.note ? { note: item.customizations } : {}),
-                }))
-            },
-            paymentMethod: userinfo.paymentMethod || 'credit_card',
-            deliveryTip: userinfo.deliveryTip ? parseInt(userinfo.deliveryTip) : 0,
-            requested_delivery_time: userinfo.deliveryTime ? new Date(userinfo.deliveryTime).toISOString() : null,
-            deliveryNote: userinfo.deliveryNote || false,
-            payment: {
-                method: userinfo.paymentMethod,
-            }
-        };
+                deliveryNote: userinfo.deliveryNote || false,
+                payment: {
+                    method: userinfo.paymentMethod,
+                }
+            };
 
-        localStorage.setItem('order', JSON.stringify(order));
+            localStorage.setItem('order', JSON.stringify(order));
 
-        renderModal({
-            minWidth: '400',
-            title: 'Order Confirmation',
-            content: '<div id="order-confirmation"></div>',
-            close: "Close",
-            submit: "Confirm",
-        }).then(() => {
-            renderTemplate(
-                '../../templates/partials/checkout/order-confirmation.mustache',
-                'order-confirmation',
-                order
-            ).then(() => {
-                document.querySelector('.c-modal__submit').addEventListener('click', async () => {
-                    await api.post('orders', order, api.includeCredentials).then((res) => {
-                        if (res.status === 201) {
-                            localStorage.setItem('orderConfirm', JSON.stringify(res.data));
-                            localStorage.removeItem('restaurantCarts');
-                            localStorage.removeItem('delivery');
-                            localStorage.removeItem('userOrders');
-                            window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;
-                        }
+            renderModal({
+                minWidth: '400',
+                title: 'Order Confirmation',
+                content: '<div id="order-confirmation"></div>',
+                close: "Close",
+                submit: "Confirm",
+            }).then(() => {
+                renderTemplate(
+                    '../../templates/partials/checkout/order-confirmation.mustache',
+                    'order-confirmation',
+                    order
+                ).then(() => {
+                    document.querySelector('.c-modal__submit').addEventListener('click', async () => {
+                        await api.post('orders', order, api.includeCredentials).then((res) => {
+                            if (res.status === 201) {
+                                localStorage.setItem('orderConfirm', JSON.stringify(res.data));
+                                localStorage.removeItem('restaurantCarts');
+                                localStorage.removeItem('delivery');
+                                localStorage.removeItem('userOrders');
+                                window.location.href = '/pages/await-confirmation.html?id=' + restaurantId;
+                            }
+                        });
                     });
                 });
             });
-        });
-    }, false);
+        }, false);
+    }
 }
 
 let validateCheckout = async (options) => {

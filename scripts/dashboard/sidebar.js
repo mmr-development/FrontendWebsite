@@ -10,7 +10,7 @@ const data = {
     sidebarTitle: 'Dashboard',
     logoutText: 'Logout',
     sidebarLinks: [
-        { label: 'Dashboard', url: '', icon: 'fas fa-tachometer-alt' },
+        { label: 'Dashboard', url: '#', icon: 'fas fa-tachometer-alt' },
     ],
 };
 

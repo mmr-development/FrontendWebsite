@@ -63,16 +63,12 @@ async function baseRenderTemplates() {
     let isLoggedin = auth.isLoggedIn();
     if (isLoggedin) {
       const userInfoButtons = document.querySelectorAll('.user-info');
-      let orders = localStorage.getItem('userOrders');
-      if (!orders) {
-        orders = await api.get('orders').then((response) => {
+      let orders = await api.get('orders/?limit=5').then((response) => {
           if (response.status === 200) {
             return response.data;
           }
           return [];
         });
-        localStorage.setItem('userOrders', JSON.stringify(orders));
-      }
 
       let userInfo = localStorage.getItem('userInfo');
       if (!userInfo) {
@@ -88,7 +84,9 @@ async function baseRenderTemplates() {
       if (userInfoButtons) {
         userInfoButtons.forEach(userInfoButton => {
           userInfoButton.addEventListener('click', async () => {
-          await renderTemplate('templates/partials/user-info-modal.mustache', 'c-modal', {});
+          await renderTemplate('templates/partials/user-info-modal.mustache', 'c-modal', {
+            minWidth: '400px',
+          });
           const modal = document.getElementById('c-modal');
           if (!modal) return;
           modal.classList.add('active');
@@ -108,46 +106,98 @@ async function baseRenderTemplates() {
                 case 'user-orders': {
                   if (typeof orders === 'string') orders = JSON.parse(orders);
 
-                  let orderFormated = orders.orders.map((order) => {
-                    order.formatedDate = new Date(order.requested_delivery_time).toLocaleDateString();
-                    order.formatedTime = new Date(order.requested_delivery_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    order.formatedPrice = order.total_amount.toFixed(2);
-                    order.total_items = order.items.reduce((total, item) => total + item.quantity, 0);
-                    order.items = order.items.map(item => ({
-                      name: item.name,
-                      quantity: item.quantity,
-                      price: item.price
-                    }));
-                    return order;
+                  // Helper to format orders
+                  function formatOrders(ordersArr) {
+                  return ordersArr.map(order => ({
+                    ...order,
+                    formatedDate: new Date(order.requested_delivery_time).toLocaleDateString(),
+                    formatedTime: new Date(order.requested_delivery_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    formatedPrice: order.total_amount.toFixed(2),
+                    total_items: order.items.reduce((total, item) => total + item.quantity, 0),
+                    items: order.items.map(item => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                    }))
+                  }));
+                  }
+
+                  // Pagination helpers
+                  const PAGE_SIZE = 5;
+                  let offset = orders.pagination?.offset || 0;
+                  let totalItems = orders.pagination?.total || 0;
+                  let totalPages = Math.ceil(totalItems / PAGE_SIZE);
+
+                  // Render orders list and pagination
+                  function renderOrdersList(container, ordersData, offsetVal, totalItemsVal) {
+                  const formattedOrders = formatOrders(ordersData.orders || []);
+                  const currentPage = Math.floor(offsetVal / PAGE_SIZE) + 1;
+                  const totalPagesVal = Math.ceil(totalItemsVal / PAGE_SIZE);
+
+                  container.innerHTML = `
+                    <div class="orders-list">
+                    ${formattedOrders.map(order => `
+                      <div class="order-item" id="order-${order.id}">
+                      <h3>Order #${order.id}</h3>
+                      <p>Date: ${order.formatedDate}</p>
+                      <p>Time: ${order.formatedTime}</p>
+                      <p>Total Items: ${order.total_items}</p>
+                      <p>Total Price: $${order.formatedPrice}</p>
+                      </div>
+                    `).join('')}
+                    <div class="order-pagination">
+                      <button class="prev-page" ${offsetVal === 0 ? 'disabled' : ''}>Previous</button>
+                      <span>Page ${currentPage} of ${totalPagesVal}</span>
+                      <button class="next-page" ${(offsetVal + PAGE_SIZE >= totalItemsVal) ? 'disabled' : ''}>Next</button>
+                    </div>
+                    </div>
+                  `;
+
+                  // Add click listeners for order items
+                  const orderItems = container.querySelectorAll('.order-item');
+                  orderItems.forEach(orderItem => {
+                    orderItem.addEventListener('click', () => {
+                    orderItems.forEach(item => item.classList.remove('active'));
+                    orderItem.classList.add('active');
+                    });
                   });
+
+                  // Pagination buttons
+                  const prevBtn = container.querySelector('.prev-page');
+                  const nextBtn = container.querySelector('.next-page');
+
+                  if (prevBtn) {
+                    prevBtn.addEventListener('click', async () => {
+                    if (offsetVal > 0) {
+                      offset = offsetVal - PAGE_SIZE;
+                      const resp = await api.get(`orders/?limit=${PAGE_SIZE}&offset=${offset}`);
+                      if (resp.status === 200) {
+                      orders = resp.data;
+                      totalItems = orders.pagination?.total || 0;
+                      renderOrdersList(container, orders, offset, totalItems);
+                      }
+                    }
+                    });
+                  }
+                  if (nextBtn) {
+                    nextBtn.addEventListener('click', async () => {
+                    if (offsetVal + PAGE_SIZE < totalItemsVal) {
+                      offset = offsetVal + PAGE_SIZE;
+                      const resp = await api.get(`orders/?limit=${PAGE_SIZE}&offset=${offset}`);
+                      if (resp.status === 200) {
+                      orders = resp.data;
+                      totalItems = orders.pagination?.total || 0;
+                      renderOrdersList(container, orders, offset, totalItems);
+                      }
+                    }
+                    });
+                  }
+                  }
 
                   let div = renderDivBelow(button.id);
                   if (div) {
-                    div.innerHTML = `
-                    <div class="orders-list">
-                    ${orderFormated.map(order => `
-                    <div class="order-item" id="order-${order.id}">
-                    <h3>Order #${order.id}</h3>
-                    <p>Date: ${order.formatedDate}</p>
-                    <p>Time: ${order.formatedTime}</p>
-                    <p>Total Items: ${order.total_items}</p>
-                    <p>Total Price: $${order.formatedPrice}</p>
-                    </div>
-                    `).join('')}
-                    </div>`;
+                  renderOrdersList(div, orders, offset, totalItems);
                   }
-
-                  let orderItems = document.querySelectorAll('.order-item');
-                  orderItems.forEach((orderItem) => {
-                    orderItem.addEventListener('click', () => {
-                      if (orderItem.classList.contains('active')) {
-                        orderItem.classList.remove('active');
-                        return;
-                      }
-                      orderItems.forEach(item => item.classList.remove('active'));
-                      orderItem.classList.add('active');
-                    });
-                  });
                   break;
                 }
                 case 'user-info': {

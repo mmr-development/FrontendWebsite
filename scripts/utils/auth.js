@@ -37,6 +37,8 @@ export const Logout = () => {
     localStorage.removeItem('restaurantCarts');
     localStorage.removeItem('delivery');
     localStorage.removeItem('order');
+
+    console.log('User logged out successfully.');
     // call the API to sign out
     return api.post('auth/sign-out', {}, api.includeCredentials).then((res) => {
         if (res.status === 200) {

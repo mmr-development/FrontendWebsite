@@ -3,7 +3,6 @@ import * as api from '../utils/api.js';
 
 let categories = await api.get('catalog/categories/all', api.includeCredentials).then((res) => {
     if (res.status === 200) {
-        console.log(res.data)
         return res.data.categories.map(category => ({
             image: category.image || "../../files/images/restaurants/placeholder.png",
             title: category.name,
@@ -19,8 +18,6 @@ let categories = await api.get('catalog/categories/all', api.includeCredentials)
     console.error('Error fetching categories:', error);
     return [];
 });
-
-console.log(categories);
 
 let scrollbarData = {
     categories: categories.map(category => ({

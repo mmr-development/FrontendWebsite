@@ -83,7 +83,8 @@ export const renderLiveOrders = async (container, partner_id, partners = []) => 
             let order = document.querySelector(`.order[data-id="${data.data.orderId}"]`);
             if (order){order.remove()}
         } else {
-            console.warn("Unknown message type:", data.type);
+            //console.warn("Unknown message type:", data.type);
+            console.log("Unknown message type:", data.type, "with data:", data.data);
         }
     }
 }

@@ -18,7 +18,7 @@ const init = async () => {
     if (partners) {
         localStorage.getItem('selectedPartnerId') ? partnerid = localStorage.getItem('selectedPartnerId') : partnerid = partners[0].id;            
     }
-    data = await api.get('partners/' + partnerid + "/catalogs/full", true).then((response) => {
+    data = await api.get('partners/' + partnerid + "/catalogs/full/?include_inactive=true", true).then((response) => {
         if (response.status == 200) {
             return response.data;
         } else {
@@ -428,12 +428,9 @@ export const renderCatalog = async (container) => {
                             return;
                         }
                         const file = fileInput.files[0];
-                        console.log(file);
                         const formData = new FormData();
                         formData.append('file', file, file.name);
-                        console.log('file', file, file.name, file.size)
                         // Check if the uploaded file is an image and is empty (0 bytes)
-                        console.log(formData);
                         // add a loading spinner
                         const loadingSpinner = document.createElement('div');
                         loadingSpinner.className = 'loading-spinner';
@@ -441,7 +438,6 @@ export const renderCatalog = async (container) => {
                         document.querySelector('.c-modal__body').classList.add('opace');
                         try {
                             const response = await api.postImage('partners/' + partnerid + '/catalogs/ai', formData);
-                            console.log(response)
                             data = null;
                             await renderCatalog(container);
                         } catch (error) {

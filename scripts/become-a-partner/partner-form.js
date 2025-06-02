@@ -145,8 +145,6 @@ export const renderPartnerForm = async () => {
             e.preventDefault();
             let formData = new FormData(e.target);
             let data = Object.fromEntries(formData.entries());
-        
-            // Format the data into the required structure
             let formattedData = {
                 contact_person: {
                     first_name: data.firstname,
@@ -162,7 +160,6 @@ export const renderPartnerForm = async () => {
                 delivery_method_id: parseInt(data['delivery-method'], 10),
                 business_type_id: parseInt(data['business-type'], 10),
             };
-            // Send the formatted data to the API
             await api.post('partner-applications', formattedData).then((response) => {
                 if (response.status === 201) {
                     window.location.href = 'thank-you.html?type=partner';

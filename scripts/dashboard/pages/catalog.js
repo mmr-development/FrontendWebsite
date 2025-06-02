@@ -407,7 +407,6 @@ export const renderCatalog = async (container) => {
         let addCatalogWithAiButton = document.querySelector('.add-catalog-ai');
         if (addCatalogWithAiButton) {
             addCatalogWithAiButton.addEventListener('click', async () => {
-                // show a form to input a file (pdf og png)
                 const form = `
                     <form id="add-catalog-ai-form">
                         <label for="catalog-file">Upload Catalog File (PDF or PNG)</label>
@@ -430,8 +429,6 @@ export const renderCatalog = async (container) => {
                         const file = fileInput.files[0];
                         const formData = new FormData();
                         formData.append('file', file, file.name);
-                        // Check if the uploaded file is an image and is empty (0 bytes)
-                        // add a loading spinner
                         const loadingSpinner = document.createElement('div');
                         loadingSpinner.className = 'loading-spinner';
                         document.querySelector('.c-modal__content').appendChild(loadingSpinner);

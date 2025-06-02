@@ -11,11 +11,9 @@
     <script src="../scripts/dashboard/dashboard-example-data.js" defer></script>
     <script defer>
         document.addEventListener('DOMContentLoaded', function() {
-            // Load templates
             const sidebarTemplate = document.getElementById('sidebar-template').innerHTML;
             const dashboardContentTemplate = document.getElementById('dashboard-content-template').innerHTML;
-            
-            // Example sidebar data
+
             const sidebarData = {
                 sidebarTitle: "MMR Admin",
                 sidebarLinks: [
@@ -45,8 +43,7 @@
                         });
                     }
                 });
-            
-            // Render dashboard content
+    
             fetch('../templates/partials/dashboard/dashboard-content.mustache')
                 .then(response => response.text())
                 .then(template => {
@@ -87,14 +84,10 @@
 <body>
     <div class="dashboard-wrapper">
         <div id="dashboard-sidebar">
-            <!-- Sidebar content will be loaded here -->
         </div>
         <div id="dashboard-content">
-            <!-- Dashboard content will be loaded here -->
         </div>
     </div>
-
-    <!-- Templates -->
     <script id="sidebar-template" type="x-tmpl-mustache">
         {{> dashboard/sidebar}}
     </script>

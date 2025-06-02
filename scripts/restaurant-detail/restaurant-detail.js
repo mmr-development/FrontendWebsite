@@ -29,7 +29,6 @@ export const getRestaurantDetail = async (id) => {
             return [];
         }
     });
-    // order of the days of the week from 0 to 6
     opening_hours.hours = opening_hours.hours.sort((a, b) => a.day_of_week - b.day_of_week);
 
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -39,15 +38,15 @@ export const getRestaurantDetail = async (id) => {
         name: restaurantDetail.name,
         banner: restaurantDetail.banner_url ? api.baseurl + 'public' + restaurantDetail.banner_url : "../../files/images/restaurants/placeholder.png",
         logo: restaurantDetail.logo_url ? api.baseurl + 'public' + restaurantDetail.logo_url : "../../files/images/restaurants/placeholder.png",
-        top_picks: "N/A", // Placeholder for top picks
+        top_picks: "N/A", 
         estimated_delivery_time: restaurantDetail.delivery_time ? restaurantDetail.delivery_time + " mins" : "N/A",
         delivery_fee: restaurantDetail.delivery_fee ? restaurantDetail.delivery_fee + 'dkk ' : "N/A",
         minimum_order: restaurantDetail.min_order_value ? restaurantDetail.min_order_value + 'dkk ' : "N/A",
         address: 'temporary address',
         opening_hours: opening_hours.hours.map((item) => {
             return {
-                day: daysOfWeek[item.day_of_week], // Map day_of_week to day name
-                hours: `${item.opens_at.slice(0, 5)} - ${item.closes_at.slice(0, 5)}` // Format opening and closing hours
+                day: daysOfWeek[item.day_of_week], 
+                hours: `${item.opens_at.slice(0, 5)} - ${item.closes_at.slice(0, 5)}` 
             };
         }),
         smiley: restaurantDetail.smiley_report_link ? {

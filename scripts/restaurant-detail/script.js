@@ -34,7 +34,6 @@ await renderPage(id).then(() => {
         infoIcon.addEventListener('click', async () => {
             let restaurantsCatalogs = JSON.parse(localStorage.getItem('restaurantsCatalogs')) || {};
             let restaurantDetail = restaurantsCatalogs[id];
-            console.log(restaurantDetail);
             await renderModal({
                 minWidth: '400',
                 title: 'Restaurant Information',
@@ -60,20 +59,15 @@ await renderPage(id).then(() => {
         category.addEventListener('click', () => {
             let value = category.getAttribute('data-value');
             let isActive = category.classList.contains('active');
-    
-            // Remove the active class from all categories
             searchcategories.forEach((cat) => cat.classList.remove('active'));
     
-            // Get all menu categories
             let categories = document.querySelectorAll('.menu-category');
     
             if (isActive) {
-                // If the same category is clicked again, show all categories
                 categories.forEach((cat) => {
                     cat.style.display = 'flex';
                 });
             } else {
-                // Otherwise, activate the clicked category and filter the menu
                 category.classList.add('active');
                 categories.forEach((cat) => {
                     if (cat.getAttribute('data-value') === value) {
@@ -89,7 +83,6 @@ await renderPage(id).then(() => {
     let searchInput = document.getElementById('search-input');
     searchInput.addEventListener('input', () => {
         let searchValue = searchInput.value.toLowerCase();
-        // Get all menu categories
         let menuCategories = document.querySelectorAll('.menu-category');
     
         menuCategories.forEach((category) => {
@@ -107,8 +100,7 @@ await renderPage(id).then(() => {
                     item.style.display = 'none';
                 }
             });
-    
-            // If no items are visible, hide the category
+
             if (hasVisibleItems) {
                 category.style.display = 'flex';
             } else {

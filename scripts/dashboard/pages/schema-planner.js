@@ -69,20 +69,15 @@ export const renderSchemaPlanner = async (container, courierid = null) => {
 Date.prototype.getWeek = function() {
   var date = new Date(this.getTime());
   date.setHours(0, 0, 0, 0);
-  // Thursday in current week decides the year.
   date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-  // January 4 is always in week 1.
   var week1 = new Date(date.getFullYear(), 0, 4);
-  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
   return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
                         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
 let generateDaysOfWeek = (week = (new Date()).getWeek(), year = (new Date()).getFullYear()) => {
-    // January 4th is always in week 1 (ISO)
     let simple = new Date(Date.UTC(year, 0, 4));
-    let dayOfWeek = simple.getUTCDay(); // 0 (Sun) - 6 (Sat)
-    // Calculate the Monday of week 1
+    let dayOfWeek = simple.getUTCDay();
     let ISOweekStart = new Date(simple);
     ISOweekStart.setUTCDate(simple.getUTCDate() - ((dayOfWeek + 6) % 7) + (week - 1) * 7);
 

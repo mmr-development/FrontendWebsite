@@ -6,7 +6,6 @@ import { basketUpdate } from './basket.js';
 import { renderModal } from '../utils/modal.js';
 
 let renderPage = async (id) => {
-    // get localstorage restaurantsCatalogs
     let restaurantsCatalogs = JSON.parse(localStorage.getItem('restaurantsCatalogs')) || {};
     let restaurantDetail = restaurantsCatalogs[id];
     await renderTemplate('../../templates/pages/restaurant-detail.mustache', 'restaurant-detail',restaurantDetail);
@@ -14,7 +13,6 @@ let renderPage = async (id) => {
 
     let newDetails = await getRestaurantDetail(id)
 
-    // compare newDetails with restaurantDetail
     if (!restaurantDetail || JSON.stringify(newDetails) !== JSON.stringify(restaurantDetail)) {
         restaurantDetail = newDetails;
         restaurantsCatalogs[id] = restaurantDetail;
@@ -28,28 +26,34 @@ let id = new URLSearchParams(window.location.search).get('id');
 
 await renderPage(id).then(() => {
     let infoIcon = document.querySelector('.fa-info-circle');
-    infoIcon.addEventListener('click', async () => {
-        let restaurantsCatalogs = JSON.parse(localStorage.getItem('restaurantsCatalogs')) || {};
-        let restaurantDetail = restaurantsCatalogs[id];
-        console.log(restaurantDetail);
-        await renderModal({
-            minWidth: '400',
-            title: 'Restaurant Information',
-            content: `
-            <div class="restaurant-detail-info">
-                <p><strong>Delivery Fee:</strong> ${restaurantDetail.delivery_fee ? restaurantDetail.delivery_fee : 'N/A'}</p>
-                <p><strong>Minimum Order:</strong> ${restaurantDetail.minimum_order ? restaurantDetail.minimum_order : 'N/A'}</p>
-                <p><strong>Opening Hours:</strong></p>
-                <ul>
-                ${restaurantDetail.opening_hours.map(hour => `<li>${hour.day}: ${hour.hours}</li>`).join('')}
-                </ul>
-            </div>
-            `,
-            close: "Close",
-            submit: null,
-            submitCallback: null
+    if (!infoIcon) {
+        console.error("Info icon not found, rendering page without it.");
+        renderPage(id);
+    }
+    if (infoIcon) {
+        infoIcon.addEventListener('click', async () => {
+            let restaurantsCatalogs = JSON.parse(localStorage.getItem('restaurantsCatalogs')) || {};
+            let restaurantDetail = restaurantsCatalogs[id];
+            console.log(restaurantDetail);
+            await renderModal({
+                minWidth: '400',
+                title: 'Restaurant Information',
+                content: `
+                <div class="restaurant-detail-info">
+                    <p><strong>Delivery Fee:</strong> ${restaurantDetail.delivery_fee ? restaurantDetail.delivery_fee : 'N/A'}</p>
+                    <p><strong>Minimum Order:</strong> ${restaurantDetail.minimum_order ? restaurantDetail.minimum_order : 'N/A'}</p>
+                    <p><strong>Opening Hours:</strong></p>
+                    <ul>
+                    ${restaurantDetail.opening_hours.map(hour => `<li>${hour.day}: ${hour.hours}</li>`).join('')}
+                    </ul>
+                </div>
+                `,
+                close: "Close",
+                submit: null,
+                submitCallback: null
+            });
         });
-    });
+    }
 
     let searchcategories = document.querySelectorAll('.search-category');
     searchcategories.forEach((category) => {

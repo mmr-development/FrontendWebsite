@@ -799,6 +799,7 @@
   flex-direction: column;
 }
 #restaurants-container .restaurants-list .restaurants-list .restaurants-item {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -3603,6 +3604,10 @@
     background-color: #1e8f5a;
     cursor: pointer;
   }
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .confetti {

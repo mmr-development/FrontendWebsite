@@ -29,6 +29,10 @@
 @use 'components/sidebar';
 @use 'components/basket';
 
+.pointer {
+    cursor: pointer;
+}
+
 .confetti {
   position: absolute;
   width: 10px;

@@ -1,4 +1,4 @@
-<div class="contact-form row" id="deliverytimeform">
+<div class="contact-form row pointer" id="deliverytimeform">
     <h3 class="contact-form__title">{{deliveryTimeTitle}}</h3>
     <div class="contact-form__content c-form-content">
         <div class="contact-form__input-group c-form-group">
@@ -8,7 +8,7 @@
     </div>
 </div>
 {{#deliveryNoteTitle}}
-<div class="contact-form row" id="deliverynoteform">
+<div class="contact-form row pointer" id="deliverynoteform">
     <h3 class="contact-form__title">{{deliveryNoteTitle}}</h3>
     <div class="contact-form__content c-form-content">
         <div class="contact-form__input-group c-form-group">
@@ -24,14 +24,14 @@
     <div class="contact-form__content c-form-content">
         <div class="contact-form__input-group c-form-group tipform">
         {{#deliveryTipOptions}}
-            <label class="predefinedTips" data-value="{{value}}">{{text}}</label>
+            <label class="predefinedTips pointer" data-value="{{value}}">{{text}}</label>
         {{/deliveryTipOptions}}
-            <label id="customTipOption">Custom <span id="deliverytipform-final"></label></label>
+            <label id="customTipOption" class="pointer">Custom <span id="deliverytipform-final"></label></label>
         </div>
     </div>
 </div>
 {{/deliveryTipTitle}}
-<div class="contact-form row" id="paymentmethodform">
+<div class="contact-form row pointer" id="paymentmethodform">
     <h3 class="contact-form__title">{{paymentTitle}}</h3>
     <div class="contact-form__content c-form-content">
         <div class="contact-form__input-group c-form-group">
